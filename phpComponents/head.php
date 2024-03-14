@@ -6,7 +6,7 @@
 
 <!--Estilos-->
 <link href="estilos/reset.css" rel="stylesheet">
-<!--link href="estilos/body.css" rel="stylesheet"-->
+<link href="estilos/main.css" rel="stylesheet">
 
 
 

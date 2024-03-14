@@ -5,7 +5,7 @@
 <head>
 
     <title>Patrones de búsqueda</title>
-    <?php include("/phpComponents/head.php"); ?>
+    <?php include("phpComponents/head.php"); ?>
 
 </head>
 
@@ -15,39 +15,37 @@
      <!--<section id="mainContent"> <-?php include("phpComponents/slideshow.php")?></section>-->
     <!--?php include("phpComponents/footer.php") ?>-->
 
-    <div>
-        <div class="toggle-btn">
-            <span>&#9776;</span>
-        </div>
-        <ul>
-            <li>
-                <img src="/images/logo_ucam.png">
-            </li>
-            <li>Home</li>
-            <li>Home</li>
-            <li>Home</li>
-            <li>Home</li>
-        </ul>
+    <!--Topbar para anuncio//readme-->
+
+    <main><!--Contenido principal (Sidebar y Content)-->
+
+    <div id="sidebar">
+         <!--?php include("phpComponents/sidebar.php") ?>-->
+      <div class="toggle-btn">
+        <span>&#9776</span>
+      </div>
+      <ul>
+        <li>
+          img
+          here
+        </li>
+        <li>Introducción</li><!--No es mandar al usuario a otra pagina, es recargar el contenido de la derecha (y los botones)-->
+        <li>Búsqueda Directa</li>
+        <li>KMP</li>
+        <li>BM</li>
+      </ul>
     </div>
 
-  
-
-
-    <div id="nav">
-        <div class="titulonav">
-        Secciones
-        </div>
-        <div class="cuerporec">
-            <ul>
-                <li><a href="#">Portada</a></li>
-                <li><a href="#">Grandes rutas</a></li>
-                <li><a href="#">Nuevas rutas</a></li>
-                <li><a href="#">Ciudades</a></li>
-                <li><a href="#">Pueblos</a></li>
-            </ul>
-        </div>
+    <div id="Content">
+        <!--?php include("phpComponents/content.php") ?>-->
+        Contenido de la página (va cambiando)
+        <!--Modificar con js una variable con los botones del sidebar para que cambie el contenido de la página-->
+        <?php include("phpComponents/sandbox.php") ?>
     </div>
 
+    </main>
+
+    <!--?php include("phpComponents/footer.php") ?>-->
 
     <script src="/Scripts/main.js" charset="utf-8"></script>
 </body>
