@@ -1,0 +1,100 @@
+#sidebar {
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    background: #151719;
+    left: -200px;
+    transition: all 500ms linear;
+  }
+  
+  #sidebar.active {
+    left: 0px;
+  }
+  
+  #sidebar ul li {
+    color: rgba(230, 230, 230, .9);
+    list-style: none;
+    padding: 15px 10px;
+    border-bottom: 1px solid rgba(100, 100, 100, .3);
+    text-align: center;
+  }
+  
+  .logo {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto; 
+  }
+  
+  #sidebar .toggle-btn {
+    position: absolute;
+    left: 230px;
+    top: 20px;
+    cursor: pointer;
+  }
+  
+  #sidebar .toggle-btn span {
+    display: block;
+    width: 40px;
+    text-align: center;
+    font-size: 30px;
+    border: 3px solid #000;
+  }
+
+
+
+  body{
+    font-family: verdana, helvetica;
+    font-weight: bold;
+ }
+ 
+ #nav{
+    width: 155px;
+ }
+ 
+ .titulonav{
+    border: 1px solid #d7d7d7;   
+    font-size: 8pt;
+    font-weight: bold;
+    background-color: #e0e0e0;
+    color: #000;
+    padding: 4px;
+ }
+ 
+ .cuerporec{
+    margin-top: 0px;
+    margin-right: 0pt;
+    margin-bottom: 10px;
+    margin-left: 0pt;
+ }
+ 
+ .cuerporec ul{
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    padding-top: 0pt;
+    padding-right: 0pt;
+    padding-bottom: 0pt;
+    padding-left: 0px;
+    list-style-type: none;
+    list-style-image: none;
+    list-style-position: outside;
+ }
+ 
+ .cuerporec li{
+    border-bottom: 1px solid #d7d7d7;   
+    border-left: 1px solid #d7d7d7;   
+    border-right: 1px solid #d7d7d7;   
+    padding: 1px 0 2px 4px;
+    font-size: 8pt;
+    margin-top: 0px;
+    margin-right: 0pt;
+    margin-bottom: 0px;
+    margin-left: 0pt;
+    background-color: #ffffcc;
+ }
+ 
+ .cuerporec a{
+    text-decoration: none;
+ }
+ 
