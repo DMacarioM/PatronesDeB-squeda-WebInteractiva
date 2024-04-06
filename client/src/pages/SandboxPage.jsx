@@ -20,6 +20,6 @@ function SandboxPage() {
       
     </div>
   )
-}
+} 
 
 export default SandboxPage
