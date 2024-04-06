@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import LogContainerComponent from '../components/LogContainerComponent'
+import LogContainerComponent from '../components/LogComponent/LogContainerComponent'
 
 
 function SandboxPage() {
@@ -16,7 +16,8 @@ function SandboxPage() {
         <div>Text color changes based on theme</div>
       </div>
       <LogContainerComponent/>
-
+      <br></br>
+      
     </div>
   )
 }
