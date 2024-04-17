@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Card, CardBody, CardHeader, Divider} from "@nextui-org/react";
-import LogCall from "../LogCall";
 import LogComponent from './LogComponent'
 
 export default function logContainerComponent() {
@@ -18,7 +17,6 @@ export default function logContainerComponent() {
       <CardHeader className="">
         <div className="flex">
           <p className="text-md">Salida</p>
-          <LogCall/>
         </div>
       </CardHeader>
       <Divider/>

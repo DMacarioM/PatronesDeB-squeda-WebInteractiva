@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import LogContainerComponent from '../components/LogComponent/LogContainerComponent'
+import LogCall from "../components/LogCall";
+import ControllerComponent from "../components/ControllerComponent/ControllerComponent";
+
 
 
 function SandboxPage() {
@@ -15,8 +18,18 @@ function SandboxPage() {
       <div className="light light:bg-gray-100 light:text-black bg-black text-white">
         <div>Text color changes based on theme</div>
       </div>
-      <LogContainerComponent/>
+      <LogCall />
       <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <ControllerComponent />
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <LogContainerComponent/>
       
     </div>
   )
