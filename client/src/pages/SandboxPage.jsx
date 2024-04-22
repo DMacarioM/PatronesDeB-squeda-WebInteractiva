@@ -8,7 +8,7 @@ import ControllerComponent from "../components/ControllerComponent/ControllerCom
 function SandboxPage() {
   return (
     /**<!-- In dark theme, background will be dark and text will be light. 
-      In light theme, background will be light and text will be dark -->*/
+      In light theme, background will be light and text will be dark --> Los cojones*/
     <div>
       <b>SandboxPage</b>
       <div className="dark dark:bg-gray-800 dark:text-white bg-white text-black">
@@ -18,7 +18,6 @@ function SandboxPage() {
       <div className="light light:bg-gray-100 light:text-black bg-black text-white">
         <div>Text color changes based on theme</div>
       </div>
-      <LogCall />
       <br></br>
       <br></br>
       <br></br>
@@ -30,7 +29,8 @@ function SandboxPage() {
       <br></br>
       <br></br>
       <LogContainerComponent/>
-      
+      <br></br>
+      <br></br>
     </div>
   )
 } 

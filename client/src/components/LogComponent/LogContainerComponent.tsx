@@ -21,11 +21,6 @@ export default function logContainerComponent() {
       </CardHeader>
       <Divider/>
       <CardBody className="px-1 py-0 text-small text-default-900 gap-1 overflow-y-auto">
-        <div className="flex justify-between pr-1 py-1">
-          <p className=" max-w-[450px]">Aquí se mostrarán los Logs:</p>
-          <p className="font-bold">'Supuesto botón'</p>
-        </div>
-
         <LogComponent />
       </CardBody>
     </Card>

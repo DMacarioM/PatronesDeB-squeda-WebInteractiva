@@ -1,15 +1,17 @@
 // ButtonComponent.js
 import React, { useContext } from 'react';
 import { InputContext } from '../InputContext';
-import { myAlgorithm } from '../../../algorithms/myAlgorithm';
 import {Button} from "@nextui-org/react";
+import { algorithmHandler } from '../../../algorithms/algorithmHandler';
+import {LogContext}  from "../../LogComponent/LogProvider";
+
 
 const ButtonComponent = () => {
-  const { input } = useContext(InputContext);
+  const { motherString, pattern, algorithm } = useContext(InputContext);
+  const { addLog } = useContext(LogContext);
 
   const handleClick = () => {
-    const result = myAlgorithm(input);
-    console.log(result);
+    algorithmHandler(motherString, pattern, algorithm, addLog);
   };
 
   return (

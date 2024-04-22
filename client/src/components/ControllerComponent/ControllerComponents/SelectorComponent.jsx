@@ -16,11 +16,11 @@ const SelectorComponent = () => {
         <Select
         label="Algoritmo"
         placeholder="Selecciona un algoritmo"
-        className="max-w-xs"
+        className="px-1"
         onChange={handleSelectionChange}
         value={algorithm}
         >
-            <SelectItem key="BusquedaLineal">Búsqueda Lineal</SelectItem>
+            <SelectItem key="FuerzaBruta">Fuerza Bruta</SelectItem>
             <SelectItem key="BM">BM</SelectItem>
             <SelectItem key="KMP">KMP</SelectItem>
         </Select>
