@@ -11,7 +11,18 @@ const ButtonComponent = () => {
   const { addLog } = useContext(LogContext);
 
   const handleClick = () => {
-    algorithmHandler(motherString, pattern, algorithm, addLog);
+    //Comprueba los campos input
+    if (!motherString || !pattern) {
+      // Mostrar un mensaje de error o realizar alguna acción apropiada
+      console.log("Las cadenas de entrada están vacías.");
+      addLog("Introduce datos de entrada válidos");
+      return;
+    }else{
+      var start = performance.now() + performance.timeOrigin;
+      algorithmHandler(motherString, pattern, algorithm, addLog);
+      var end = performance.now() + performance.timeOrigin;
+      addLog("Ejecución exitosa, t.ejec: "+ (end-start)+'s');
+    }
   };
 
   return (
