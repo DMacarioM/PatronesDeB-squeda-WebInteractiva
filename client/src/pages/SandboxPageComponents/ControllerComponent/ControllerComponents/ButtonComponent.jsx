@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { InputContext } from '../InputContext';
 import {Button} from "@nextui-org/react";
-import { algorithmHandler } from '../../../algorithms/algorithmHandler';
+import { algorithmHandler } from '../../../../algorithms/algorithmHandler';
 import {LogContext}  from "../../LogComponent/LogProvider";
 
 
@@ -21,7 +21,7 @@ const ButtonComponent = () => {
       var start = performance.now() + performance.timeOrigin;
       algorithmHandler(motherString, pattern, algorithm, addLog);
       var end = performance.now() + performance.timeOrigin;
-      addLog("Ejecución exitosa, t.ejec: "+ (end-start)+'s');
+      addLog("Ejecución exitosa, tiempo de ejecución: "+ (end-start)+'s');
     }
   };
 

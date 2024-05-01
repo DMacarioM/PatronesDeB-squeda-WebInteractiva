@@ -2,14 +2,14 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import SandboxPage from './pages/SandboxPage.jsx'
 
-import {LogProvider} from './components/LogComponent/LogProvider.jsx';
+import {LogProvider} from './pages/SandboxPageComponents/LogComponent/LogProvider.jsx';
 
 function App() {
   return (
     <LogProvider>
-    <div>
-      <h1>Navbar (Investigar que sea lateral)</h1>
-      <div className="container mx-auto px-4">
+    <div className='flex-col'>
+      {/* <h1>Navbar (Investigar que sea lateral)</h1> */}
+      <div className="flex-col container mx-auto px-4">
         <BrowserRouter>
           <Routes>
             <Route path='/' element={

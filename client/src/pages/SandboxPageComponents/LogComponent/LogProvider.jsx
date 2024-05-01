@@ -11,12 +11,17 @@ export const LogProvider = ({ children }) => {
     setLogs((prevLogs) => [...prevLogs, log]);
     //Set PasoDelAlgoritmo ->Así controlo el valor que tiene en cada momento (Añado el valor al log)
     //Y desde LogComponent accedo al objeto para cargarlo con el botón 
+    
+    //TODO: sólo guardo el paso, y el log controla un array infinito de pasos, puedes ir hacia alante y hacia atrás.
     //(Vuelve a ejecutar el paso, y continúa por donde iba(Establece el paso como actual en el array de pasos))
-    //O sólo guardo el paso, y el log controla un array infinito de pasos, puedes ir hacia alante y hacia atrás.
+  };
+
+  const clearLogs = () => {
+    setLogs([]);
   };
 
   return (
-    <LogContext.Provider value={{ logs, addLog }}>
+    <LogContext.Provider value={{ logs, addLog, clearLogs}}>
       {children}
     </LogContext.Provider>
   );

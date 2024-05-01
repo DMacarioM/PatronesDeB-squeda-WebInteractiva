@@ -13,6 +13,7 @@ const ControllerComponent = () => {
     const [pattern, setPattern] = useState('');
 
     return (
+        //TODO: Los botones y elementos tienen que desactivarse mientras se está en ejecución, Si el usuario no se ha enterado, pulsará el "supuesto botón del log, entonces la ejecución de los pasos se pausará hasta que dé al play (No se da directo)"
         <div>
             <InputContext.Provider value={{algorithm, setAlgorithm, motherString, setMotherString, pattern, setPattern }}>
             <div className="flex justify-center items-center">        

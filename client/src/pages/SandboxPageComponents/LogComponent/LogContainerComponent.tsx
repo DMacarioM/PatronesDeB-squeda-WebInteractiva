@@ -1,7 +1,8 @@
 import React from "react";
 
-import { Card, CardBody, CardHeader, Divider} from "@nextui-org/react";
-import LogComponent from './LogComponent'
+import { Card, CardBody, CardFooter, CardHeader, Divider} from "@nextui-org/react";
+import LogComponent from './LogContainerComponents/LogComponent'
+import ResetLogButtonComponent from './LogContainerComponents/ResetLogButtonComponent'
 
 export default function logContainerComponent() {
   return (
@@ -11,11 +12,13 @@ export default function logContainerComponent() {
     //singleton para estado de la imagen¿?
     
     //TODO: Cambiar fuente
+    //TODO: El botón para reiniciar sólo se activa cuando no se está ejecutando (Igual para ejecutar)
+
 
     <div className="flex justify-center items-center">
-    <Card className="max-w-[600px] min-w-[600px] max-h-[300px]">
+    <Card className="max-w-[600px] min-w-[600px] max-h-[500px]">
       <CardHeader className="">
-        <div className="flex">
+        <div className="flex pr-1 py-1">
           <p className="text-md">Salida</p>
         </div>
       </CardHeader>
@@ -23,6 +26,10 @@ export default function logContainerComponent() {
       <CardBody className="px-1 py-0 text-small text-default-900 gap-1 overflow-y-auto">
         <LogComponent />
       </CardBody>
+      <Divider/>
+      <CardFooter className="flex justify-end items-center px-2 py-4">
+        <ResetLogButtonComponent />
+      </CardFooter>
     </Card>
     </div>
   );

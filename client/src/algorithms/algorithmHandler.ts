@@ -28,13 +28,18 @@ export const algorithmHandler = (motherString:String , pattern:String, algorithm
     //Switch en función del valor de algorithm
 
     // Itera sobre la lista de pasos y realiza acciones con cada paso
+
+
+
+    //TODO: Los pasos no deberían salir uno detrás de otro sin control, debería de haber un "gestor de logs/pasos", que en función de la velocidad/modo, ejecute el algoritmo más rápido o más lento
+    //Realmente es coordinar el timeout con la animación / o llamada síncrona
     result.forEach((paso,index) => {
       /* Aquí puedes acceder a las propiedades del paso, por ejemplo:
       console.log(`Paso ${paso.id}: ${paso.message}`);*/
       
       setTimeout(() => {
         //Añadir los pasos al Log 
-        addLog(''+paso.message+', Resultado:'+paso.status);
+        addLog(''+paso.message+', Resultado: '+paso.status);
 
         
       },index*1000);
