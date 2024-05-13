@@ -1,6 +1,8 @@
 // ControllerComponent.jsx
 import React, { useState } from 'react';
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
+import VisualComponent from "./VisualController"
+import KonvaComponent from "./KonvaComponent"
 
 const VisualContainerComponent = () => {
     //Es el componente que contiene el recuadro de la extensión KonvaJs 
@@ -12,8 +14,8 @@ const VisualContainerComponent = () => {
             
             <div className="flex justify-center items-center">        
                 <Card className="px-1 py-1 max-w-[1300px] min-w-[1300px] max-h-[800px]">
-                    <CardBody>
-                        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                    <CardBody className='flex justify-center items-center'>
+                        <KonvaComponent/>
                     </CardBody>
                 </Card>
             </div>
