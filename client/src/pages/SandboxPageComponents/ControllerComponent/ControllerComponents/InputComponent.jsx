@@ -8,8 +8,8 @@ const InputComponent = () => {
 
   return (
     <div className="flex flex-col col-span-6 md:col-span-8 px-1 ">
-      <Input className='py-1' type="email" value={motherString} onChange={(e) => setMotherString(e.target.value)} placeholder="Cadena madre" />
-      <Input className='py-1' type="email" value={pattern} onChange={(e) => setPattern(e.target.value)} placeholder="Patrón a buscar" />
+      <Input className='py-1' type="email" value={motherString.toUpperCase()} onChange={(e) => setMotherString(e.target.value.toUpperCase())} placeholder="Cadena madre" />
+      <Input className='py-1' type="email" value={pattern.toUpperCase()} onChange={(e) => setPattern(e.target.value.toUpperCase())} placeholder="Patrón a buscar" />
     </div>
   );
 };

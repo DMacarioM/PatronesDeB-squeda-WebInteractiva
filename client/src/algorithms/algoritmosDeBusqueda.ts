@@ -1,4 +1,3 @@
-import React, { useContext,useState  } from 'react';
 import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
 
 
@@ -11,6 +10,7 @@ export const fuerzaBruta = (motherString, pattern) => {
 
     const n = motherString.length;
     const m = pattern.length;
+    let exitos=0;
 
     for (let i = 0; i <= n - m; i++) {
         let j;
@@ -18,12 +18,13 @@ export const fuerzaBruta = (motherString, pattern) => {
           //Paso  
           if (motherString[i + j] !== pattern[j]) {
             pasos.push({
-              message: ("Comprueba '"+motherString[i + j]+ "' con '"+pattern[j]+"'."),
+              message: ("Comprueba '" + motherString[i + j] + "' con '" + pattern[j] + "'."),
               motherString: motherString,
               pattern: pattern,
               status: 'Fallo',
-              posi:i,
-              posj:j
+              posEnCMadre: i,
+              posEnPatron: j,
+              patronDeBusqueda: "Fuerza Bruta"
             });
             break;
           }
@@ -33,23 +34,35 @@ export const fuerzaBruta = (motherString, pattern) => {
               message: ("Comprueba '"+motherString[i + j]+ "' con '"+pattern[j]+"'."),
               motherString: motherString,
               pattern: pattern,
-              status: 'Patrón encontrado!',
-              posi:i,
-              posj:j,
+              status: 'EXITO',
+              posEnCMadre: i,
+              posEnPatron: j,
+              patronDeBusqueda: "Fuerza Bruta"
             });
             // Se encontró una ocurrencia (es correcta la ultima posición del patrón(j=longitud de pat))
+            exitos++;
           }else{
             //El caracter coincide
             pasos.push({
               message: ("Comprueba '"+motherString[i + j]+ "' con '"+pattern[j]+"'."),
               motherString: motherString,
               pattern: pattern,
-              status: 'Acierto'
+              status: 'Acierto',
+              posEnCMadre: i,
+              posEnPatron: j,
+              patronDeBusqueda: "Fuerza Bruta"
             });
           }
         }
     }
 
+    pasos.push({
+      message: ("Fin de la ejecución. Patrón encontrado "+ exitos +" veces"),
+      motherString: motherString,
+      pattern: pattern,
+      status: 'FIN',
+      patronDeBusqueda: "Fuerza Bruta"
+    });//Este paso lo puedo utilizar para remarcar los patrones encontrados en la cadena madre
     return pasos;
   };
   

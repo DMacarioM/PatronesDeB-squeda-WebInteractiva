@@ -2,7 +2,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import SandboxPage from './pages/SandboxPage.jsx'
 
-import {LogProvider} from './pages/SandboxPageComponents/LogComponent/LogProvider.jsx';
+import {LogProvider} from './context/LogProvider.tsx';
 
 function App() {
   return (

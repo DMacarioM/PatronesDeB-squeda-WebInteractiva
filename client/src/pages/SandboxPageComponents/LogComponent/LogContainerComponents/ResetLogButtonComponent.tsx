@@ -1,18 +1,18 @@
 // ButtonComponent.js
-import React, { useContext } from 'react';
+import React from 'react';
 import {Button} from "@nextui-org/react";
-import {LogContext}  from "../LogProvider";
-
+import { PasoDelAlgoritmo } from '../../../../classes/PasoDelAlgoritmo';
+import { useLogContext } from '../../../../context/useLogContext';
 
 const ButtonComponent = () => {
-  const { addLog } = useContext(LogContext);
-  const { clearLogs } = useContext(LogContext);
+  const { addPaso, clearPasos } = useLogContext();
 
+  const pasoEstandar : PasoDelAlgoritmo = { message:"Eliminando Registros...",motherString:"",patronDeBusqueda:"",pattern:"",status:"RESET",};
 
   const handleClick = () => {
-    addLog("Eliminando registros...");
+    addPaso(pasoEstandar);
     setTimeout(() => {
-        clearLogs();
+        clearPasos();
       },3000);
     return;
   };

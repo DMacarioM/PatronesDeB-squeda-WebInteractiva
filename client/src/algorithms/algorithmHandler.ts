@@ -1,4 +1,3 @@
-import React, { useContext,useState  } from 'react';
 import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
 import { bmAlgorithm, fuerzaBruta } from './algoritmosDeBusqueda';
 
@@ -6,7 +5,7 @@ import { bmAlgorithm, fuerzaBruta } from './algoritmosDeBusqueda';
 
 //Los algoritmos deben devolver una Lista de pasos, con cada uno su mensaje,t.ejec (Posiciones)
 
-export const algorithmHandler = (motherString:String , pattern:String, algorithm:String, addLog:any ) => {
+export const algorithmHandler = (motherString:String , pattern:String, algorithm:String, addPaso:any ) => {
     //Recibe los valores del Input y ejecuta el algoritmo
 
     let result;
@@ -33,13 +32,15 @@ export const algorithmHandler = (motherString:String , pattern:String, algorithm
 
     //TODO: Los pasos no deberían salir uno detrás de otro sin control, debería de haber un "gestor de logs/pasos", que en función de la velocidad/modo, ejecute el algoritmo más rápido o más lento
     //Realmente es coordinar el timeout con la animación / o llamada síncrona
+
+    //Lanza los log una vez generados contra el log
     result.forEach((paso,index) => {
       /* Aquí puedes acceder a las propiedades del paso, por ejemplo:
       console.log(`Paso ${paso.id}: ${paso.message}`);*/
       
       setTimeout(() => {
         //Añadir los pasos al Log 
-        addLog(''+paso.message+', Resultado: '+paso.status);
+        addPaso(paso);
 
         
       },index*1000);

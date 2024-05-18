@@ -1,7 +1,5 @@
 // ControllerComponent.jsx
-import React, { useState } from 'react';
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
-import VisualComponent from "./VisualController"
 import KonvaComponent from "./KonvaComponent"
 
 const VisualContainerComponent = () => {
@@ -10,10 +8,9 @@ const VisualContainerComponent = () => {
     //TODO: Recibe la lista de Logs (Puede recibir la lista y manejarla totalmente por dentro (Boton play, animaciones, pasos, etc..)/Se le indica un Log especíifico de la Lista y lo muestra)
 
     return (
-        <div>
-            
+        <div id="SandboxView">
             <div className="flex justify-center items-center">        
-                <Card className="px-1 py-1 max-w-[1300px] min-w-[1300px] max-h-[800px]">
+                <Card className="px-1 py-1 max-w-[1000px] min-w-[1000px] max-h-[600px] ">
                     <CardBody className='flex justify-center items-center'>
                         <KonvaComponent/>
                     </CardBody>

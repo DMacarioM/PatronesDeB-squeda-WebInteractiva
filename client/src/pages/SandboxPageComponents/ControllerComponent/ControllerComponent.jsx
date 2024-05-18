@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { InputContext } from './InputContext';
 import InputComponent from './ControllerComponents/InputComponent';
-import ButtonComponent from './ControllerComponents/ButtonComponent';
+import ButtonComponent from './ControllerComponents/ButtonComponent.tsx';
 import SelectorComponent from './ControllerComponents/SelectorComponent';
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
 
