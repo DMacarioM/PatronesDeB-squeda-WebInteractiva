@@ -14,7 +14,7 @@ var pasoExitoEjec : PasoDelAlgoritmo = {message:"Ejecución exitosa, tiempo de e
 const ButtonComponent = () => {
   const { motherString, pattern, algorithm } = useContext(InputContext);
 
-  const { addPaso} = useLogContext();
+  const { addPaso,currentLogIndex,setCurrentLogIndex} = useLogContext();
 
   const handleClick = () => {
     //Comprueba los campos input
@@ -31,6 +31,7 @@ const ButtonComponent = () => {
       pasoExitoEjec.message+=(end-start)+'s';
       addPaso(pasoExitoEjec);
       //LLama a pintar los pasos
+      setCurrentLogIndex(currentLogIndex+1);
     }
   };
 

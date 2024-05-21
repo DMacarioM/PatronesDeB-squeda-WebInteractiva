@@ -20,7 +20,7 @@ export type PasoDelAlgoritmo = {
     tablaD2?: any;
     tablaSgte?: any;
 
-    drawStatus?: Konva.Layer;
+    drawStatus?: Konva.Stage;
   };
   //Cuando se imprima tiene que tener sus cadenas, para ir de un ejemplo a otro?¿ 
   //Entonces, al pulsar el botón de ver se debe actualizar el contexto con el paso actual
