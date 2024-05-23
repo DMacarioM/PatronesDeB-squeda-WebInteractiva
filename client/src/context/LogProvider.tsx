@@ -5,9 +5,6 @@ import Konva from 'konva';
 //Esta clase exporta el contexto(Logs) y la función para añadir nuevos para así importarlos desde otros componentes 
 
 export const LogContext = createContext<{
-  logs: string[];
-  addLog: (log: string) => void;
-  clearLogs: () => void;
   pasos: PasoDelAlgoritmo[];
   addPaso: (paso: PasoDelAlgoritmo) => void;
   clearPasos: () => void;
@@ -17,21 +14,11 @@ export const LogContext = createContext<{
 } | undefined>(undefined);
 
 export const LogProvider = ({ children }) => {
-  const [logs, setLogs] = useState<string[]>([]);
   const [pasos, setPasos] = useState<PasoDelAlgoritmo[]>([]);
   const [currentLogIndex, setCurrentLogIndex] = useState(0);
 
-  const addLog = (log) => {
-    setLogs((prevLogs) => [...prevLogs, log]);
-    //Set PasoDelAlgoritmo ->Así controlo el valor que tiene en cada momento (Añado el valor al log)
-  };
-
   const addPaso = (paso: PasoDelAlgoritmo) => {
     setPasos((prevPasos) => [...prevPasos, paso]);
-  };
-
-  const clearLogs = () => {
-    setLogs([]);
   };
 
   const clearPasos = () => {
@@ -46,7 +33,7 @@ export const LogProvider = ({ children }) => {
   };
 
   return (
-    <LogContext.Provider value={{ logs, addLog, clearLogs, pasos, addPaso, clearPasos, currentLogIndex, setCurrentLogIndex, setDrawStatus}}>
+    <LogContext.Provider value={{pasos, addPaso, clearPasos, currentLogIndex, setCurrentLogIndex, setDrawStatus}}>
       {children}
     </LogContext.Provider>
   );

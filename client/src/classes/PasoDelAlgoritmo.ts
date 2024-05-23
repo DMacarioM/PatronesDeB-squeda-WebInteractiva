@@ -13,7 +13,7 @@ export type PasoDelAlgoritmo = {
 
     posEnCMadre?: number;
     posEnPatron?: number;
-    //Altura Y?
+    alturaY?: number;
 
 
     tablaD1?: any;

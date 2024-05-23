@@ -8,8 +8,15 @@ import { useLogContext } from '../../../../context/useLogContext';
 
 
 
-const pasoErrorInput : PasoDelAlgoritmo = {message:"Introduce datos de entrada válidos",motherString:"",patronDeBusqueda:"",pattern:"",status:"INPUTERROR",};
-var pasoExitoEjec : PasoDelAlgoritmo = {message:"Ejecución exitosa, tiempo de ejecución:",motherString:"",patronDeBusqueda:"",pattern:"",status:"EXECUTE",};
+const pasoErrorInput : PasoDelAlgoritmo = {message:"Introduce datos de entrada válidos  ",motherString:"",patronDeBusqueda:"",pattern:"",status:"INPUTERROR",};
+const pasoErrorInputPatron : PasoDelAlgoritmo = {message:"Introduce datos de entrada válidos (El patrón no puede ser más grande que la cadena Madre) ",motherString:"",patronDeBusqueda:"",pattern:"",status:"INPUTERROR",};
+var pasoExitoEjec : PasoDelAlgoritmo = {message:"Ejecución exitosa, tiempo de ejecución:  ",motherString:"",patronDeBusqueda:"",pattern:"",status:"EXECUTE",};
+
+function mapPasoExito (motherString:String, pattern:String, algorithm:String) {
+  pasoExitoEjec.motherString=motherString;
+  pasoExitoEjec.pattern=pattern;
+  pasoExitoEjec.patronDeBusqueda=algorithm;
+}
 
 const ButtonComponent = () => {
   const { motherString, pattern, algorithm } = useContext(InputContext);
@@ -23,20 +30,26 @@ const ButtonComponent = () => {
       console.log("Las cadenas de entrada están vacías.");
       addPaso(pasoErrorInput);
       return;
+    }else if(!algorithm){
+      console.log("Patrón no encontrado.");
+      addPaso(pasoErrorInput);
+    }else if(pattern.length>motherString.length){
+      console.log("Patrón no encontrado.");
+      addPaso(pasoErrorInputPatron);
     }else{
       var start = performance.now() + performance.timeOrigin;
-      algorithmHandler(motherString, pattern, algorithm, addPaso);
+      algorithmHandler(motherString, pattern, algorithm, addPaso, currentLogIndex, setCurrentLogIndex);
       var end = performance.now() + performance.timeOrigin;
 
+      mapPasoExito(motherString, pattern, algorithm);
       pasoExitoEjec.message+=(end-start)+'s';
       addPaso(pasoExitoEjec);
       //LLama a pintar los pasos
-      setCurrentLogIndex(currentLogIndex+1);
     }
   };
 
   return (
-    <Button onClick={handleClick}>Ejecutar algoritmo</Button>
+    <a href="#SandboxView"><Button onClick={handleClick}>Ejecutar algoritmo</Button></a>
   );
 };
 
