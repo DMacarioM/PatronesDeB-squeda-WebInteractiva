@@ -6,11 +6,13 @@ import Konva from 'konva';
 const getColorFromStatus = (status) => {
   switch (status) {
     case 'Fallo':
-      return 'red';
+      return '#FF0000';
     case 'Acierto':
-      return 'yellow';
+      return '#63BB66';
     case 'EXITO':
-      return 'green';
+      return '#9CCC66';
+    case 'NEWELEMENT':
+      return '#85C2FF';
     default:
       return 'white';
   }
@@ -26,7 +28,7 @@ const establecerDibujo = (paso) => {
   const caracteresPatron = paso.pattern.split('');
   const tamanoTexto = 50; // Tamaño del texto
   const distancia = tamanoTexto +20; // Distancia entre caracteres
-
+//<Stage width={960} height={500}>
   return (
     <Stage width={960} height={500}>
       <Layer
@@ -34,26 +36,6 @@ const establecerDibujo = (paso) => {
         y={4}
       >
         <Group draggable>
-          {caracteresMadre.map((mcaracter, index) => (
-            <React.Fragment key={index}>
-            <Text
-              x={(index * distancia + 10)}
-              y={6}
-              text={mcaracter}
-              fontSize={tamanoTexto}
-              draggable
-            />
-            <Rect
-              x={(index * distancia)}
-              y={0}
-              width={tamanoTexto+7}
-              height={tamanoTexto+7}
-              stroke='black'
-              strokeWidth={4}
-            />
-          </React.Fragment>
-          ))}
-
           {caracteresPatron.map((pcaracter, index) => (
             <React.Fragment key={index}>
               {paso.posEnPatron==index && (
@@ -61,14 +43,14 @@ const establecerDibujo = (paso) => {
                   <Rect
                     x={(index * distancia)+ (paso.posEnCMadre*distancia)}
                     y={paso.alturaY*distancia}
-                    width={tamanoTexto + 5}
-                    height={tamanoTexto + 5}
+                    width={tamanoTexto + 7}
+                    height={tamanoTexto + 7}
                     stroke='black'
                     fill={getColorFromStatus(paso.status)} // Aquí se establece el color de fondo
                     strokeWidth={4} />
                      
                   <Text
-                  x={(index * distancia + 9) + (paso.posEnCMadre*distancia)}
+                  x={(index * distancia + 6) + (paso.posEnCMadre*distancia)}
                   y={paso.alturaY*distancia + 6}
                   text={pcaracter}
                   fontSize={tamanoTexto}
@@ -78,11 +60,17 @@ const establecerDibujo = (paso) => {
            ))}
         </Group>
       </Layer>
-    </Stage>
+      </Stage>
   );
 };
 
 const establecerDibujoInicial = (paso) => {
+  // Crear una lista de caracteres
+  const caracteresMadre = paso.motherString.split('');
+  const caracteresPatron = paso.pattern.split('');
+  const tamanoTexto = 50; // Tamaño del texto
+  const distancia = tamanoTexto +20; // Distancia entre caracteres
+
   return (
     <Stage width={960} height={500}>
       <Layer
@@ -90,10 +78,10 @@ const establecerDibujoInicial = (paso) => {
         y={4}
       >
         <Group draggable>
-          {caracteresMadre.map((mcaracter, index) => (
+        {caracteresMadre.map((mcaracter, index) => (
             <React.Fragment key={index}>
             <Text
-              x={(index * distancia + 10)}
+              x={(index * distancia) +5}
               y={6}
               text={mcaracter}
               fontSize={tamanoTexto}
@@ -102,7 +90,7 @@ const establecerDibujoInicial = (paso) => {
             <Rect
               x={(index * distancia)}
               y={0}
-              width={tamanoTexto+7}
+              width={tamanoTexto+6}
               height={tamanoTexto+7}
               stroke='black'
               strokeWidth={4}
@@ -156,17 +144,17 @@ const KonvaComponent = () => {
     if(pasos[currentLogIndex]){
 
       if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")){
-        /*if(pasos[currentLogIndex].status=="FIN"){
-          setDrawStatus(pasos[currentLogIndex], establecerDibujoFinal(pasos[currentLogIndex]))
+        if(pasos[currentLogIndex].status=="FIN"){
+          //setDrawStatus(pasos[currentLogIndex], establecerDibujoFinal(pasos[currentLogIndex]))
         }else{
           setDrawStatus(pasos[currentLogIndex], establecerDibujoInicial(pasos[currentLogIndex]))
         }
         console.log("PintaEspecial");
         setStage(pasos[currentLogIndex].drawStatus);
-        return;*/
+        return;
       }else if(pasos[currentLogIndex-1]){
         if(pasos[currentLogIndex-1]?.drawStatus){
-          if((pasos[currentLogIndex-1].status == "Fallo")) {
+          if((pasos[currentLogIndex-1].status == "Fallo")&&(pasos[currentLogIndex-1].status == "EXITO")) {
             pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1]?.alturaY +1) || 1;
           }else{
             pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1]?.alturaY || 1;
@@ -174,18 +162,38 @@ const KonvaComponent = () => {
           console.log("PintaPrevio");
           //setDrawStatus(pasos[currentLogIndex], establecerDibujo(pasos[currentLogIndex]));
           setStage(pasos[currentLogIndex-1].drawStatus);
+
+          //Ahora Pinta el nuevo dibujo sobre el anterior
+          /*if(!pasos[currentLogIndex]?.drawStatus){
+            console.log("PintaActual");
+            //Recibe el dibujo anterior y añade el paso nuevo
+            var stagevariable = new Konva.Stage();
+            stagevariable = pasos[currentLogIndex-1]?.drawStatus;
+            //stagevariable.add(establecerDibujo(pasos[currentLogIndex]));
+    
+            setDrawStatus(pasos[currentLogIndex], stagevariable);
+          }*/
+
         }else{
           setStage(dibujoVacio());
         }
       }
 
+      if(!pasos[currentLogIndex]?.drawStatus){
+            console.log("PintaActual");
+            //Recibe el dibujo anterior y añade el paso nuevo
+            var stagevariable =pasos[currentLogIndex-1]?.drawStatus;
+            //stagevariable.add(establecerDibujo(pasos[currentLogIndex]));
+    
+            stagevariable = establecerDibujo(pasos[currentLogIndex-1]);
+
+            //Aquí me gustaría añadir a stageVariable el dibujo de establecerDibujo
+            
+            //setDrawStatus(pasos[currentLogIndex], stagevariable);
+            setDrawStatus(pasos[currentLogIndex], establecerDibujo(pasos[currentLogIndex]));
+          }
+      
       //Pisa el dibujo anterior con el Nuevo? o cojo el anterior y creo el dibujo
-
-      if(!pasos[currentLogIndex].drawStatus){
-        console.log("PintaActual");
-        setDrawStatus(pasos[currentLogIndex], establecerDibujo(pasos[currentLogIndex]))
-      }
-
       // Pinta (o no) el dibujo del paso anterior, ahora pinta el paso
       
       const tiempoRetraso = 2000; // Define tu tiempo de retraso aquí (en milisegundos)
