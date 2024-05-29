@@ -27,7 +27,7 @@ const ControllerComponent = () => {
                         {<InputComponent />}
                         {<SelectorComponent />}
                     </CardBody>
-                    <CardFooter>
+                    <CardFooter className="">
                         {<ButtonComponent />}
                     </CardFooter>
                 </Card>

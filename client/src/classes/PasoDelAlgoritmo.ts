@@ -16,11 +16,12 @@ export type PasoDelAlgoritmo = {
     alturaY?: number;
 
 
-    tablaD1?: any;
+    tablaD1?: any;//Bad Match
     tablaD2?: any;
     tablaSgte?: any;
 
     drawStatus?: any;
+    
     //drawStatus?: Konva.Layer[];
     //drawStatus?: Konva.Stage;
   };

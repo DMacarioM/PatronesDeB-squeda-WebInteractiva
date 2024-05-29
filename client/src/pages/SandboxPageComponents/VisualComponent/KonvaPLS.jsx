@@ -1,22 +1,24 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
-import { dibujoVacio , establecerDibujo , establecerDibujoInicial } from "./KonvaHandler";
+import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial } from "./KonvaHandler";
 
 
 const KonvaComponent = () => {
     const { pasos, setDrawStatus, currentLogIndex } = useLogContext();
     const [elements, setElements] = useState([]);
     const timeoutRef = useRef(null);
-    const [lastExecute, setLastExecute] = useState(null); // Nueva variable de estado
+    const [lastExecutes, setLastExecutes] = useState([]); // Ahora es un array
 
     useEffect(() => {
+        //console.log("useEffectActual: "+ currentLogIndex);
+        //console.log("Soy : "+ pasos[currentLogIndex]?.message);
         if(pasos[currentLogIndex]){
+            //pasos[currentLogIndex].id=currentLogIndex; //Cambiar y usar el setState o setAlgo con el contexto?¿
+            console.log("ID: "+ pasos[currentLogIndex].id);
             if(timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
               }
-
-            pasos[currentLogIndex].id=currentLogIndex; //Cambiar y usar el setState o setAlgo con el contexto?¿
 
             if(pasos[currentLogIndex]?.drawStatus){
                 if(pasos[currentLogIndex-1]){
@@ -24,18 +26,27 @@ const KonvaComponent = () => {
                         setElements([pasos[currentLogIndex-1].drawStatus]);
                     }
                 }
-            }else if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")){
-                //setElements([]);
+            }else if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")||(pasos[currentLogIndex].status=="RESET")){
+                pasos[currentLogIndex].id=currentLogIndex; //Cambiar y usar el setState o setAlgo con el contexto?¿
+                console.log("Id- EXEC"+pasos[currentLogIndex].id)
                 if(pasos[currentLogIndex].status=="FIN"){
                     return;
-                  //setDrawStatus(pasos[currentLogIndex], establecerDibujoFinal(pasos[currentLogIndex]))
+                    //TODO: En el dibujo final, recoger los objetos anteriores (hasta el execute incluido),
+                    //y (en caso de que el patrón.length>1) buscar paso EXITO, y si el paso anterior es acierto, cambiarlo a Exito/Crear un elemento encima (cabiar el color a Éxito) 
+                    //En caso de que no sea viable, cuando un paso sea exito, volver a hacer los aciertos anteriores con exito(Para que así el elemento paso sea exito también).
+                     //setDrawStatus(pasos[currentLogIndex], establecerDibujoFinal(pasos[currentLogIndex]))
                 }else if(pasos[currentLogIndex].status=="EXECUTE"){
                   setDrawStatus(pasos[currentLogIndex], establecerDibujoInicial(pasos[currentLogIndex]))
-                  setLastExecute(pasos[currentLogIndex]); // Guardar el último paso EXECUT
-                }else{return;}
+                  setLastExecutes([...lastExecutes, pasos[currentLogIndex]]); // Añadir al array
+                }else if(pasos[currentLogIndex].status=="RESET"){
+                    setDrawStatus(pasos[currentLogIndex], dibujoVacio())
+                }
+                else{return;}
                 setElements([pasos[currentLogIndex].drawStatus]);
                 return;
             }else{
+                pasos[currentLogIndex].id=currentLogIndex; //Cambiar y usar el setState o setAlgo con el contexto?¿
+                console.log("Id- NORMAL"+pasos[currentLogIndex].id)
                 if(pasos[currentLogIndex-1]){ 
                     if(pasos[currentLogIndex-1]?.drawStatus){
                         if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
@@ -44,29 +55,34 @@ const KonvaComponent = () => {
                             pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;
                         }
 
-                        //const newElements = pasos.map(paso => paso.id === currentLogIndex ? establecerDibujo(paso) : paso.drawStatus);
-                        //const newElements = pasos.map(paso => establecerDibujo(paso));
-                        if(lastExecute) { // Si existe un paso EXECUTE
+                        if(lastExecutes.length > 0) { // Si existe un paso EXECUTE
+
                             const newElements = pasos.map(paso => {
-                                if (paso.id > lastExecute.id && paso.id <= currentLogIndex) {
+                                if (paso.id > lastExecutes[lastExecutes.length - 1].id && paso.id <= currentLogIndex) {
+                                    //console.log("Pasos entre lasExec");
+                                    //console.log(paso);
                                     return establecerDibujo(paso);
-                                } else if (paso.id === lastExecute.id) { // Si el paso actual es EXECUTE
+                                } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { // Si el paso actual es EXECUTE
+                                    //console.log("Last exec: "+paso.id);
+                                    //console.log(paso);
                                     return establecerDibujoInicial(paso);
                                 } else {
                                     return null;
                                 }
                             });
-                            console.log("New elements: - "+ newElements);
+                            console.log("New elements: - ");
+                            console.log(newElements);
+
                             setDrawStatus(pasos[currentLogIndex],newElements);
                             setElements(pasos[currentLogIndex-1].drawStatus);
                         }else{
                          console.log("Error de Execute");   
                         }
                     }else{
-                        setElements(dibujoVacio())
+                        setElements(errorKonva())
                     }
                 }else{
-                    setElements(dibujoVacio())
+                    setElements(errorKonva())
                 }
 
             }

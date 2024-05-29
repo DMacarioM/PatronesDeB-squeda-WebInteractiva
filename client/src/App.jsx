@@ -20,7 +20,7 @@ function App() {
             </Route> 
             <Route path='/BD' element={<h1>Busqueda directa Info</h1>}></Route>
             <Route path='/KMP' element={<h1>KMP Info</h1>}></Route>
-            <Route path='/BM' element={<h1>BM Info</h1>}></Route>
+            <Route path='/BM' element={<h1>Booyer-Moore Info</h1>}></Route>
             <Route path='/Sandbox' element={<SandboxPage />}></Route>
           </Routes>
         </BrowserRouter>

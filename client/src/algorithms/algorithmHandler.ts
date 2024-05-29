@@ -2,19 +2,17 @@ import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
 import { bmAlgorithm, fuerzaBruta } from './algoritmosDeBusqueda';
 
 
-export const algorithmHandler = async (motherString:String , pattern:String, algorithm:String, addPaso:any , currentLogIndex:number, setCurrentLogIndex: any) => {
+export const algorithmHandler = async (motherString:string , pattern:string, algorithm:string, addPaso:any , currentLogIndex:number, setCurrentLogIndex: any, lastLogIndex: number, setLastLogIndex:any,) => {
     //Recibe los valores del Input y ejecuta el algoritmo
-    let result: PasoDelAlgoritmo[]  = [];;
+    let result: PasoDelAlgoritmo[]  = [];
 
     switch(algorithm) {
         case 'FuerzaBruta':
             result = fuerzaBruta(motherString, pattern);
             break;
-        case 'BM':
+        case 'Booyer-Moore':
             result = bmAlgorithm(motherString, pattern);
             //TODO: En caso de ser BM/KMP se deberán mostrar las tablas antes de comenzar con el algoritmo
-            //Al log se añaden igual, entonces(lo muestro en el canva) o lo muestro en una tabla lateral, setvisibleTrue para cada uno
-            //, y al calcularla añadir el texto al log, (Puede estar ya rellena y explicarla), o lanzar una funcion que lo vaya rellenando y lanzando Logs
             break;
         // Add more cases as needed
         default:
@@ -30,6 +28,9 @@ export const algorithmHandler = async (motherString:String , pattern:String, alg
     var tiempoDeEspera = 7000;
 
 
+    let newLastLogIndex=lastLogIndex;
+    console.log("NEWLLI "+newLastLogIndex);
+
     for (let i = 0; i < result.length; i++) {
         if(i==0){
             console.log("tiempospera");
@@ -38,9 +39,12 @@ export const algorithmHandler = async (motherString:String , pattern:String, alg
             tiempoDeEspera=4000; //Recoger de algun sitio
         }
         await new Promise(resolve => setTimeout(resolve, tiempoDeEspera));
-        console.log("Lanza Paso");
-        setCurrentLogIndex(prevIndex => prevIndex + 1); // Utiliza una función para actualizar el estado
+        newLastLogIndex = newLastLogIndex + 1;
+        console.log("Lanza Paso " +newLastLogIndex);
+        setLastLogIndex(newLastLogIndex);
+        //result[i].id=newLastLogIndex;
         addPaso(result[i]);
+        setCurrentLogIndex(newLastLogIndex); // Utiliza una función para actualizar el estado
     }
   };
   

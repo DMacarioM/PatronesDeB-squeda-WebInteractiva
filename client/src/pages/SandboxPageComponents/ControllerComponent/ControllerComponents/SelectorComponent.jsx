@@ -21,7 +21,7 @@ const SelectorComponent = () => {
         value={algorithm}
         >
             <SelectItem key="FuerzaBruta">Fuerza Bruta</SelectItem>
-            <SelectItem key="BM">BM</SelectItem>
+            <SelectItem key="Booyer-Moore">Booyer-Moore</SelectItem>
             <SelectItem key="KMP">KMP</SelectItem>
         </Select>
     </div>
