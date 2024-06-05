@@ -1,5 +1,5 @@
 import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
-import { bmAlgorithm, fuerzaBruta } from './algoritmosDeBusqueda';
+import { bmAlgorithm, fuerzaBruta, kmpAlgorithm } from './algoritmosDeBusqueda';
 
 
 export const algorithmHandler = async (motherString:string , pattern:string, algorithm:string, addPaso:any , currentLogIndex:number, setCurrentLogIndex: any, lastLogIndex: number, setLastLogIndex:any,) => {
@@ -10,9 +10,12 @@ export const algorithmHandler = async (motherString:string , pattern:string, alg
         case 'FuerzaBruta':
             result = fuerzaBruta(motherString, pattern);
             break;
-        case 'Booyer-Moore':
+        case 'Boyer-Moore':
             result = bmAlgorithm(motherString, pattern);
             //TODO: En caso de ser BM/KMP se deberán mostrar las tablas antes de comenzar con el algoritmo
+            break;
+        case 'KMP':
+            result = kmpAlgorithm(motherString, pattern);
             break;
         // Add more cases as needed
         default:
@@ -29,12 +32,10 @@ export const algorithmHandler = async (motherString:string , pattern:string, alg
 
 
     let newLastLogIndex=lastLogIndex;
-    console.log("NEWLLI "+newLastLogIndex);
 
     for (let i = 0; i < result.length; i++) {
         if(i==0){
-            console.log("tiempospera");
-            tiempoDeEspera=1000;
+            tiempoDeEspera=2000;
         }else{
             tiempoDeEspera=4000; //Recoger de algun sitio
         }

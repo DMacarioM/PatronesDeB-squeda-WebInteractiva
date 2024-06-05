@@ -18,8 +18,9 @@ export const getColorFromStatus = (status) => {
 export const establecerDibujo = (paso) => {
     //const caracteresMadre = paso.motherString.split('');
     const caracteresPatron = paso.pattern.split('');
-    const tamanoTexto = 50;
+    const tamanoTexto = 35;
     const distancia = tamanoTexto +20; // Distancia entre caracteres
+
     return (
         <Group key={`${paso.id}-PAS-`}>
             {caracteresPatron.map((pcaracter, index) => (
@@ -36,7 +37,7 @@ export const establecerDibujo = (paso) => {
                     strokeWidth={4} 
                 />
                 <Text
-                    x={(index * distancia + 5) + (paso.posEnCMadre*distancia)}
+                    x={(index * distancia +8) + (paso.posEnCMadre*distancia)}
                     y={paso.alturaY*distancia + 6}
                     text={pcaracter}
                     fontSize={tamanoTexto} />
@@ -51,7 +52,7 @@ export const establecerDibujo = (paso) => {
     // Crear una lista de caracteres
     const caracteresMadre = paso.motherString.split('');
     //const caracteresPatron = paso.pattern.split('');
-    const tamanoTexto = 50; 
+    const tamanoTexto = 35; 
     const distancia = tamanoTexto +20; // Distancia entre caracteres
 
     return (
@@ -67,11 +68,28 @@ export const establecerDibujo = (paso) => {
                         strokeWidth={4}
                     />
                     <Text
-                        x={(index * distancia) +5}
+                        x={(index * distancia) +8}
                         y={6}
                         text={mcaracter}
                         fontSize={tamanoTexto}
                     />
+                </React.Fragment>
+            ))}
+          </Group>
+    );
+  };
+
+  export const establecerDibujoInicialTabla = (paso, numero) => {
+    // Crear una lista de caracteres
+    const caracteresMadre = paso.motherString.split('');
+    const tamanoTexto = 50; 
+    const distancia = tamanoTexto +20; // Distancia entre caracteres
+
+    return (
+          <Group key={`${paso.id}-IN-`}>
+            {caracteresMadre.map((mcaracter, index) => (
+                <React.Fragment key={`${mcaracter}-${index}`}>
+                 
                 </React.Fragment>
             ))}
           </Group>

@@ -12,8 +12,8 @@ export const LogContext = createContext<{
   setCurrentLogIndex: (index: number) => void;
   lastLogIndex: number;
   setLastLogIndex: (index: number) => void;
-  //setDrawStatus: (paso: PasoDelAlgoritmo,stage: Konva.Stage)=> void;
   setDrawStatus: (paso: PasoDelAlgoritmo,elements: any)=> void;
+  setTableDrawStatus: (paso: PasoDelAlgoritmo,elements: any)=> void;
 } | undefined>(undefined);
 
 export const LogProvider = ({ children }) => {
@@ -29,19 +29,20 @@ export const LogProvider = ({ children }) => {
     setPasos([]);
   };
 
-  /*const setDrawStatus = (paso: PasoDelAlgoritmo,stage: Konva.Stage)=> {
-    if(stage!=null){
-      paso.drawStatus=stage;
-    }
-  };*/
   const setDrawStatus = (paso: PasoDelAlgoritmo,elements: any)=> {
     if (paso && elements) {
       paso.drawStatus = elements;
     }
   };
 
+  const setTableDrawStatus = (paso: PasoDelAlgoritmo,elements: any)=> {
+    if (paso && elements) {
+      paso.tableDrawStatus = elements;
+    }
+  };
+
   return (
-    <LogContext.Provider value={{pasos, addPaso, clearPasos, currentLogIndex, setCurrentLogIndex,lastLogIndex, setLastLogIndex, setDrawStatus}}>
+    <LogContext.Provider value={{pasos, addPaso, clearPasos, currentLogIndex, setCurrentLogIndex,lastLogIndex, setLastLogIndex, setDrawStatus,setTableDrawStatus}}>
       {children}
     </LogContext.Provider>
   );

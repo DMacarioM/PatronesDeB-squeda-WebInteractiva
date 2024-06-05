@@ -23,13 +23,16 @@ function SandboxPage() {
       <br></br>
       <br></br>
       <br></br>
+      <div className='flex gap-x-32'>
       <ControllerComponent />
+      <LogContainerComponent/>
+      </div>
       <br></br>
       <br></br>
       <VisualContainerComponent />
       <br></br>
       <br></br>
-      <LogContainerComponent/>
+      
       <br></br>
       <br></br>
     </div>

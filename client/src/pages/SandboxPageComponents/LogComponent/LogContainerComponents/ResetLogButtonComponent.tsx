@@ -7,13 +7,14 @@ import { useLogContext } from '../../../../context/useLogContext';
 const ButtonComponent = () => {
   const { addPaso,clearPasos,currentLogIndex,setCurrentLogIndex,lastLogIndex ,setLastLogIndex} = useLogContext();
 
-  const pasoEstandar : PasoDelAlgoritmo = { message:"Eliminando Registros...",motherString:"",patronDeBusqueda:"",pattern:"",status:"RESET",};
+  const pasoEstandar = ( { message:"Eliminando Registros...",motherString:"",patronDeBusqueda:"",pattern:"",status:"RESET",});
 
   const handleClick = () => {
-    addPaso(pasoEstandar);
+    
+    console.log(pasoEstandar);
     let newLastLogIndex=lastLogIndex+1;
     setLastLogIndex(newLastLogIndex);
-    setCurrentLogIndex(newLastLogIndex);
+    addPaso(pasoEstandar);
     setTimeout(() => {
         clearPasos();
         setLastLogIndex(0);

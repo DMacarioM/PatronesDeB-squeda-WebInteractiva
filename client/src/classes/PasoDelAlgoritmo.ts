@@ -15,11 +15,12 @@ export type PasoDelAlgoritmo = {
     posEnPatron?: number;
     alturaY?: number;
 
-
     tablaD1?: any;//Bad Match
     tablaD2?: any;
+    
     tablaSgte?: any;
-
+    
+    tableDrawStatus?: any;
     drawStatus?: any;
     
     //drawStatus?: Konva.Layer[];

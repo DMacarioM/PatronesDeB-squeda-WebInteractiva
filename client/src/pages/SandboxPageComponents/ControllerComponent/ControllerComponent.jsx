@@ -14,10 +14,10 @@ const ControllerComponent = () => {
 
     return (
         //TODO: Los botones y elementos tienen que desactivarse mientras se está en ejecución, Si el usuario no se ha enterado, pulsará el "supuesto botón del log, entonces la ejecución de los pasos se pausará hasta que dé al play (No se da directo)"
-        <div>
+        <div style={{ marginTop: '55px' }}>
             <InputContext.Provider value={{algorithm, setAlgorithm, motherString, setMotherString, pattern, setPattern }}>
             <div className="flex justify-center items-center">        
-                <Card className="max-w-[900px] min-w-[900px] max-h-[800px]">
+                <Card className="max-w-[800px] min-w-[800px] max-h-[800px]">
                 <CardHeader className="">
                     <div className="flex">
                     <p className="text-lg">Control</p>

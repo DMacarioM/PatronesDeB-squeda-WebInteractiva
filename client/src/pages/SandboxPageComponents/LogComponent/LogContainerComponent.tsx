@@ -16,7 +16,7 @@ export default function logContainerComponent() {
 
 
     <div className="flex justify-center items-center">
-    <Card className="max-w-[600px] min-w-[600px] max-h-[500px]">
+    <Card className="max-w-[600px] min-w-[600px] max-h-[350px] min-h-[350px]">
       <CardHeader className="">
         <div className="flex pr-1 py-1">
           <p className="text-md">Salida</p>
@@ -27,7 +27,7 @@ export default function logContainerComponent() {
         <LogComponent />
       </CardBody>
       <Divider/>
-      <CardFooter className="flex justify-end items-center px-2 py-4">
+      <CardFooter className="flex justify-end items-center px-2 py-5">
         <ResetLogButtonComponent />
       </CardFooter>
     </Card>

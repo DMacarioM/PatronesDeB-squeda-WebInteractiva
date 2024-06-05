@@ -6,6 +6,16 @@ import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
 
 //TODO: Para los mensajes, puedo devolver una lista de mensajes, y en logComponent Imprimo uno a uno los mensajes de un mismo paso, pero como en tres salidas (dentro de la misma section)
 
+
+ /******
+   * 
+   * 
+   * 
+   * Algoritmo Fuerza BRUTA
+   * 
+   * 
+   */
+
 export const fuerzaBruta = (motherString, pattern) => {
     // Crea una lista vacía para almacenar los pasos
     const pasos: PasoDelAlgoritmo[]  = [];
@@ -69,13 +79,113 @@ export const fuerzaBruta = (motherString, pattern) => {
   };
 
 
+   /******
+   * 
+   * 
+   * 
+   * Algoritmo KMP
+   * 
+   * SE EJECUTA PERO NO CORRECTAMENTE, EL PATRON LO ENCUENTRA PERO EL OUTPUT NO TIENE SENTIDO (HACER OTRA FUNCION ESTABLECERDIBUJO?)
+   */
 
+   export const  kmpAlgorithm= (motherString, pattern) =>{
+    const patternLength = pattern.length;
+    const motherStringLength = motherString.length;
+    const lps = computeLPSArray(pattern, patternLength);
+    console.log("lps "+lps);
+    let i = 0; // index for text[]
+    let j = 0; // index for pattern[]
+    
+    const pasos: PasoDelAlgoritmo[] = [];
+    let exitos = 0;
+    let posX=0;
+
+    while (i < motherStringLength) {
+
+        if (pattern[j] === motherString[i]) {
+            pasos.push({
+              message: ("Comprueba '" + pattern[j]  + "' con '" + motherString[i] + "'("+(i)+" en cadena madre)."),
+              motherString: motherString,
+              pattern: pattern,
+              status: 'Acierto',
+              posEnCMadre: (posX),
+              posEnPatron: j,
+              patronDeBusqueda: "KMP"
+            });
+            j++;
+            i++;
+        }
+        if (j === patternLength) {
+            pasos[pasos.length - 1].status = 'EXITO';
+            pasos[pasos.length - 1].message += `Patrón encontrado en el índice ${i - j + 1}`;
+            exitos++;
+            posX++;
+            j = lps[j - 1];
+        } else if (i < motherStringLength && pattern[j] !== motherString[i]) {
+            pasos.push({
+              message: ("Comprueba '" + pattern[j]  + "' con '" + motherString[i] + "'."),
+              motherString: motherString,
+              pattern: pattern,
+              status: 'Fallo',
+              posEnCMadre: (posX),
+              posEnPatron: j,
+              patronDeBusqueda: "KMP"
+            });
+            if (j !== 0) {
+                j = lps[j - 1];
+            } else {
+                i = i + 1;
+            }
+        }
+    }
+
+    pasos.push({
+      message: `Fin de la ejecución. Patrón encontrado ${exitos} veces`,
+      motherString: motherString,
+      pattern: pattern,
+      status: 'FIN',
+      patronDeBusqueda: "KMP"
+    });
+
+    return pasos;
+}
+
+function computeLPSArray(pattern: string, patternLength: number): number[] {
+    let length = 0;
+    let i = 1;
+    let lps = new Array(patternLength).fill(0);
+
+    while (i < patternLength) {
+        if (pattern[i] === pattern[length]) {
+            length++;
+            lps[i] = length;
+            i++;
+        } else {
+            if (length !== 0) {
+                length = lps[length - 1];
+            } else {
+                lps[i] = 0;
+                i++;
+            }
+        }
+    }
+    return lps;
+}
+
+  /******
+   * 
+   * 
+   * 
+   * Algoritmo BM
+   * 
+   * 
+   */
 
 
   // Función para generar la tabla de malos caracteres
 function generateBadCharTable(pattern: string) {
   const badCharTable = {};
-  for (let i = 0; i < pattern.length; i++) {
+  for (let i = 0; i < pattern.length; i++) {//Cada iteración es la creación de un elemento de la tabla
     badCharTable[pattern[i]] = i;
   }
   return badCharTable;
@@ -150,7 +260,7 @@ function generateBadCharTable(pattern: string) {
           status: 'Acierto',
           posEnCMadre: s,
           posEnPatron: j,
-          patronDeBusqueda: "Booyer-Moore"
+          patronDeBusqueda: "Boyer-Moore"
         });
         j--;
         if (j < 0) {
@@ -179,7 +289,7 @@ function generateBadCharTable(pattern: string) {
           status: 'Fallo',
           posEnCMadre: s,
           posEnPatron: j,
-          patronDeBusqueda: "Booyer-Moore"
+          patronDeBusqueda: "Boyer-Moore"
         });
         const badCharShift = badCharTable[motherString[s+j]] !== undefined ? j - badCharTable[motherString[s+j]] : j + 1;
         s += Math.max(goodSuffixTable[j], badCharShift);
@@ -197,4 +307,4 @@ function generateBadCharTable(pattern: string) {
     return pasos;
   };
 
-    
+
