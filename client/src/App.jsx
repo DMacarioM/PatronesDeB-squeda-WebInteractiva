@@ -8,7 +8,7 @@ function App() {
   return (
     <LogProvider>
     <div className='flex-col'>
-      {/* <h1>Navbar (Investigar que sea lateral)</h1> */}
+      {/*TODO: Gestion de rutas <h1>Navbar (Investigar que sea lateral)</h1> */}
       <div className="flex-col container mx-auto px-4">
         <BrowserRouter>
           <Routes>

@@ -1,15 +1,9 @@
 import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
 
-
-
-//Los algoritmos deben devolver una Lista de pasos, con cada uno su mensaje,t.ejec (Posiciones)
-
-//TODO: Para los mensajes, puedo devolver una lista de mensajes, y en logComponent Imprimo uno a uno los mensajes de un mismo paso, pero como en tres salidas (dentro de la misma section)
-
-
  /******
    * 
-   * 
+   * TODO: Devolver cantidad de comprobaciones
+   * TODO: Devolver la tablas
    * 
    * Algoritmo Fuerza BRUTA
    * 

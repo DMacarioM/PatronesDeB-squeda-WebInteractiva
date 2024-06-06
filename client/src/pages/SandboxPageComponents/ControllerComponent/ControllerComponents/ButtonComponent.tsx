@@ -26,7 +26,7 @@ function mapPasoExito (motherString:String, pattern:String, algorithm:String, la
 const ButtonComponent = () => {
   const { motherString, pattern, algorithm } = useContext(InputContext);
 
-  const { addPaso,currentLogIndex,setCurrentLogIndex,lastLogIndex ,setLastLogIndex} = useLogContext();
+  const { addPaso,currentLogIndex,setCurrentLogIndex,lastLogIndex ,setLastLogIndex, buttonsDisabled, setButtonsDisabled,execSpeed} = useLogContext();
 
   const handleClick = () => {
 
@@ -45,8 +45,10 @@ const ButtonComponent = () => {
       console.log("El Patrón no es válido.");
       addPaso(pasoErrorInputPatron);
     }else{
+      setButtonsDisabled(true);
+
       var start = performance.now() + performance.timeOrigin;
-      algorithmHandler(motherString, pattern, algorithm, addPaso, currentLogIndex, setCurrentLogIndex, lastLogIndex ,setLastLogIndex);
+      algorithmHandler(motherString, pattern, algorithm, addPaso, currentLogIndex, setCurrentLogIndex, lastLogIndex ,setLastLogIndex,setButtonsDisabled,execSpeed);
       var end = performance.now() + performance.timeOrigin;
 
       
@@ -55,14 +57,12 @@ const ButtonComponent = () => {
       addPaso(pasoExitoEjec);
 
       setLastLogIndex(newLastLogIndex);
-      //setCurrentLogIndex(newLastLogIndex);
-      //LLama a pintar los pasos
     }
     return;
   };
 
   return (
-    <Button onClick={handleClick}>Ejecutar algoritmo</Button>
+    <Button disabled={buttonsDisabled} onClick={handleClick}>Ejecutar algoritmo</Button>
   );
 };
 

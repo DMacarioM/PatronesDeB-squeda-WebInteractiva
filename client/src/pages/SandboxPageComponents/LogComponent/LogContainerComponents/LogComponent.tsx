@@ -4,18 +4,19 @@ import {Button, Divider} from "@nextui-org/react";
 import { useLogContext } from '../../../../context/useLogContext';
 
 const Log = () => {
-  const {pasos,currentLogIndex,setCurrentLogIndex} = useLogContext();
+  const {pasos,currentLogIndex,setCurrentLogIndex,buttonsDisabled} = useLogContext();
   const endRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' ,/*block: 'end'*/});
-  }, [pasos]);
+  /*useEffect(() => {   Manda la página al final
+    if(pasos.length>2){
+    endRef.current?.scrollIntoView({ behavior: 'smooth' ,/*block: 'end'});
+    }
+  }, [pasos]);*/
   
   const handleClick = (index) => {
     setCurrentLogIndex(index);
   };
   
-//TODO: Desactivar los botones (con LogContext)
   return (
     <div>
       {pasos.map((paso, index) => (
@@ -26,7 +27,7 @@ const Log = () => {
             <div className="place-items-center flex">
               <p className="font-bold">{paso.status} </p>
               {paso.status !== 'EXECUTE' && paso.status !== 'RESET'&& paso.status !== 'FIN' && paso.status !== 'INPUTERROR'
-              && <Button className='' onClick={() => handleClick(index)} color="warning" size='sm' variant="bordered">
+              && <Button disabled={buttonsDisabled}className='' onClick={() => handleClick(index)} color="warning" size='sm' variant="bordered">
                 Ver
               </Button>}
             </div>

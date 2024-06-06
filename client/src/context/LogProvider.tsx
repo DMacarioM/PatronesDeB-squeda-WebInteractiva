@@ -12,14 +12,19 @@ export const LogContext = createContext<{
   setCurrentLogIndex: (index: number) => void;
   lastLogIndex: number;
   setLastLogIndex: (index: number) => void;
-  setDrawStatus: (paso: PasoDelAlgoritmo,elements: any)=> void;
-  setTableDrawStatus: (paso: PasoDelAlgoritmo,elements: any)=> void;
+  buttonsDisabled: boolean;
+  setButtonsDisabled: (status:boolean) => void;
+  execSpeed: number;
+  setExecSpeed: (value: number) => void;
 } | undefined>(undefined);
 
 export const LogProvider = ({ children }) => {
   const [pasos, setPasos] = useState<PasoDelAlgoritmo[]>([]);
   const [currentLogIndex, setCurrentLogIndex] = useState(0);
   const [lastLogIndex, setLastLogIndex] = useState(0);
+  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [execSpeed, setExecSpeed] = useState(1);
+
 
   const addPaso = (paso: PasoDelAlgoritmo) => {
     setPasos((prevPasos) => [...prevPasos, paso]);
@@ -29,20 +34,8 @@ export const LogProvider = ({ children }) => {
     setPasos([]);
   };
 
-  const setDrawStatus = (paso: PasoDelAlgoritmo,elements: any)=> {
-    if (paso && elements) {
-      paso.drawStatus = elements;
-    }
-  };
-
-  const setTableDrawStatus = (paso: PasoDelAlgoritmo,elements: any)=> {
-    if (paso && elements) {
-      paso.tableDrawStatus = elements;
-    }
-  };
-
   return (
-    <LogContext.Provider value={{pasos, addPaso, clearPasos, currentLogIndex, setCurrentLogIndex,lastLogIndex, setLastLogIndex, setDrawStatus,setTableDrawStatus}}>
+    <LogContext.Provider value={{pasos, addPaso, clearPasos, currentLogIndex, setCurrentLogIndex,lastLogIndex, setLastLogIndex,buttonsDisabled,setButtonsDisabled,execSpeed, setExecSpeed}}>
       {children}
     </LogContext.Provider>
   );

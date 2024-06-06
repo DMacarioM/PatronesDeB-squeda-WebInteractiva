@@ -2,7 +2,7 @@ import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
 import { bmAlgorithm, fuerzaBruta, kmpAlgorithm } from './algoritmosDeBusqueda';
 
 
-export const algorithmHandler = async (motherString:string , pattern:string, algorithm:string, addPaso:any , currentLogIndex:number, setCurrentLogIndex: any, lastLogIndex: number, setLastLogIndex:any,) => {
+export const algorithmHandler = async (motherString:string , pattern:string, algorithm:string, addPaso:any , currentLogIndex:number, setCurrentLogIndex: any, lastLogIndex: number, setLastLogIndex:any,setbuttonsDisabled:any,execSpeed:number) => {
     //Recibe los valores del Input y ejecuta el algoritmo
     let result: PasoDelAlgoritmo[]  = [];
 
@@ -17,35 +17,24 @@ export const algorithmHandler = async (motherString:string , pattern:string, alg
         case 'KMP':
             result = kmpAlgorithm(motherString, pattern);
             break;
-        // Add more cases as needed
         default:
             console.log('Invalid algorithm');
     }
-    //Switch en función del valor de algorithm
 
-    // Itera sobre la lista de pasos y realiza acciones con cada paso
+    //TODO: Gestion de TIEMPO
 
-    //TODO: Los pasos no deberían salir uno detrás de otro sin control, debería de haber un "gestor de logs/pasos", que en función de la velocidad/modo, ejecute el algoritmo más rápido o más lento
-    //Realmente es coordinar el timeout con la animación / o llamada síncrona
-
-    var tiempoDeEspera = 7000;
-
+    var tiempoDeEspera = 4000/execSpeed;
 
     let newLastLogIndex=lastLogIndex;
 
     for (let i = 0; i < result.length; i++) {
-        if(i==0){
-            tiempoDeEspera=2000;
-        }else{
-            tiempoDeEspera=4000; //Recoger de algun sitio
-        }
         await new Promise(resolve => setTimeout(resolve, tiempoDeEspera));
         newLastLogIndex = newLastLogIndex + 1;
-        console.log("Lanza Paso " +newLastLogIndex);
+        //console.log("Lanza Paso " +newLastLogIndex);
         setLastLogIndex(newLastLogIndex);
-        //result[i].id=newLastLogIndex;
         addPaso(result[i]);
         setCurrentLogIndex(newLastLogIndex); // Utiliza una función para actualizar el estado
     }
+    setbuttonsDisabled(false);
   };
   

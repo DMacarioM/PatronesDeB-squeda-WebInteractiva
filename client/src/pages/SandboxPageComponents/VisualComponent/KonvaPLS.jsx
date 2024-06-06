@@ -1,19 +1,54 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Stage, Layer,  Text, Rect,Group} from "react-konva";
+import { Stage, Layer,  Text, Rect,Group, Image} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
 import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "./KonvaHandler";
-
+import KonvaController from './konvaController';
 
 const KonvaComponent = () => {
-    const { pasos, setDrawStatus,setTableDrawStatus, currentLogIndex } = useLogContext();
+    const { pasos, currentLogIndex ,execSpeed} = useLogContext();
     const [elements, setElements] = useState([]);
     const timeoutRef = useRef(null);
     const [lastExecutes, setLastExecutes] = useState([]); // Ahora es un array
+    const [textSize, setTextSize] = useState(45); // Tamaño inicial del texto
+    const [stageWidth, setStageWidth] = useState(1150); // Ancho inicial del Stage
+    const [stageHeigth, setStageHeigth] = useState(465); // Altura inicial del Stage
+
 
     useEffect(() => {
-        //console.log("useEffectActual: "+ currentLogIndex);
-        console.log("Soy : "+ pasos[currentLogIndex]?.message);
-        //console.log(pasos[currentLogIndex]);
+        var resizedElements;
+        // Aquí va el código para actualizar el dibujo
+        switch (pasos[currentLogIndex]?.status){
+            case "FIN":
+                resizedElements = pasos.map(paso => {
+                    if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1)) {
+                        return establecerDibujo(paso,textSize);
+                    } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { 
+                        return establecerDibujoInicial(paso,textSize);
+                    } else {
+                        return null;
+                    }
+                });
+                setElements(resizedElements);
+                break;
+                case "EXECUTE":
+                    break;
+            default:
+                resizedElements = pasos.map(paso => {
+                    if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
+                        return establecerDibujo(paso,textSize);
+                    } else if (paso.id === pasos[currentLogIndex].lastExecId) { 
+                        return establecerDibujoInicial(paso,textSize);
+                    } else {
+                        return null;
+                    }
+                });
+                setElements(resizedElements);
+                break;
+        }
+    }, [textSize]);
+
+    useEffect(() => {
+        var newElements;
 
         if(pasos[currentLogIndex]){
             //console.log("ID: "+ pasos[currentLogIndex].id);
@@ -21,21 +56,16 @@ const KonvaComponent = () => {
                 clearTimeout(timeoutRef.current);
               }
 
-           if(pasos[currentLogIndex]?.drawStatus){
-                if(pasos[currentLogIndex-1]){
-                    if(pasos[currentLogIndex-1]?.drawStatus){
-                        setElements([pasos[currentLogIndex-1].drawStatus]);
-                    }
-                }
-            }else if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")||(pasos[currentLogIndex].status=="RESET")){
+            pasos[currentLogIndex].id = pasos[currentLogIndex].id || currentLogIndex;
+
+          if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")||(pasos[currentLogIndex].status=="RESET")){
                 //Control de dibujos especiales (Inicial, final, reset...)
-                pasos[currentLogIndex].id=currentLogIndex;
+                
                 if(pasos[currentLogIndex].status=="FIN"){
+                    pasos[currentLogIndex].lastExecId = pasos[currentLogIndex].lastExecId !== undefined ? pasos[currentLogIndex].lastExecId : lastExecutes[lastExecutes.length - 1].id;
                     return;
+                    //Mostrar el patrón descuadrado (No es posible un próximo movimiento)
                     //TODO: En el dibujo final, recoger los objetos anteriores (hasta el execute incluido),
-                    //y (en caso de que el patrón.length>1) buscar paso EXITO, y si el paso anterior es acierto, cambiarlo a Exito/Crear un elemento encima (cabiar el color a Éxito) 
-                    //En caso de que no sea viable, cuando un paso sea exito, volver a hacer los aciertos anteriores con exito(Para que así el elemento paso sea exito también).
-                     //setDrawStatus(pasos[currentLogIndex], establecerDibujoFinal(pasos[currentLogIndex]))
                 }else if(pasos[currentLogIndex].status=="EXECUTE"){
                     switch(pasos[currentLogIndex].patronDeBusqueda){//Debo gestionar la primera ejecucion de cada tipo (para crear las tablas)
                         case"Boyer-Moore":
@@ -54,58 +84,59 @@ const KonvaComponent = () => {
                         default:
                             break;
                     }
-                  setDrawStatus(pasos[currentLogIndex], establecerDibujoInicial(pasos[currentLogIndex]));
+                  //setDrawStatus(pasos[currentLogIndex], establecerDibujoInicial(pasos[currentLogIndex]));
                   setLastExecutes([...lastExecutes, pasos[currentLogIndex]]); // Añadir al array
+                  setElements(establecerDibujoInicial(pasos[currentLogIndex],textSize));
                 }else if(pasos[currentLogIndex].status=="RESET"){
-                    setDrawStatus(pasos[currentLogIndex], dibujoVacio())
+                    setElements(dibujoVacio());
                 }
-                else{return;}
-                setElements([pasos[currentLogIndex].drawStatus]);
                 return;
             }else{
-                pasos[currentLogIndex].id=currentLogIndex; 
                 if(pasos[currentLogIndex-1]){ 
-                    if(pasos[currentLogIndex-1]?.drawStatus){
-                        if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
-                            pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
-                        }else{
-                            pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;
-                        }
-
-                        if(lastExecutes.length > 0) { // Si existe un paso EXECUTE
-
-                            const newElements = pasos.map(paso => {
-                                if (paso.id > lastExecutes[lastExecutes.length - 1].id && paso.id <= currentLogIndex) {
-                                    console.log(paso.posEnCMadre);
-                                    return establecerDibujo(paso);
-                                } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { // Si el paso actual es EXECUTE
-                                    return establecerDibujoInicial(paso);
-                                } else {
-                                    return null;
-                                }
-                            });
-                            console.log("New elements: - ");
-                            console.log(newElements);
-
-                            setDrawStatus(pasos[currentLogIndex],newElements);
-                            setElements(pasos[currentLogIndex-1].drawStatus);
-                        }else{
-                         console.log("Error de Execute");   
-                        }
+                    if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
+                        pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
                     }else{
-                        setElements(errorKonva())
+                        pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;
                     }
+
+                    if(lastExecutes.length > 0) { // Si existe un paso EXECUTE
+
+                        pasos[currentLogIndex].lastExecId = pasos[currentLogIndex].lastExecId !== undefined ? pasos[currentLogIndex].lastExecId : lastExecutes[lastExecutes.length - 1].id;
+                        
+                        const oldElements = pasos.map(paso => {
+                            if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1)) {
+                                return establecerDibujo(paso,textSize);
+                            } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { // Si el paso actual es EXECUTE
+                                return establecerDibujoInicial(paso,textSize);
+                            } else {
+                                return null;
+                            }
+                        });
+
+                        newElements = pasos.map(paso => {
+                            if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
+                                return establecerDibujo(paso,textSize);
+                            } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                                return establecerDibujoInicial(paso,textSize);
+                            } else {
+                                return null;
+                            }
+                        });
+                        
+                        setElements(oldElements);
+                    }else{
+                        console.log("Error de Execute");   
+                    }
+                
                 }else{
                     setElements(errorKonva())
                 }
 
             }
 
-            const tiempoRetraso = 2000; // Define tu tiempo de retraso aquí (en milisegundos)
+            const tiempoRetraso = 2000/execSpeed; // Define tu tiempo de retraso aquí (en milisegundos)
             timeoutRef.current = setTimeout(() => {
-                if(pasos[currentLogIndex]?.drawStatus){
-                    setElements([pasos[currentLogIndex].drawStatus]);
-                }
+                setElements(newElements);
             },tiempoRetraso);
         }else{
 
@@ -118,10 +149,15 @@ const KonvaComponent = () => {
 
     return (
         <div>
-            <Stage width={950} height={500}>
-                <Layer x={4} y={4} draggable>
+            <Stage width={stageWidth} height={stageHeigth}>
+                <Layer x={5} y={5} draggable>
                      {elements}
                 </Layer>
+                <KonvaController 
+                    stageWidth={stageWidth} 
+                    stageHeigth={stageHeigth} 
+                    setTextSize={setTextSize} 
+                />
             </Stage>
         </div>
     );

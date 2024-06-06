@@ -1,6 +1,7 @@
 import Konva from "konva";
 
-// types.ts
+// types.ts 
+//todo:Revisar el uso de todos los elementos
 export type PasoDelAlgoritmo = {
     id?: number;
     message: string;
@@ -19,12 +20,12 @@ export type PasoDelAlgoritmo = {
     tablaD2?: any;
     
     tablaSgte?: any;
+
+    lastExecId?: number;
     
     tableDrawStatus?: any;
     drawStatus?: any;
     
-    //drawStatus?: Konva.Layer[];
-    //drawStatus?: Konva.Stage;
   };
   //Cuando se imprima tiene que tener sus cadenas, para ir de un ejemplo a otro?¿ 
   //Entonces, al pulsar el botón de ver se debe actualizar el contexto con el paso actual

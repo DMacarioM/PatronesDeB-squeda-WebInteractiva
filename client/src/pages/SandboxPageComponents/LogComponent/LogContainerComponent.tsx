@@ -9,11 +9,7 @@ export default function logContainerComponent() {
     //Utilizar el header, para cada mensaje se generará un /mensaje (y un posible icono para volver)
     //Intentar poner el scroll sólo con los mensajes (Letra más pequeña)
 
-    //singleton para estado de la imagen¿?
-    
-    //TODO: Cambiar fuente
-    //TODO: El botón para reiniciar sólo se activa cuando no se está ejecutando (Igual para ejecutar)
-
+    //TODO: Cambiar esética
 
     <div className="flex justify-center items-center">
     <Card className="max-w-[600px] min-w-[600px] max-h-[350px] min-h-[350px]">
