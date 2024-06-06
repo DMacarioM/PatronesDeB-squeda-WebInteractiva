@@ -23,9 +23,6 @@ export type PasoDelAlgoritmo = {
 
     lastExecId?: number;
     
-    tableDrawStatus?: any;
-    drawStatus?: any;
-    
   };
   //Cuando se imprima tiene que tener sus cadenas, para ir de un ejemplo a otro?¿ 
   //Entonces, al pulsar el botón de ver se debe actualizar el contexto con el paso actual

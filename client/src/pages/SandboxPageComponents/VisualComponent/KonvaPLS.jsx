@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group, Image} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
 import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "./KonvaHandler";
-import KonvaController from './konvaController';
+import KonvaController from './KonvaComponents/konvaController';
 
 const KonvaComponent = () => {
     const { pasos, currentLogIndex ,execSpeed} = useLogContext();

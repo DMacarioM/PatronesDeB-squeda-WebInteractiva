@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group, Image} from "react-konva";
-import { useLogContext } from "../../../context/useLogContext";
-import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "./KonvaHandler";
-import useImage from '../../../context/useImage';
+import { useLogContext } from "../../../../context/useLogContext";
+import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "../KonvaHandler";
+import useImage from '../../../../context/useImage';
 
 
 const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
