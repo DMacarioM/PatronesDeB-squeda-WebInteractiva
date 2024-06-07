@@ -1,6 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import SandboxPage from './pages/SandboxPage.jsx'
+import Navbar  from './components/Navbar.jsx';
 
 import {LogProvider} from './context/LogProvider.tsx';
 
@@ -8,9 +9,9 @@ function App() {
   return (
     <LogProvider>
     <div className='flex-col'>
-      {/*TODO: Gestion de rutas <h1>Navbar (Investigar que sea lateral)</h1> */}
-      <div className="flex-col container mx-auto px-4">
+      <div className="">
         <BrowserRouter>
+          <Navbar />
           <Routes>
             <Route path='/' element={
 

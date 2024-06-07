@@ -7,7 +7,7 @@ import VisualContainerComponent from "./SandboxPageComponents/VisualComponent/Vi
 
 function SandboxPage() {
   return (
-    <div className='flex-col'>
+    <div className='flex-col container mx-auto px-4'>
       <b>SandboxPage</b> 
       <br></br>
       <br></br>

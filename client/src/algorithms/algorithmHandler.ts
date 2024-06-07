@@ -1,5 +1,5 @@
 import {PasoDelAlgoritmo} from '../classes/PasoDelAlgoritmo'
-import { bmAlgorithm, fuerzaBruta, kmpAlgorithm } from './algoritmosDeBusqueda';
+import { boyerMooreAlgorithm, fuerzaBruta, kmpAlgorithm } from './algoritmosDeBusqueda';
 
 
 export const algorithmHandler = async (motherString:string , pattern:string, algorithm:string, addPaso:any , currentLogIndex:number, setCurrentLogIndex: any, lastLogIndex: number, setLastLogIndex:any,setbuttonsDisabled:any,execSpeed:number) => {
@@ -11,7 +11,7 @@ export const algorithmHandler = async (motherString:string , pattern:string, alg
             result = fuerzaBruta(motherString, pattern);
             break;
         case 'Boyer-Moore':
-            result = bmAlgorithm(motherString, pattern);
+            result = boyerMooreAlgorithm(motherString, pattern);
             //TODO: En caso de ser BM/KMP se deberán mostrar las tablas antes de comenzar con el algoritmo
             break;
         case 'KMP':
@@ -30,11 +30,11 @@ export const algorithmHandler = async (motherString:string , pattern:string, alg
     for (let i = 0; i < result.length; i++) {
         await new Promise(resolve => setTimeout(resolve, tiempoDeEspera));
         newLastLogIndex = newLastLogIndex + 1;
-        //console.log("Lanza Paso " +newLastLogIndex);
         setLastLogIndex(newLastLogIndex);
-        addPaso(result[i]);
         setCurrentLogIndex(newLastLogIndex); // Utiliza una función para actualizar el estado
+        addPaso(result[i]); 
     }
+
     setbuttonsDisabled(false);
   };
   

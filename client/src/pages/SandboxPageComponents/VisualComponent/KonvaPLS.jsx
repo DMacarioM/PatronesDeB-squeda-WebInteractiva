@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group, Image} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
-import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "./KonvaHandler";
+import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoFinal } from "./KonvaHandler";
 import KonvaController from './KonvaComponents/konvaController';
 
 const KonvaComponent = () => {
-    const { pasos, currentLogIndex ,execSpeed} = useLogContext();
+    const { pasos, currentLogIndex ,execSpeed,lastLogIndex} = useLogContext();
     const [elements, setElements] = useState([]);
     const timeoutRef = useRef(null);
     const [lastExecutes, setLastExecutes] = useState([]); // Ahora es un array
@@ -20,17 +20,25 @@ const KonvaComponent = () => {
         switch (pasos[currentLogIndex]?.status){
             case "FIN":
                 resizedElements = pasos.map(paso => {
-                    if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1)) {
+                    if (paso.id > pasos[currentLogIndex].lastExecId && paso.id == currentLogIndex){
+                        return establecerDibujoFinal(paso,textSize);
+                    }else if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex-1) {
                         return establecerDibujo(paso,textSize);
-                    } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { 
+                    } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
                         return establecerDibujoInicial(paso,textSize);
                     } else {
                         return null;
                     }
                 });
-                setElements(resizedElements);
                 break;
                 case "EXECUTE":
+                    resizedElements = pasos.map(paso => {
+                        if (paso.id === pasos[currentLogIndex].lastExecId) { 
+                            return establecerDibujoInicial(paso,textSize);
+                        } else {
+                            return null;
+                        }
+                    });
                     break;
             default:
                 resizedElements = pasos.map(paso => {
@@ -42,9 +50,9 @@ const KonvaComponent = () => {
                         return null;
                     }
                 });
-                setElements(resizedElements);
                 break;
         }
+        setElements(resizedElements);
     }, [textSize]);
 
     useEffect(() => {
@@ -58,15 +66,10 @@ const KonvaComponent = () => {
 
             pasos[currentLogIndex].id = pasos[currentLogIndex].id || currentLogIndex;
 
-          if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")||(pasos[currentLogIndex].status=="RESET")){
+          if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="RESET")){
                 //Control de dibujos especiales (Inicial, final, reset...)
                 
-                if(pasos[currentLogIndex].status=="FIN"){
-                    pasos[currentLogIndex].lastExecId = pasos[currentLogIndex].lastExecId !== undefined ? pasos[currentLogIndex].lastExecId : lastExecutes[lastExecutes.length - 1].id;
-                    return;
-                    //Mostrar el patrón descuadrado (No es posible un próximo movimiento)
-                    //TODO: En el dibujo final, recoger los objetos anteriores (hasta el execute incluido),
-                }else if(pasos[currentLogIndex].status=="EXECUTE"){
+                if(pasos[currentLogIndex].status=="EXECUTE"){
                     switch(pasos[currentLogIndex].patronDeBusqueda){//Debo gestionar la primera ejecucion de cada tipo (para crear las tablas)
                         case"Boyer-Moore":
                         /*let grupo1 = establecerDibujoInicialTabla(pasos[currentLogIndex], 1);
@@ -84,7 +87,6 @@ const KonvaComponent = () => {
                         default:
                             break;
                     }
-                  //setDrawStatus(pasos[currentLogIndex], establecerDibujoInicial(pasos[currentLogIndex]));
                   setLastExecutes([...lastExecutes, pasos[currentLogIndex]]); // Añadir al array
                   setElements(establecerDibujoInicial(pasos[currentLogIndex],textSize));
                 }else if(pasos[currentLogIndex].status=="RESET"){
@@ -93,6 +95,8 @@ const KonvaComponent = () => {
                 return;
             }else{
                 if(pasos[currentLogIndex-1]){ 
+
+                    
                     if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
                         pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
                     }else{
@@ -113,15 +117,29 @@ const KonvaComponent = () => {
                             }
                         });
 
-                        newElements = pasos.map(paso => {
-                            if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
-                                return establecerDibujo(paso,textSize);
-                            } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                                return establecerDibujoInicial(paso,textSize);
-                            } else {
-                                return null;
-                            }
-                        });
+                        if(pasos[currentLogIndex].status=="FIN"){
+                            newElements = pasos.map(paso => {
+                                if (paso.id > pasos[currentLogIndex].lastExecId && paso.id == currentLogIndex){
+                                    return establecerDibujoFinal(paso,textSize);
+                                }else if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex-1) {
+                                    return establecerDibujo(paso,textSize);
+                                } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                                    return establecerDibujoInicial(paso,textSize);
+                                } else {
+                                    return null;
+                                }
+                            });
+                        }else{
+                            newElements = pasos.map(paso => {
+                                if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
+                                    return establecerDibujo(paso,textSize);
+                                } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                                    return establecerDibujoInicial(paso,textSize);
+                                } else {
+                                    return null;
+                                }
+                            });
+                        }
                         
                         setElements(oldElements);
                     }else{

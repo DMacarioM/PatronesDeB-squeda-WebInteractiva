@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Stage, Layer,  Text, Rect,Group, Image} from "react-konva";
+import { Stage, Layer,  Text, Rect,Group, Image, Circle} from "react-konva";
 import { useLogContext } from "../../../../context/useLogContext";
 import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "../KonvaHandler";
 import useImage from '../../../../context/useImage';
+import BotonesTamanoComponent from "./BotonesTamañoComponent"
 
 
 const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
@@ -15,7 +16,6 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
     const imageSiguiente = useImage('../../../../public/paso-siguiente.png');
 
     const handleGoToIndex = (index) => {
-        console.log(index);
         if(index>=0 && index<=lastLogIndex){
             setCurrentLogIndex(index);
         }
@@ -24,19 +24,32 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
     return (
         <>
                 <Layer>
-                    {/*<Rect
-                        x={stageWidth/3}
-                        y={stageHeigth-70}
-                        width={350}
-                        height={65}
-                        fill='#85C2FF'
-                        cornerRadius={7}
-                        stroke='black'
-                        strokeWidth={2}
-                        ></Rect>*/
-                    }
+                            <Rect
+                            x={-10}
+                            y={stageHeigth-60}
+                            width={200}
+                            height={65}
+                            fill='white'//Color del fondo
+                            cornerRadius={10}
+                            ></Rect>
+                            <Rect
+                            x={stageWidth-60}
+                            y={stageHeigth-60}
+                            width={70}
+                            height={70}
+                            fill='white'//Color del fondo
+                            cornerRadius={10}
+                            ></Rect>
                     <Group key={"BotonesPasos"}>
                         <Group key={"BotonPasoPrevio"} onClick={() => handleGoToIndex(currentLogIndex-1)}>
+                            <Circle
+                                x={20}
+                                y={stageHeigth-30}
+                                width={40}
+                                height={40}
+                                fill='#3B684D'//Color del fondo
+                                cornerRadius={10}
+                                ></Circle>
                             {imagePrevio && (
                                 <Image
                                     image={imagePrevio}
@@ -49,6 +62,14 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                         </Group>
 
                         <Group key={"BotonPasoSiguiente"} onClick={() => handleGoToIndex(currentLogIndex+1)}>
+                            <Circle
+                                x={stageWidth-30}
+                                y={stageHeigth-30}
+                                width={40}
+                                height={40}
+                                fill='#3B684D'//Color del fondo
+                                cornerRadius={10}
+                                ></Circle>
                             {imageSiguiente && (
                                 <Image
                                     image={imageSiguiente}
@@ -60,7 +81,6 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                                 )}
                         </Group>
                     </Group>
-
                     <Group key={"BotonesTamano"}>
                         <Group key={"BotonReducir"} onClick={() => setTextSize(size => size - 2)}>
                             <Rect
@@ -106,6 +126,10 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                             )}
                         </Group>
                     </Group>
+                    <BotonesTamanoComponent
+                    stageWidth={stageWidth} 
+                    stageHeigth={stageHeigth} 
+                    setTextSize={setTextSize}/>
                 </Layer>
         </>
     );

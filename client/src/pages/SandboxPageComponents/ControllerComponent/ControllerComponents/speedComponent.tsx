@@ -14,12 +14,11 @@ const SpeedComponent = () => {
   return (
       <Slider   
           size="md"
-          step={0.5}
+          step={1}
           color="foreground"
           label={"Velocidad de ejecución (x"+execSpeed+")"}
           showSteps={true} 
-          maxValue={5} 
-          minValue={0.5} 
+          maxValue={8} 
           defaultValue={1}
           className="max-w-md ml-16"
           onChange={handleSliderChange}

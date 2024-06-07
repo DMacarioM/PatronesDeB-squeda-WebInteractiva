@@ -14,6 +14,8 @@ export type PasoDelAlgoritmo = {
 
     posEnCMadre?: number;
     posEnPatron?: number;
+
+    posComienzoPatron?:number;
     alturaY?: number;
 
     tablaD1?: any;//Bad Match

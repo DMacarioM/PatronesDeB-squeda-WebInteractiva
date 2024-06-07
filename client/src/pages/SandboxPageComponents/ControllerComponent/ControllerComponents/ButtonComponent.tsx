@@ -12,7 +12,7 @@ const pasoErrorInput : PasoDelAlgoritmo = {message:"Introduce datos de entrada v
 const pasoErrorInputPatron = ( {message:"Introduce datos de entrada válidos (El patrón no puede ser más grande que la cadena Madre) ",motherString:"",patronDeBusqueda:"",pattern:"",status:"INPUTERROR",});
 var pasoExitoEjec : PasoDelAlgoritmo 
 
-function mapPasoExito (motherString:String, pattern:String, algorithm:String, lastLogIndex:number) {
+function mapPasoExito (motherString:String, pattern:String, algorithm:String) {
   return{
     motherString:motherString,
     pattern:pattern,
@@ -20,7 +20,6 @@ function mapPasoExito (motherString:String, pattern:String, algorithm:String, la
     message:"Ejecución exitosa, tiempo de ejecución:  ",
     status:"EXECUTE",
   }
-  //pasoExitoEjec.id=lastLogIndex;
 }
 
 const ButtonComponent = () => {
@@ -31,7 +30,6 @@ const ButtonComponent = () => {
   const handleClick = () => {
 
     //TODO:Puedo aplicar el dibujoVacio para evitar cosas raras
-    let newLastLogIndex=lastLogIndex+1;
 
     //Comprueba los campos input
     if (!motherString || !pattern) {
@@ -47,16 +45,21 @@ const ButtonComponent = () => {
     }else{
       setButtonsDisabled(true);
 
+      var newLastLogIndex=lastLogIndex;
+      if(lastLogIndex>0){
+        newLastLogIndex=newLastLogIndex+1;
+        setLastLogIndex(newLastLogIndex);
+        setCurrentLogIndex(newLastLogIndex);
+      }
+
       var start = performance.now() + performance.timeOrigin;
-      algorithmHandler(motherString, pattern, algorithm, addPaso, currentLogIndex, setCurrentLogIndex, lastLogIndex ,setLastLogIndex,setButtonsDisabled,execSpeed);
+      algorithmHandler(motherString, pattern, algorithm, addPaso, currentLogIndex, setCurrentLogIndex, newLastLogIndex ,setLastLogIndex,setButtonsDisabled,execSpeed);
       var end = performance.now() + performance.timeOrigin;
 
       
-      pasoExitoEjec = mapPasoExito(motherString, pattern, algorithm,newLastLogIndex);
+      pasoExitoEjec = mapPasoExito(motherString, pattern, algorithm);
       pasoExitoEjec.message+=(end-start)+'s';
       addPaso(pasoExitoEjec);
-
-      setLastLogIndex(newLastLogIndex);
     }
     return;
   };

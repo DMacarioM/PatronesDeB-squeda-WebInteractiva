@@ -27,17 +27,21 @@ export const getColorFromStatus = (status) => {
              let color;
               if (paso.status === 'EXITO') {
                 color = getColorFromStatus('EXITO');
-              } else if (index < paso.posEnPatron) {
+              } else if ((index < paso.posEnPatron)&&(paso.patronDeBusqueda != "Boyer-Moore")) {
                 color = '#63BB66'; // Verde
               } else if (index === paso.posEnPatron) {
                 color = getColorFromStatus(paso.status);
+              } else if ((index < paso.posEnPatron)&&(paso.patronDeBusqueda == "Boyer-Moore")) {
+                color = '#B0C4C3'; // Gris
+              } else if ((index > paso.posEnPatron)&&(paso.patronDeBusqueda == "Boyer-Moore")) {
+                color = '#63BB66'; // Gris
               } else {
                 color = '#B0C4C3'; // Gris
               }
               return (
                 <React.Fragment key={`${pcaracter}-${index}`}>
                   <Rect
-                      x={(index * distancia)+ (paso.posEnCMadre*distancia)}
+                      x={(index * distancia)+ (paso.posComienzoPatron*distancia)}
                       y={paso.alturaY*distancia}
                       width={tamanoTexto + 10}
                       height={tamanoTexto + 7}
@@ -46,8 +50,8 @@ export const getColorFromStatus = (status) => {
                       strokeWidth={tamanoTexto/10} 
                   />
                   <Text
-                      x={(index * distancia +9) + (paso.posEnCMadre*distancia)}
-                      y={paso.alturaY*distancia + 6}
+                      x={(index * distancia +(tamanoTexto/7)) + (paso.posComienzoPatron*distancia)}
+                      y={paso.alturaY*distancia + tamanoTexto/6}
                       text={pcaracter}
                       fontSize={tamanoTexto} />
                 </React.Fragment>
@@ -78,14 +82,48 @@ export const getColorFromStatus = (status) => {
                         strokeWidth={tamanoTexto/10}
                     />
                     <Text
-                        x={(index * distancia) +9}
-                        y={6}
+                        x={(index * distancia) + tamanoTexto/7}
+                        y={tamanoTexto/6}
                         text={mcaracter}
                         fontSize={tamanoTexto}
                     />
                 </React.Fragment>
             ))}
           </Group>
+    );
+  };
+
+  export const establecerDibujoFinal = (paso, textSize) => {
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = textSize;
+    const distancia = tamanoTexto +(tamanoTexto/2)+5; // Distancia entre caracteres
+
+    return (
+        <Group key={`${paso.id}-FIN-`}>
+            {caracteresPatron.map((pcaracter, index) => {
+             let color = '#F7CA90'; // Naranja;
+             let despX=paso.motherString.length-paso.pattern.length;
+             
+              return (
+                <React.Fragment key={`${pcaracter}-${index}`}>
+                  <Rect
+                      x={(index * distancia)+ ((despX+1)*distancia)}
+                      y={(paso.alturaY)*distancia}
+                      width={tamanoTexto + 10}
+                      height={tamanoTexto + 7}
+                      stroke='black'
+                      fill={color} // Aquí se establece el color de fondo
+                      strokeWidth={tamanoTexto/10} 
+                  />
+                  <Text
+                      x={(index * distancia +(tamanoTexto/7)) + ((despX+1) *distancia)}
+                      y={((paso.alturaY)*distancia + tamanoTexto/6)}
+                      text={pcaracter}
+                      fontSize={tamanoTexto} />
+                </React.Fragment>
+              );
+            })}
+        </Group>
     );
   };
 
