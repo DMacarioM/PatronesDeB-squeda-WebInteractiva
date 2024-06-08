@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group, Image, Circle} from "react-konva";
 import { useLogContext } from "../../../../context/useLogContext";
-import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoInicialTabla } from "../KonvaHandler";
 import useImage from '../../../../context/useImage';
 
 
 const BotonesTamanoComponent = ({ stageWidth, stageHeigth, setTextSize }) => {
     
-    const imageAumentar = useImage('../../../../public/aumentar-fuente.png'); // Carga la imagen
-    const imageReducir = useImage('../../../../public/reducir-fuente.png');
+    const imageAumentar = useImage('/aumentar-fuente.png'); // Carga la imagen
+    const imageReducir = useImage('/public/reducir-fuente.png');
   
     
     return (

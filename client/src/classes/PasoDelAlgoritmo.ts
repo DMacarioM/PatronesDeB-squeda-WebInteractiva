@@ -7,7 +7,7 @@ export type PasoDelAlgoritmo = {
     message: string;
     status:String;
     
-    motherString: String;
+    motherString?: String;
     pattern:String;
 
     patronDeBusqueda:String;

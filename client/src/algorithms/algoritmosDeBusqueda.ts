@@ -89,13 +89,13 @@ export const fuerzaBruta = (motherString, pattern) => {
    export const  kmpAlgorithm= (motherString, pattern) =>{
     const patternLength = pattern.length;
     const motherStringLength = motherString.length;
-    const lps = computeLPSArray(pattern, patternLength);
+    const pasos: PasoDelAlgoritmo[] = [];
+    const lps = computeLPSArray(pattern, patternLength,pasos);
     //console.log("lps "+lps);
     let i = 0; // index for text[]
     let j = 0; // index for pattern[]
     let posPatron=0;
     
-    const pasos: PasoDelAlgoritmo[] = [];
     let exitos = 0;
     let comprobaciones=0
 
@@ -163,26 +163,50 @@ export const fuerzaBruta = (motherString, pattern) => {
     return pasos;
 }
 
-function computeLPSArray(pattern: string, patternLength: number): number[] {
-    let length = 0;
-    let i = 1;
-    let lps = new Array(patternLength).fill(0);
+function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDelAlgoritmo[]): number[] {
+  let length = 0;
+  let i = 1;
+  let lps = new Array(patternLength).fill(0);
 
-    while (i < patternLength) {
-        if (pattern[i] === pattern[length]) {
-            length++;
-            lps[i] = length;
-            i++;
-        } else {
-            if (length !== 0) {
-                length = lps[length - 1];
-            } else {
-                lps[i] = 0;
-                i++;
-            }
-        }
-    }
-    return lps;
+  while (i < patternLength) {
+      if (pattern[i] === pattern[length]) {
+          length++;
+          lps[i] = length;
+          pasos.push({
+            message: `El carácter en la posición ${i} del patrón (${pattern[i]}) coincide con el carácter en la posición actual de la longitud del prefijo más largo (${length}). Por lo tanto, incrementamos la longitud en uno y asignamos este valor a TablaSiguiente[${i}].`,
+            pattern: pattern,
+            posEnPatron:i,
+            status: 'TABLA',
+            patronDeBusqueda: "KMP",
+            tablaSgte: [...lps],
+          });
+          i++;
+      } else {
+          if (length !== 0) {
+              pasos.push({
+                message: `El carácter en la posición ${i} del patrón (${pattern[i]}) no coincide con el carácter en la posición actual de la longitud del prefijo más largo (${length}). Sin embargo, la longitud no es cero, por lo que actualizamos la longitud al valor de TablaSiguiente en la posición length - 1 (TablaSiguiente[${length - 1}]).`,
+                pattern: pattern,
+                status: 'TABLA',
+                posEnPatron:i,
+                patronDeBusqueda: "KMP",
+                tablaSgte: [...lps],
+              });
+              length = lps[length - 1];
+          } else {
+              lps[i] = 0;
+              pasos.push({
+                message: `El carácter en la posición ${i} del patrón (${pattern[i]}) no coincide con el carácter en la posición actual de la longitud del prefijo más largo (${length}), y la longitud es cero. Por lo tanto, asignamos TablaSiguiente[${i}] a cero.`,
+                pattern: pattern,
+                status: 'TABLA',
+                posEnPatron:i,
+                patronDeBusqueda: "KMP",
+                tablaSgte: [...lps],
+              });
+              i++;
+          }
+      }
+  }
+  return lps;
 }
 
   /******

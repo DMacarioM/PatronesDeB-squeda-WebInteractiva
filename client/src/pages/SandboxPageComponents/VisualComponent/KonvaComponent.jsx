@@ -1,223 +1,423 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Stage, Layer, Text, Rect,Group } from 'react-konva';
+import { Stage, Layer,  Text, Rect,Group, Image,Transformer,Circle} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
-import Konva from 'konva';
-
-const getColorFromStatus = (status) => {
-  switch (status) {
-    case 'Fallo':
-      return '#FF0000';
-    case 'Acierto':
-      return '#63BB66';
-    case 'EXITO':
-      return '#9CCC66';
-    case 'NEWELEMENT':
-      return '#85C2FF';
-    default:
-      return 'white';
-  }
-};
-
-const establecerDibujo = (paso) => {
-
-  //Necesito: 
-  //- Comprobar si el paso es de tipo FuerzaBruta o no, en caso de que sí, se creará una Layer encima del actual para mostrar la tabla
-
-  // Crear una lista de caracteres
-  const caracteresMadre = paso.motherString.split('');
-  const caracteresPatron = paso.pattern.split('');
-  const tamanoTexto = 50; // Tamaño del texto
-  const distancia = tamanoTexto +20; // Distancia entre caracteres
-//<Stage width={960} height={500}>
-  return (
-    <Stage width={960} height={500}>
-      <Layer
-        x={4}
-        y={4}
-      >
-        <Group draggable>
-          {caracteresPatron.map((pcaracter, index) => (
-            <React.Fragment key={index}>
-              {paso.posEnPatron==index && (
-                  <>
-                  <Rect
-                    x={(index * distancia)+ (paso.posEnCMadre*distancia)}
-                    y={paso.alturaY*distancia}
-                    width={tamanoTexto + 7}
-                    height={tamanoTexto + 7}
-                    stroke='black'
-                    fill={getColorFromStatus(paso.status)} // Aquí se establece el color de fondo
-                    strokeWidth={4} />
-                     
-                  <Text
-                  x={(index * distancia + 6) + (paso.posEnCMadre*distancia)}
-                  y={paso.alturaY*distancia + 6}
-                  text={pcaracter}
-                  fontSize={tamanoTexto}
-                  draggable />  
-                   </>)}   
-          </React.Fragment>
-           ))}
-        </Group>
-      </Layer>
-      </Stage>
-  );
-};
-
-const establecerDibujoInicial = (paso) => {
-  // Crear una lista de caracteres
-  const caracteresMadre = paso.motherString.split('');
-  const caracteresPatron = paso.pattern.split('');
-  const tamanoTexto = 50; // Tamaño del texto
-  const distancia = tamanoTexto +20; // Distancia entre caracteres
-
-  return (
-    <Stage width={960} height={500}>
-      <Layer
-        x={4}
-        y={4}
-      >
-        <Group draggable>
-        {caracteresMadre.map((mcaracter, index) => (
-            <React.Fragment key={index}>
-            <Text
-              x={(index * distancia) +5}
-              y={6}
-              text={mcaracter}
-              fontSize={tamanoTexto}
-              draggable
-            />
-            <Rect
-              x={(index * distancia)}
-              y={0}
-              width={tamanoTexto+6}
-              height={tamanoTexto+7}
-              stroke='black'
-              strokeWidth={4}
-            />
-          </React.Fragment>
-          ))}
-        </Group>
-      </Layer>
-    </Stage>
-  );
-};
-
-const establecerDibujoFinal = (paso) => {
-  return (
-    <Stage width={960} height={500}>
-      <Layer>
-        {paso && (
-          <Text
-            text={paso.message}
-            fontSize={20} // Modifica el tamaño de las letras aquí
-            draggable
-          />
-        )}
-      </Layer>
-    </Stage>
-  );
-};
-
-const dibujoVacio = (paso) =>{
-  return (
-    <Stage width={960} height={500}>
-      <Layer>
-        
-      </Layer>
-    </Stage>
-  );
-};
+import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoFinal, establecerDibujoInicialTablaKMP, establecerDibujoTablaKMP } from "./KonvaHandler";
+import KonvaController from './KonvaComponents/konvaController';
 
 const KonvaComponent = () => {
-  const { pasos, setDrawStatus, currentLogIndex } = useLogContext();
-  const [Stage, setStage] = useState(dibujoVacio);
-  const timeoutRef = useRef(null);
+    /**Para la gestion de pasos */
+    const { pasos, currentLogIndex ,execSpeed,lastLogIndex} = useLogContext();
+    const [lastExecutes, setLastExecutes] = useState([]);
 
-  useEffect(() => {
-    console.log(currentLogIndex);
-    //console.log("Soy "+pasos[currentLogIndex]?.message);
-    if(timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    /**Elementos para pintar en la tabla */
+    const [elements, setElements] = useState([]);
+    const [firstTableElements, setFirstTableElements] = useState([]);
+    const [secondTableElements, setSecondTableElements] = useState([]);
 
-    if(pasos[currentLogIndex]){
+    const timeoutRef = useRef(null);
+    
+    /**Para el dibujo del texto */
+    const [textSize, setTextSize] = useState(45); // Tamaño inicial del texto
+    const [stageWidth, setStageWidth] = useState(1150); // Ancho inicial del Stage
+    const [stageHeigth, setStageHeigth] = useState(465); // Altura inicial del Stage
 
-      if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="FIN")){
-        if(pasos[currentLogIndex].status=="FIN"){
-          //setDrawStatus(pasos[currentLogIndex], establecerDibujoFinal(pasos[currentLogIndex]))
+    /**Para el dibujo de la tabla */
+    const shapeRef = useRef();
+    const trRef = useRef();
+    const anchorRef = useRef();
+    const [clipArea, setClipArea] = useState({ x: 0, y: 0, width: 200, height: 200 });
+    const [firstTableVisible, setFirstTableVisible] = useState(false);
+    const [secondTableVisible, setSecondTableVisible] = useState(false); // Altura inicial del Stage
+
+
+
+    useEffect(() => {
+        if(firstTableVisible){
+        trRef.current.nodes([shapeRef.current]);
+        trRef.current.getLayer().batchDraw();}
+    }, []);
+
+    useEffect(() => {
+        if(firstTableVisible){
+        const anchor = anchorRef.current;
+        const shape = shapeRef.current;
+        anchor.x(shape.x());
+        anchor.y(shape.y() + shape.height());
+        setClipArea({ x: shape.x(), y: shape.y(), width: shape.width(), height: shape.height() });
+        }
+    }, [shapeRef.current?.width(), shapeRef.current?.height()]);
+
+    /**Para El tamaño del dibujo  */
+    useEffect(() => {
+        var resizedElements;
+        
+        // Aquí va el código para actualizar el dibujo
+        switch (pasos[currentLogIndex]?.status){
+            case "FIN":
+                resizedElements = pasos.map(paso => {
+                        if(paso.status!="TABLA"){
+                            if (paso.id > pasos[currentLogIndex].lastExecId && paso.id == currentLogIndex){
+                                return establecerDibujoFinal(paso,textSize);
+                            }else if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex-1) {
+                                return establecerDibujo(paso,textSize);
+                            } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                                return establecerDibujoInicial(paso,textSize);
+                            } else {
+                                return null;
+                            }
+                    }
+                });
+                break;
+                case "EXECUTE":
+                    resizedElements = pasos.map(paso => {
+                        if(paso.status!="TABLA"){
+                            if (paso.id === pasos[currentLogIndex].lastExecId) { 
+                                return establecerDibujoInicial(paso,textSize);
+                            } else {
+                                return null;
+                            }
+                        }
+                    });
+                    break;
+            default:
+                resizedElements = pasos.map(paso => {
+                    if(paso.status!="TABLA"){
+                        if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
+                            return establecerDibujo(paso,textSize);
+                        } else if (paso.id === pasos[currentLogIndex].lastExecId) { 
+                            return establecerDibujoInicial(paso,textSize);
+                        } else {
+                            return null;
+                        }}
+                });
+                break;
+        }
+
+        if(firstTableVisible){
+            var resizedTableElements;
+            if(pasos[currentLogIndex].patronDeBusqueda=="KMP"){
+                resizedTableElements = pasos.map(paso => {
+                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA")) {
+                            return establecerDibujoTablaKMP(paso,textSize);
+                        } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                            return establecerDibujoInicialTablaKMP(paso,textSize);
+                        } else {
+                            return null;
+                        }
+                
+                });
+                setFirstTableElements(resizedTableElements);
+                }else if(pasos[currentLogIndex].patronDeBusqueda=="Boyer-Moore"){
+                    var resizedSecondTableElements
+                    //TODO: Alguna forma de diferenciar los pasos de las tablas para pintar cada una
+                    /*resizedTableElements = pasos.map(paso => {
+                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA")) {
+                            return establecerDibujoTablaKMP(paso,textSize);
+                        } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                            return establecerDibujoInicialTablaKMP(paso,textSize);
+                        } else {
+                            return null;
+                        } });
+                    resizedSecondTableElements = pasos.map(paso => {
+                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA")) {
+                            return establecerDibujoTablaKMP(paso,textSize);
+                        } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                            return establecerDibujoInicialTablaKMP(paso,textSize);
+                        } else {
+                            return null;
+                        }
+                    });
+                setFirstTableElements(resizedTableElements);*/
+                //setSecondableElements(resizedSecondTableElements);
+                }
+            }
+        
+        setElements(resizedElements);
+    }, [textSize]);
+
+    useEffect(() => {
+        var newElements;
+        var newTableElements
+
+        if(pasos[currentLogIndex]){
+            //console.log("ID: "+ pasos[currentLogIndex].id);
+            console.log(pasos[currentLogIndex].status);
+            if(timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+              }
+
+            pasos[currentLogIndex].id = pasos[currentLogIndex].id || currentLogIndex;
+
+          if((pasos[currentLogIndex].status=="EXECUTE")||(pasos[currentLogIndex].status=="RESET")){
+                //Control de dibujos especiales (Inicial, final, reset...)
+                
+                if(pasos[currentLogIndex].status=="EXECUTE"){
+                    switch(pasos[currentLogIndex].patronDeBusqueda){//Debo gestionar la primera ejecucion de cada tipo (para crear las tablas)
+                        case"Boyer-Moore":
+                            setFirstTableVisible(true);
+                            setSecondTableVisible(true);
+                            //setFirstTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
+                            //setSecondTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
+                            break;
+                        case "KMP":
+                            setFirstTableVisible(true);
+                            setFirstTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
+                            break;
+                        default:
+                            setFirstTableVisible(false);
+                            break;
+                    }
+                  setLastExecutes([...lastExecutes, pasos[currentLogIndex]]); // Añadir al array
+                  setElements(establecerDibujoInicial(pasos[currentLogIndex],textSize));
+                }else if(pasos[currentLogIndex].status=="RESET"){
+                    setFirstTableElements(dibujoVacio());
+                    setSecondTableElements(dibujoVacio());
+                    setFirstTableVisible(false);
+                    setSecondTableVisible(false);
+                    setElements(dibujoVacio());
+                }
+                return;
+            }else{
+                if(pasos[currentLogIndex-1]){
+
+                    if(pasos[currentLogIndex].status=="TABLA"){
+                        //Si el paso acutal es de creación de tabla, no se pinta en el dibujo, sino en la tabla
+
+                        if(lastExecutes.length > 0) { // Si existe un paso EXECUTE
+
+                            pasos[currentLogIndex].lastExecId = pasos[currentLogIndex].lastExecId !== undefined ? pasos[currentLogIndex].lastExecId : lastExecutes[lastExecutes.length - 1].id;
+                             
+                            switch(pasos[currentLogIndex].patronDeBusqueda){
+                              case "Boyer-Moore":
+                                //TODO: Diferenciar de alguna forma los tipos de tabla, así es mas facil para decidir si es uno u otro
+                                //if(pasos[currentLogIndex].nTabla==1){setFirstTableElements();}else{setSecondTableElements}
+                                break;
+                                case "KMP":
+                                  const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,textSize);} else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { return establecerDibujoInicialTablaKMP(paso,textSize);} else {return null;}});
+                                  newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialTablaKMP(paso,textSize);} else { return null;}});
+                                  setFirstTableElements(oldTableElements);
+                                break;
+                                default:
+                                  console.log("Fallo del sistema");
+                                  break;
+                            }
+                            }else{console.log("Fallo del paso TABLA");}
+                    }else{
+                        
+                        if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
+                            pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
+                        }else{
+                            pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;
+                        }
+
+                        if(lastExecutes.length > 0) { // Si existe un paso EXECUTE
+
+                            pasos[currentLogIndex].lastExecId = pasos[currentLogIndex].lastExecId !== undefined ? pasos[currentLogIndex].lastExecId : lastExecutes[lastExecutes.length - 1].id;
+                            
+                            const oldElements = pasos.map(paso => {
+                                if(paso.status!="TABLA"){
+                                    if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1)) {
+                                        return establecerDibujo(paso,textSize);
+                                    } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { // Si el paso actual es EXECUTE
+                                        return establecerDibujoInicial(paso,textSize);
+                                    } else {
+                                        return null;
+                                    }
+                                }
+                            });
+
+                            if(pasos[currentLogIndex].status=="FIN"){
+                                newElements = pasos.map(paso => {
+                                    if(paso.status!="TABLA"){
+                                        if (paso.id > pasos[currentLogIndex].lastExecId && paso.id == currentLogIndex){
+                                            return establecerDibujoFinal(paso,textSize);
+                                        }else if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex-1) {
+                                            return establecerDibujo(paso,textSize);
+                                        } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                                            return establecerDibujoInicial(paso,textSize);
+                                        } else {
+                                            return null;
+                                        }
+                                    }
+                                });
+                            }else{
+                                newElements = pasos.map(paso => {
+                                    if(paso.status!="TABLA"){
+                                        if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
+                                            return establecerDibujo(paso,textSize);
+                                        } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
+                                            return establecerDibujoInicial(paso,textSize);
+                                        } else {
+                                            return null;
+                                        }
+                                    }
+                                });
+                            }
+                            
+                            setElements(oldElements);
+                        }else{
+                            console.log("Error de Execute");   
+                        }
+                    }
+                }else{
+                    setElements(errorKonva())
+                }
+
+            }
+
+            const tiempoRetraso = 2000/execSpeed; // Define tu tiempo de retraso aquí (en milisegundos)
+            timeoutRef.current = setTimeout(() => {
+                if(pasos[currentLogIndex].status=="TABLA"){
+                    switch(pasos[currentLogIndex].patronDeBusqueda){
+                        case "KMP":
+                            setFirstTableElements(newTableElements)
+                            break;
+                        case "Boyer-Moore":
+                            //El que se haya cambiado
+                            /*if(){
+                                setFirstTableElements(newTableElements)
+                            }else{
+                                setSecondTableElements(newTableElements)
+                            }*/
+                            break;
+                    }
+                }else{
+                    setElements(newElements);
+                }
+            },tiempoRetraso);
         }else{
-          setDrawStatus(pasos[currentLogIndex], establecerDibujoInicial(pasos[currentLogIndex]))
+
         }
-        console.log("PintaEspecial");
-        setStage(pasos[currentLogIndex].drawStatus);
-        return;
-      }else if(pasos[currentLogIndex-1]){
-        if(pasos[currentLogIndex-1]?.drawStatus){
-          if((pasos[currentLogIndex-1].status == "Fallo")&&(pasos[currentLogIndex-1].status == "EXITO")) {
-            pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1]?.alturaY +1) || 1;
-          }else{
-            pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1]?.alturaY || 1;
-          }
-          console.log("PintaPrevio");
-          //setDrawStatus(pasos[currentLogIndex], establecerDibujo(pasos[currentLogIndex]));
-          setStage(pasos[currentLogIndex-1].drawStatus);
+        return () => {
+        if(timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }}
+    }, [pasos,currentLogIndex]);
 
-          //Ahora Pinta el nuevo dibujo sobre el anterior
-          /*if(!pasos[currentLogIndex]?.drawStatus){
-            console.log("PintaActual");
-            //Recibe el dibujo anterior y añade el paso nuevo
-            var stagevariable = new Konva.Stage();
-            stagevariable = pasos[currentLogIndex-1]?.drawStatus;
-            //stagevariable.add(establecerDibujo(pasos[currentLogIndex]));
-    
-            setDrawStatus(pasos[currentLogIndex], stagevariable);
-          }*/
+    return (
+        <div>
+            <Stage width={stageWidth} height={stageHeigth}>
+                <Layer x={5} y={5} draggable>
+                     {elements}
+                </Layer>
+                {firstTableVisible && <Layer x={stageWidth-203} y={3}>
+                    
+                    <Group key={"FirstTable"} draggable>
+                        <Rect
+                            ref={shapeRef}
+                            x={0}
+                            y={0}
+                            width={200}
+                            height={200}
+                            fill='white'//Color del fondo
+                            cornerRadius={2}
+                            stroke='black'
+                            strokeWidth={2}
+                        />
+                        <Transformer 
+                        ref={trRef} 
+                        anchorSize={0} 
+                        borderEnabled={false} 
+                        rotateEnabled={false}
+                    />
+                    <Circle
+                        ref={anchorRef}
+                        radius={10}
+                        fill='black'
+                        draggable
+                        dragOnTop={false}
+                        width={13}
+                        height={13}
+                        onDragMove={() => {
+                            const anchor = anchorRef.current;
+                            const shape = shapeRef.current;
+                            const newWidth = shape.width() + (shape.x() - anchor.x());
+                            if (newWidth < 0) {
+                                // Si el nuevo ancho es negativo, restablecer la posición del círculo
+                                anchor.x(shape.x() + shape.width());
+                            } else {
+                                shape.width(newWidth);
+                                shape.x(anchor.x());
+                            }
+                            shape.height(anchor.y() - shape.y());
+                            shape.x(anchor.x());
+                            trRef.current.forceUpdate();
+                            setClipArea({ x: 0, y: 0, width: shape.width(), height: shape.height() });
+                        }}
+                    />
+                    
+                        <Group key={"FTContainer"} clipFunc={(ctx) => {ctx.rect(clipArea.x, clipArea.y, clipArea.width, clipArea.height);}}>
+                            <Group key={"FirstTableElements"} draggable>
+                                    {firstTableElements}
+                                </Group>
+                        </Group>
+                        
+                    </Group>
+                </Layer>}
 
-        }else{
-          setStage(dibujoVacio());
-        }
-      }
-
-      if(!pasos[currentLogIndex]?.drawStatus){
-            console.log("PintaActual");
-            //Recibe el dibujo anterior y añade el paso nuevo
-            var stagevariable =pasos[currentLogIndex-1]?.drawStatus;
-            //stagevariable.add(establecerDibujo(pasos[currentLogIndex]));
-    
-            stagevariable = establecerDibujo(pasos[currentLogIndex-1]);
-
-            //Aquí me gustaría añadir a stageVariable el dibujo de establecerDibujo
-            
-            //setDrawStatus(pasos[currentLogIndex], stagevariable);
-            setDrawStatus(pasos[currentLogIndex], establecerDibujo(pasos[currentLogIndex]));
-          }
-      
-      //Pisa el dibujo anterior con el Nuevo? o cojo el anterior y creo el dibujo
-      // Pinta (o no) el dibujo del paso anterior, ahora pinta el paso
-      
-      const tiempoRetraso = 2000; // Define tu tiempo de retraso aquí (en milisegundos)
-      timeoutRef.current = setTimeout(() => {
-        if(pasos[currentLogIndex]?.drawStatus){
-          console.log("SetActual");
-          setStage(pasos[currentLogIndex].drawStatus);
-        }
-      },tiempoRetraso);
-    }
-    
-    return () => {
-      if(timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    }
-  }, [pasos,currentLogIndex]);
-
-  return (
-    <div>
-      {Stage}
-    </div>
-  );
+                {secondTableVisible/* VA a haber que declarar otra ref para todo
+                 && <Layer x={stageWidth-100} y={3}>
+                    
+                    <Group key={"SecondTable"} draggable>
+                        <Rect
+                            ref={shapeRef}
+                            x={0}
+                            y={0}
+                            width={200}
+                            height={200}
+                            fill='white'//Color del fondo
+                            cornerRadius={2}
+                            stroke='black'
+                            strokeWidth={2}
+                        />
+                        <Transformer 
+                        ref={trRef} 
+                        anchorSize={0} 
+                        borderEnabled={false} 
+                        rotateEnabled={false}
+                    />
+                    <Circle
+                        ref={anchorRef}
+                        radius={10}
+                        fill='black'
+                        draggable
+                        dragOnTop={false}
+                        width={13}
+                        height={13}
+                        onDragMove={() => {
+                            const anchor = anchorRef.current;
+                            const shape = shapeRef.current;
+                            const newWidth = shape.width() + (shape.x() - anchor.x());
+                            if (newWidth < 0) {
+                                // Si el nuevo ancho es negativo, restablecer la posición del círculo
+                                anchor.x(shape.x() + shape.width());
+                            } else {
+                                shape.width(newWidth);
+                                shape.x(anchor.x());
+                            }
+                            shape.height(anchor.y() - shape.y());
+                            shape.x(anchor.x());
+                            trRef.current.forceUpdate();
+                            setClipArea({ x: 0, y: 0, width: shape.width(), height: shape.height() });
+                        }}
+                    />
+                    
+                        <Group key={"FTContainer"} clipFunc={(ctx) => {ctx.rect(clipArea.x, clipArea.y, clipArea.width, clipArea.height);}}>
+                            <Group key={"FirstTableElements"} draggable>
+                                    {firstTableElements}
+                                </Group>
+                        </Group>
+                        
+                    </Group>
+                </Layer>*/}
+                <KonvaController 
+                    stageWidth={stageWidth} 
+                    stageHeigth={stageHeigth} 
+                    setTextSize={setTextSize} 
+                />
+            </Stage>
+        </div>
+    );
 };
-
 
 export default KonvaComponent;

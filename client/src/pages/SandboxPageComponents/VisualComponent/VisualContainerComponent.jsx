@@ -11,8 +11,8 @@ const VisualContainerComponent = () => {
             <div className="flex justify-center items-center">        
                 <Card className="px-1 py-1 max-w-[1200px] min-w-[1200px] max-h-[500px] min-h-[500px] ">
                     <CardBody className='flex justify-center items-center'>
-                    {/*<KonvaComponent/><KonvaHandler/>*/}
-                    <KonvaPLS />
+                    {/*<KonvaPLS />*/}
+                    <KonvaComponent/>
                     </CardBody>
 
                     {/*<Divider/><CardFooter></CardFooter>*/}

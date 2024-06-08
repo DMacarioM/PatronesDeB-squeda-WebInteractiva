@@ -101,7 +101,7 @@ export const getColorFromStatus = (status) => {
     return (
         <Group key={`${paso.id}-FIN-`}>
             {caracteresPatron.map((pcaracter, index) => {
-             let color = '#F7CA90'; // Naranja;
+             let color = '#C9F0FF'; // azul;
              let despX=paso.motherString.length-paso.pattern.length;
              
               return (
@@ -127,20 +127,75 @@ export const getColorFromStatus = (status) => {
     );
   };
 
-  export const establecerDibujoInicialTabla = (paso, numero) => {
-    // Crear una lista de caracteres
-    const caracteresMadre = paso.motherString.split('');
-    const tamanoTexto = 50; 
-    const distancia = tamanoTexto +20; // Distancia entre caracteres
+  export const establecerDibujoInicialTablaKMP = (paso, tableTextSize) => {
+    // Crear una lista de caracteres del patrón
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = tableTextSize-20; 
+    const distancia = tamanoTexto + 15; // Distancia entre caracteres
+  
+    // Crear la tabla de fallos
+    //const tablaFallos = paso.tablaSgte;
+  
+    
+    // Crear los componentes Konva para cada carácter y su correspondiente valor en la tabla lps
+    const componentesKonva = caracteresPatron.map((caracter, index) => (
+      <Group key={`${paso.id}-IN-T-${index}`}>
+        {
+          <>
+          <Rect fill='white' x={10} y={10+distancia+(index*distancia)} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
+          <Text text={`${index}`} x={27} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='white' x={distancia+10} y={10+distancia+(index*distancia)} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${caracter}`}x={distancia+20} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
 
+        {index==0 && 
+          <>
+          <Rect fill='#C9F0FF' x={20+distancia*2} y={10+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`0`} x={35+distancia*2} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
+      </Group>
+    ));
+  
     return (
-          <Group key={`${paso.id}-IN-`}>
-            {caracteresMadre.map((mcaracter, index) => (
-                <React.Fragment key={`${mcaracter}-${index}`}>
-                 
-                </React.Fragment>
-            ))}
-          </Group>
+      <Group key={`${paso.id}-IN-T`}>
+        <Rect fill='#B0C4C3' x={10} y={10} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
+        <Text text={`i`} x={27} y={13} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={distancia+10} y={10} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`P[i]`}x={distancia+12} y={13} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={20+distancia*2} y={10} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`Sgte[i]`} x={20+distancia*2} y={13} fontSize={tamanoTexto} />
+        {componentesKonva}
+      </Group>
+    );
+  };
+
+
+  export const establecerDibujoTablaKMP = (paso, tableTextSize) => {
+    // Crear una lista de caracteres del patrón
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = tableTextSize-20; 
+    const distancia = tamanoTexto + 15; // Distancia entre caracteres
+  
+    // Crear la tabla de fallos
+    const tablaFallos = paso.tablaSgte;
+    // Crear los componentes Konva para cada carácter y su correspondiente valor en la tabla lps
+    const componentesKonva = caracteresPatron.map((caracter, index) => (
+      <Group key={`${paso.id}-PAS-T-${index}`}>
+        {paso.posEnPatron==index && 
+          <>
+          <Rect fill='#C9F0FF' x={20+distancia*2} y={10+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${tablaFallos[index]}`} x={35+distancia*2} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
+      </Group>
+    ));
+  
+    return (
+      <Group key={`${paso.id}-PAS-T`}>
+        {componentesKonva}
+      </Group>
     );
   };
 
@@ -159,4 +214,4 @@ export const getColorFromStatus = (status) => {
     );
   };
 
-  export default {dibujoVacio, errorKonva, establecerDibujoInicial,establecerDibujo };
+  export default {dibujoVacio, errorKonva, establecerDibujoInicial,establecerDibujo,establecerDibujoInicialTablaKMP };
