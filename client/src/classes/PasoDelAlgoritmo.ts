@@ -19,11 +19,12 @@ export type PasoDelAlgoritmo = {
     alturaY?: number;
 
     tablaD1?: any;//Bad Match
-    tablaD2?: any;
+    tablaD2?: any;//Good Sufix
     
     tablaSgte?: any;
 
     lastExecId?: number;
+    tableNumber?: number;
     
   };
   //Cuando se imprima tiene que tener sus cadenas, para ir de un ejemplo a otro?¿ 

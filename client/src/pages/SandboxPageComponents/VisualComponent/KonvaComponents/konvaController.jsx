@@ -10,8 +10,8 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
     
     const {setCurrentLogIndex,currentLogIndex,lastLogIndex} = useLogContext();
 
-    const imagePrevio = useImage('/public/paso-previo.png');
-    const imageSiguiente = useImage('/public/paso-siguiente.png');
+    const imagePrevio = useImage('/paso-previo.png');
+    const imageSiguiente = useImage('paso-siguiente.png');
 
     const handleGoToIndex = (index) => {
         if(index>=0 && index<=lastLogIndex){

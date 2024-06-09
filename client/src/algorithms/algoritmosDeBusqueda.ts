@@ -221,16 +221,17 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
   export const boyerMooreAlgorithm = (motherString: string, pattern: string) => {
     const motherStringLength = motherString.length;
     const patternLength = pattern.length;
-    const badCharTable = makeBadCharTable(pattern);
-    const goodSufixTable = makeGoodSufixTable(pattern);
+    const pasos: PasoDelAlgoritmo[] = [];
+    const badCharTable = makeBadCharTable(pattern,pasos);
+    const goodSufixTable = makeGoodSufixTable(pattern,pasos);
     let i = patternLength - 1;
     let j;
     let exitos = 0;
     let comprobaciones = 0;
-    const pasos: PasoDelAlgoritmo[] = [];
+   
 
     console.log("gs- "+goodSufixTable);
-    console.log(badCharTable);
+    //console.log(badCharTable);
 
     while (i < motherStringLength) {
         for (j = patternLength - 1; pattern[j] === motherString[i]; --i, --j) {
@@ -278,28 +279,57 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
     return pasos;
 }
 
-function makeBadCharTable(pattern: string) {
+function makeBadCharTable(pattern: string,pasos: PasoDelAlgoritmo[]) {
     let table = {};
-    for (let i = 0; i < pattern.length - 1; ++i) {
-        table[pattern[i]] = pattern.length - 1 - i;
+    
+    for (let i = 0; i <= pattern.length - 1; i++) {
+        table[pattern[i]] = pattern.length - 1 - (table[pattern[i]] !== undefined ? Math.max(i,table[pattern[i]]) : i);
+        pasos.push({
+          message: `D1[${i}] = ${table[pattern[i]]}. En la tabla de malos caracteres.`,
+          pattern: pattern,
+          posEnPatron: i,
+          status: 'TABLA',
+          patronDeBusqueda: "Boyer-Moore",
+          tablaD1: [table],
+          tableNumber: 1
+      });
     }
-    table[pattern[pattern.length - 1]] = pattern.length;
+
     return table;
 }
 
-function makeGoodSufixTable(pattern: string) {
-    let table = new Array(pattern.length).fill(0);
-    let lastPrefixPosition = pattern.length;
-    for (let i = pattern.length; i > 0; --i) {
-        if (isPrefix(pattern, i)) lastPrefixPosition = i;
-        table[pattern.length - i] = lastPrefixPosition - i + pattern.length;
-    }
-    for (let i = 0; i < pattern.length - 1; ++i) {
-        let slen = suffixLength(pattern, i);
-        table[slen] = pattern.length - 1 - i + slen;
-    }
-    return table;
+function makeGoodSufixTable(pattern: string, pasos: PasoDelAlgoritmo[]) {
+  let table = new Array(pattern.length).fill(pattern.length);
+  let lastPrefixPosition = pattern.length;
+  
+  for (let i = pattern.length; i > 0; --i) {
+    if (isPrefix(pattern, i)) lastPrefixPosition = i;
+    table[pattern.length - i] = lastPrefixPosition - i + pattern.length;
+  }
+  
+  for (let i = 0; i < pattern.length - 1; ++i) {
+    let slen = suffixLength(pattern, i);
+    table[slen] = pattern.length - 1 - i + slen;
+  }
+  
+  for (let i = pattern.length; i >= 0; --i) {
+    pasos.push({
+        message: `D2[${i}] = ${table[pattern.length - i]}. En la posición ${pattern.length - i} del patrón, el sufijo tiene un desplazamiento de ${lastPrefixPosition - i + pattern.length}.`,
+        pattern: pattern,
+        posEnPatron: i,
+        status: 'TABLA',
+        patronDeBusqueda: "Boyer-Moore",
+        tablaD2: [table],
+        tableNumber: 2
+    });
+  }
+  
+  console.log(table);
+  return table;
 }
+
+
+
 
 function isPrefix(pattern: string, p: number) {
     for (let i = p, j = 0; i < pattern.length; ++i, ++j) {
@@ -307,11 +337,11 @@ function isPrefix(pattern: string, p: number) {
     }
     return true;
 }
-
 function suffixLength(pattern: string, p: number) {
-    let len = 0;
-    for (let i = p, j = pattern.length - 1; i >= 0 && pattern[i] === pattern[j]; --i, --j) {
-        len += 1;
-    }
-    return len;
+  let len = 0;
+  for (let i = p, j = pattern.length - 1; i >= 0 && pattern[i] === pattern[j]; --i, --j) {
+      len += 1;
+  }
+  return len;
 }
+

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group, Image,Transformer,Circle} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
-import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoFinal, establecerDibujoInicialTablaKMP, establecerDibujoTablaKMP } from "./KonvaHandler";
+import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoFinal, establecerDibujoInicialTablaKMP, establecerDibujoTablaKMP,establecerDibujoInicialPrimeraTablaBM,establecerDibujoInicialSegundaTablaBM,establecerDibujoPrimeraTablaBM,establecerDibujoSegundaTablaBM } from "./KonvaHandler";
 import KonvaController from './KonvaComponents/konvaController';
 
 const KonvaComponent = () => {
@@ -22,30 +22,55 @@ const KonvaComponent = () => {
     const [stageHeigth, setStageHeigth] = useState(465); // Altura inicial del Stage
 
     /**Para el dibujo de la tabla */
-    const shapeRef = useRef();
-    const trRef = useRef();
-    const anchorRef = useRef();
-    const [clipArea, setClipArea] = useState({ x: 0, y: 0, width: 200, height: 200 });
+    const shapeRefFT = useRef();
+    const shapeRefST = useRef();
+    const trRefFT = useRef();
+    const trRefST = useRef();
+    const anchorRefFT = useRef();
+    const anchorRefST = useRef();
+    const [clipAreaFT, setClipAreaFT] = useState({ x: 0, y: 0, width: 200, height: 200 });
+    const [clipAreaST, setClipAreaST] = useState({ x: 0, y: 0, width: 200, height: 200 });
+
     const [firstTableVisible, setFirstTableVisible] = useState(false);
-    const [secondTableVisible, setSecondTableVisible] = useState(false); // Altura inicial del Stage
+    const [secondTableVisible, setSecondTableVisible] = useState(false);
+
+    
+    const [tableTitle, setTableTitle] = useState("");
+
 
 
 
     useEffect(() => {
         if(firstTableVisible){
-        trRef.current.nodes([shapeRef.current]);
-        trRef.current.getLayer().batchDraw();}
+        trRefFT.current.nodes([shapeRefFT.current]);
+        trRefFT.current.getLayer().batchDraw();
+        }
+
+        if(secondTableVisible){
+            trRefST.current.nodes([shapeRefST.current]);
+            trRefST.current.getLayer().batchDraw();
+            }
     }, []);
 
     useEffect(() => {
         if(firstTableVisible){
-        const anchor = anchorRef.current;
-        const shape = shapeRef.current;
+        const anchor = anchorRefFT.current;
+        const shape = shapeRefFT.current;
         anchor.x(shape.x());
         anchor.y(shape.y() + shape.height());
-        setClipArea({ x: shape.x(), y: shape.y(), width: shape.width(), height: shape.height() });
+        setClipAreaFT({ x: shape.x(), y: shape.y(), width: shape.width(), height: shape.height() });}
+
+    }, [shapeRefFT.current?.width(), shapeRefFT.current?.height()]);
+
+    useEffect(() => {
+        if(secondTableVisible){
+        const anchor = anchorRefST.current;
+        const shape = shapeRefST.current;
+        anchor.x(shape.x());
+        anchor.y(shape.y() + shape.height());
+        setClipAreaST({ x: shape.x(), y: shape.y(), width: shape.width(), height: shape.height() });
         }
-    }, [shapeRef.current?.width(), shapeRef.current?.height()]);
+    }, [shapeRefST.current?.width(), shapeRefST.current?.height()]);
 
     /**Para El tamaño del dibujo  */
     useEffect(() => {
@@ -110,25 +135,25 @@ const KonvaComponent = () => {
                 }else if(pasos[currentLogIndex].patronDeBusqueda=="Boyer-Moore"){
                     var resizedSecondTableElements
                     //TODO: Alguna forma de diferenciar los pasos de las tablas para pintar cada una
-                    /*resizedTableElements = pasos.map(paso => {
-                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA")) {
-                            return establecerDibujoTablaKMP(paso,textSize);
+                    resizedTableElements = pasos.map(paso => {
+                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA") && (paso.tableNumber==1)) {
+                            return establecerDibujoPrimeraTablaBM(paso,textSize);
                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                            return establecerDibujoInicialTablaKMP(paso,textSize);
+                            return establecerDibujoInicialPrimeraTablaBM(paso,textSize);
                         } else {
                             return null;
                         } });
                     resizedSecondTableElements = pasos.map(paso => {
-                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA")) {
-                            return establecerDibujoTablaKMP(paso,textSize);
+                        if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA") && (paso.tableNumber==2)) {
+                            return establecerDibujoSegundaTablaBM(paso,textSize);
                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                            return establecerDibujoInicialTablaKMP(paso,textSize);
+                            return establecerDibujoInicialSegundaTablaBM(paso,textSize);
                         } else {
                             return null;
                         }
                     });
-                setFirstTableElements(resizedTableElements);*/
-                //setSecondableElements(resizedSecondTableElements);
+                setFirstTableElements(resizedTableElements);
+                setSecondTableElements(resizedSecondTableElements);
                 }
             }
         
@@ -140,7 +165,6 @@ const KonvaComponent = () => {
         var newTableElements
 
         if(pasos[currentLogIndex]){
-            //console.log("ID: "+ pasos[currentLogIndex].id);
             console.log(pasos[currentLogIndex].status);
             if(timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
@@ -155,12 +179,15 @@ const KonvaComponent = () => {
                     switch(pasos[currentLogIndex].patronDeBusqueda){//Debo gestionar la primera ejecucion de cada tipo (para crear las tablas)
                         case"Boyer-Moore":
                             setFirstTableVisible(true);
+                            setTableTitle("Tabla D1");
                             setSecondTableVisible(true);
-                            //setFirstTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
-                            //setSecondTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
+                            setFirstTableElements(establecerDibujoInicialPrimeraTablaBM(pasos[currentLogIndex],textSize));
+                            setSecondTableElements(establecerDibujoInicialSegundaTablaBM(pasos[currentLogIndex],textSize));
                             break;
                         case "KMP":
                             setFirstTableVisible(true);
+                            setSecondTableVisible(false);
+                            setTableTitle("Tabla Siguiente");
                             setFirstTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
                             break;
                         default:
@@ -190,7 +217,15 @@ const KonvaComponent = () => {
                             switch(pasos[currentLogIndex].patronDeBusqueda){
                               case "Boyer-Moore":
                                 //TODO: Diferenciar de alguna forma los tipos de tabla, así es mas facil para decidir si es uno u otro
-                                //if(pasos[currentLogIndex].nTabla==1){setFirstTableElements();}else{setSecondTableElements}
+                                if(pasos[currentLogIndex].tableNumber==1){
+                                    const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && (paso.status=="TABLA") && (paso.tableNumber==1)) {return establecerDibujoPrimeraTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialPrimeraTablaBM(paso,textSize);} else {return null;}});
+                                    newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA"&& (paso.tableNumber==1)) {return establecerDibujoPrimeraTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialPrimeraTablaBM(paso,textSize);} else { return null;}});
+                                    setFirstTableElements(oldTableElements);
+                                }else{
+                                    const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && (paso.status=="TABLA") && (paso.tableNumber==2)) {return establecerDibujoSegundaTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialSegundaTablaBM(paso,textSize);} else {return null;}});
+                                    newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA"&& (paso.tableNumber==2)) {return establecerDibujoSegundaTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialSegundaTablaBM(paso,textSize);} else { return null;}});
+                                    setSecondTableElements(oldTableElements);
+                                }
                                 break;
                                 case "KMP":
                                   const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,textSize);} else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { return establecerDibujoInicialTablaKMP(paso,textSize);} else {return null;}});
@@ -206,6 +241,9 @@ const KonvaComponent = () => {
                         
                         if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
                             pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
+                            if((pasos[currentLogIndex].alturaY>5)&&(pasos[currentLogIndex].patronDeBusqueda!="KMP")){
+                                pasos[currentLogIndex].alturaY = 1;
+                            }
                         }else{
                             pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;
                         }
@@ -274,11 +312,11 @@ const KonvaComponent = () => {
                             break;
                         case "Boyer-Moore":
                             //El que se haya cambiado
-                            /*if(){
+                            if(pasos[currentLogIndex].tableNumber==1){
                                 setFirstTableElements(newTableElements)
                             }else{
                                 setSecondTableElements(newTableElements)
-                            }*/
+                            }
                             break;
                     }
                 }else{
@@ -300,11 +338,10 @@ const KonvaComponent = () => {
                 <Layer x={5} y={5} draggable>
                      {elements}
                 </Layer>
-                {firstTableVisible && <Layer x={stageWidth-203} y={3}>
-                    
+                {firstTableVisible && <Layer x={stageWidth-205} y={5}>
                     <Group key={"FirstTable"} draggable>
                         <Rect
-                            ref={shapeRef}
+                            ref={shapeRefFT}
                             x={0}
                             y={0}
                             width={200}
@@ -315,13 +352,13 @@ const KonvaComponent = () => {
                             strokeWidth={2}
                         />
                         <Transformer 
-                        ref={trRef} 
+                        ref={trRefFT} 
                         anchorSize={0} 
                         borderEnabled={false} 
                         rotateEnabled={false}
                     />
                     <Circle
-                        ref={anchorRef}
+                        ref={anchorRefFT}
                         radius={10}
                         fill='black'
                         draggable
@@ -329,8 +366,8 @@ const KonvaComponent = () => {
                         width={13}
                         height={13}
                         onDragMove={() => {
-                            const anchor = anchorRef.current;
-                            const shape = shapeRef.current;
+                            const anchor = anchorRefFT.current;
+                            const shape = shapeRefFT.current;
                             const newWidth = shape.width() + (shape.x() - anchor.x());
                             if (newWidth < 0) {
                                 // Si el nuevo ancho es negativo, restablecer la posición del círculo
@@ -341,75 +378,108 @@ const KonvaComponent = () => {
                             }
                             shape.height(anchor.y() - shape.y());
                             shape.x(anchor.x());
-                            trRef.current.forceUpdate();
-                            setClipArea({ x: 0, y: 0, width: shape.width(), height: shape.height() });
+                            trRefFT.current.forceUpdate();
+                            setClipAreaFT({ x: 0, y: 0, width: shape.width(), height: shape.height() });
+                            
                         }}
                     />
                     
-                        <Group key={"FTContainer"} clipFunc={(ctx) => {ctx.rect(clipArea.x, clipArea.y, clipArea.width, clipArea.height);}}>
-                            <Group key={"FirstTableElements"} draggable>
+                        <Group key={"FTContainer"} clipFunc={(ctx) => {ctx.rect(clipAreaFT.x, clipAreaFT.y, clipAreaFT.width, clipAreaFT.height);}}>
+                                <Group key={"FirstTableElements"} draggable>
                                     {firstTableElements}
+                                </Group>
+                                <Group key={"FTITLE"}>
+                                    <Rect
+                                    x={shapeRefFT.current ? shapeRefFT.current.x() + 5 : 0}
+                                    y={0}
+                                    width={100}
+                                    height={15}
+                                    fill='#EAECEA'//Color del fondo
+                                    cornerRadius={2}
+                                    stroke='black'
+                                    strokeWidth={2}/>
+                                    
+                                    <Text
+                                    text={`${tableTitle}`} 
+                                    x={shapeRefFT.current ? shapeRefFT.current.x() + 7 : 2}
+                                    y={2}
+                                    />
+                                </Group>
+                        </Group>
+                    </Group>
+                </Layer>}
+
+                {secondTableVisible && <Layer x={stageWidth-205} y={210}>
+                    
+                    <Group key={"SecondTable"} draggable>
+                        <Rect
+                            ref={shapeRefST}
+                            x={0}
+                            y={0}
+                            width={200}
+                            height={200}
+                            fill='white'//Color del fondo
+                            cornerRadius={2}
+                            stroke='black'
+                            strokeWidth={2}
+                        />
+                        <Transformer 
+                        ref={trRefST} 
+                        anchorSize={0} 
+                        borderEnabled={false} 
+                        rotateEnabled={false}
+                    />
+                    <Circle
+                        ref={anchorRefST}
+                        radius={10}
+                        fill='black'
+                        draggable
+                        dragOnTop={false}
+                        width={13}
+                        height={13}
+                        onDragMove={() => {
+                            const anchor = anchorRefST.current;
+                            const shape = shapeRefST.current;
+                            const newWidth = shape.width() + (shape.x() - anchor.x());
+                            if (newWidth < 0) {
+                                // Si el nuevo ancho es negativo, restablecer la posición del círculo
+                                anchor.x(shape.x() + shape.width());
+                            } else {
+                                shape.width(newWidth);
+                                shape.x(anchor.x());
+                            }
+                            shape.height(anchor.y() - shape.y());
+                            shape.x(anchor.x());
+                            trRefST.current.forceUpdate();
+                            setClipAreaST({ x: 0, y: 0, width: shape.width(), height: shape.height() });
+                        }}
+                    />
+                    
+                        <Group key={"STContainer"} clipFunc={(ctx) => {ctx.rect(clipAreaST.x, clipAreaST.y, clipAreaST.width, clipAreaST.height);}}>
+                            <Group key={"SecondTableElements"} draggable>
+                                    {secondTableElements}
+                                </Group>
+                                <Group key={"STITLE"}>
+                                    <Rect
+                                    x={shapeRefST.current ? shapeRefST.current.x() + 5 : 0}
+                                    y={0}
+                                    width={100}
+                                    height={15}
+                                    fill='#EAECEA'//Color del fondo
+                                    cornerRadius={2}
+                                    stroke='black'
+                                    strokeWidth={2}/>
+                                    
+                                    <Text
+                                    text={`Tabla D2`} 
+                                    x={shapeRefST.current ? shapeRefST.current.x() + 7 : 2}
+                                    y={2}
+                                    />
                                 </Group>
                         </Group>
                         
                     </Group>
                 </Layer>}
-
-                {secondTableVisible/* VA a haber que declarar otra ref para todo
-                 && <Layer x={stageWidth-100} y={3}>
-                    
-                    <Group key={"SecondTable"} draggable>
-                        <Rect
-                            ref={shapeRef}
-                            x={0}
-                            y={0}
-                            width={200}
-                            height={200}
-                            fill='white'//Color del fondo
-                            cornerRadius={2}
-                            stroke='black'
-                            strokeWidth={2}
-                        />
-                        <Transformer 
-                        ref={trRef} 
-                        anchorSize={0} 
-                        borderEnabled={false} 
-                        rotateEnabled={false}
-                    />
-                    <Circle
-                        ref={anchorRef}
-                        radius={10}
-                        fill='black'
-                        draggable
-                        dragOnTop={false}
-                        width={13}
-                        height={13}
-                        onDragMove={() => {
-                            const anchor = anchorRef.current;
-                            const shape = shapeRef.current;
-                            const newWidth = shape.width() + (shape.x() - anchor.x());
-                            if (newWidth < 0) {
-                                // Si el nuevo ancho es negativo, restablecer la posición del círculo
-                                anchor.x(shape.x() + shape.width());
-                            } else {
-                                shape.width(newWidth);
-                                shape.x(anchor.x());
-                            }
-                            shape.height(anchor.y() - shape.y());
-                            shape.x(anchor.x());
-                            trRef.current.forceUpdate();
-                            setClipArea({ x: 0, y: 0, width: shape.width(), height: shape.height() });
-                        }}
-                    />
-                    
-                        <Group key={"FTContainer"} clipFunc={(ctx) => {ctx.rect(clipArea.x, clipArea.y, clipArea.width, clipArea.height);}}>
-                            <Group key={"FirstTableElements"} draggable>
-                                    {firstTableElements}
-                                </Group>
-                        </Group>
-                        
-                    </Group>
-                </Layer>*/}
                 <KonvaController 
                     stageWidth={stageWidth} 
                     stageHeigth={stageHeigth} 

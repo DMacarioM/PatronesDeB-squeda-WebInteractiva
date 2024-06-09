@@ -142,17 +142,17 @@ export const getColorFromStatus = (status) => {
       <Group key={`${paso.id}-IN-T-${index}`}>
         {
           <>
-          <Rect fill='white' x={10} y={10+distancia+(index*distancia)} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
-          <Text text={`${index}`} x={27} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
-          <Rect fill='white' x={distancia+10} y={10+distancia+(index*distancia)} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
-          <Text text={`${caracter}`}x={distancia+20} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='white' x={10} y={20+distancia+(index*distancia)} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
+          <Text text={`${index}`} x={27} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='white' x={distancia+10} y={20+distancia+(index*distancia)} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${caracter}`}x={distancia+20} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
           </>
         }
 
         {index==0 && 
           <>
-          <Rect fill='#C9F0FF' x={20+distancia*2} y={10+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
-          <Text text={`0`} x={35+distancia*2} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='#C9F0FF' x={20+distancia*2} y={20+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`0`} x={35+distancia*2} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
           </>
         }
       </Group>
@@ -160,12 +160,12 @@ export const getColorFromStatus = (status) => {
   
     return (
       <Group key={`${paso.id}-IN-T`}>
-        <Rect fill='#B0C4C3' x={10} y={10} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
-        <Text text={`i`} x={27} y={13} fontSize={tamanoTexto} />
-        <Rect fill='#B0C4C3' x={distancia+10} y={10} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
-        <Text text={`P[i]`}x={distancia+12} y={13} fontSize={tamanoTexto} />
-        <Rect fill='#B0C4C3' x={20+distancia*2} y={10} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
-        <Text text={`Sgte[i]`} x={20+distancia*2} y={13} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={10} y={20} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
+        <Text text={`i`} x={27} y={23} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={distancia+10} y={20} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`P[i]`}x={distancia+12} y={23} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={20+distancia*2} y={20} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`Sgte[i]`} x={20+distancia*2} y={23} fontSize={tamanoTexto} />
         {componentesKonva}
       </Group>
     );
@@ -185,8 +185,8 @@ export const getColorFromStatus = (status) => {
       <Group key={`${paso.id}-PAS-T-${index}`}>
         {paso.posEnPatron==index && 
           <>
-          <Rect fill='#C9F0FF' x={20+distancia*2} y={10+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
-          <Text text={`${tablaFallos[index]}`} x={35+distancia*2} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='#C9F0FF' x={20+distancia*2} y={20+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${tablaFallos[index]}`} x={35+distancia*2} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
           </>
         }
       </Group>
@@ -194,6 +194,124 @@ export const getColorFromStatus = (status) => {
   
     return (
       <Group key={`${paso.id}-PAS-T`}>
+        {componentesKonva}
+      </Group>
+    );
+  };
+
+  export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
+    // Crear una lista de caracteres del patrón
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = tableTextSize-20; 
+    const distancia = tamanoTexto + 15; // Distancia entre caracteres
+
+    const caracteresUnicos = [...new Set(caracteresPatron)];
+    
+    // Crear los componentes Konva para cada carácter y su correspondiente valor en la tabla lps
+    const componentesKonva = caracteresUnicos.map((caracter, index) => (
+      <Group key={`${paso.id}-IN-T-BM1-${index}`}>
+        {
+          <>
+          <Rect fill='white' x={10} y={10+distancia+(index*distancia)} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${caracter}`}x={27} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='#C9F0FF' x={20+distancia} y={10+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`0`} x={35+distancia} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
+      </Group>
+    ));
+  
+    return (
+      <Group key={`${paso.id}-IN-T-BM1-`}>
+        <Rect fill='#B0C4C3' x={10} y={10} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`P[i]`}x={12} y={13} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={20+distancia} y={10} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`D1[i]`} x={30+distancia} y={13} fontSize={tamanoTexto} />
+        {componentesKonva}
+      </Group>
+    );
+  };
+
+  export const establecerDibujoInicialSegundaTablaBM = (paso, tableTextSize) => {
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = tableTextSize-20; 
+    const distancia = tamanoTexto + 15; 
+    const componentesKonva = caracteresPatron.map((caracter, index) => (
+      <Group key={`${paso.id}-IN-T-BM2-${index}`}>
+        {
+          <>
+          <Rect fill='white' x={10} y={20+distancia+(index*distancia)} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
+          <Text text={`${index}`} x={27} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='white' x={distancia+10} y={20+distancia+(index*distancia)} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${caracter}`}x={distancia+20} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Rect fill='#C9F0FF' x={20+distancia*2} y={20+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`0`} x={35+distancia*2} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
+      </Group>
+    ));
+  
+    return (
+      <Group key={`${paso.id}-IN-T-BM2-`}>
+        <Rect fill='#B0C4C3' x={10} y={20} width={distancia} height={tamanoTexto+5} stroke='black' ></Rect>
+        <Text text={`i`} x={27} y={25} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={distancia+10} y={20} width={distancia+10} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`P[i]`}x={distancia+12} y={23} fontSize={tamanoTexto} />
+        <Rect fill='#B0C4C3' x={20+distancia*2} y={20} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`D2[i]`} x={30+distancia*2} y={23} fontSize={tamanoTexto} />
+        {componentesKonva}
+      </Group>
+    );
+  };
+
+
+  export const establecerDibujoPrimeraTablaBM = (paso, tableTextSize) => {
+    // Crear una lista de caracteres del patrón
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = tableTextSize-20; 
+    const distancia = tamanoTexto + 15; // Distancia entre caracteres
+  
+    const tablaMalosCaracteres = paso.tablaD1[0];
+    const caracteresUnicos = [...new Set(caracteresPatron)];
+    const componentesKonva = caracteresUnicos.map((caracter, index) => (
+      <Group key={`${paso.id}-PAS-T-BM1-${index}`}>
+        {paso.posEnPatron==index && 
+          <>
+          <Rect fill='#C9F0FF' x={20+distancia} y={10+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${tablaMalosCaracteres[caracter]}`} x={35+distancia} y={15+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
+      </Group>
+    ));
+  
+    return (
+      <Group key={`${paso.id}-PAS-T-BM1`}>
+        {componentesKonva}
+      </Group>
+    );
+  };
+
+  export const establecerDibujoSegundaTablaBM = (paso, tableTextSize) => {
+    // Crear una lista de caracteres del patrón
+    const caracteresPatron = paso.pattern.split('');
+    const tamanoTexto = tableTextSize-20; 
+    const distancia = tamanoTexto + 15; // Distancia entre caracteres
+  
+    // Crear la tabla de fallos
+    const tablaBuenosSufijos = paso.tablaD2[0];
+    const componentesKonva = caracteresPatron.map((caracter, index) => (
+      <Group key={`${paso.id}-PAS-T-BM2-${index}`}>
+        {(paso.posEnPatron==index) && 
+          <>
+          <Rect fill='#C9F0FF' x={20+distancia*2} y={20+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
+          <Text text={`${tablaBuenosSufijos[(paso.pattern.length-1)-index]}`} x={35+distancia*2} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          </>
+        }
+      </Group>
+    ));
+  
+    return (
+      <Group key={`${paso.id}-PAS-T-BM2`}>
         {componentesKonva}
       </Group>
     );
@@ -214,4 +332,4 @@ export const getColorFromStatus = (status) => {
     );
   };
 
-  export default {dibujoVacio, errorKonva, establecerDibujoInicial,establecerDibujo,establecerDibujoInicialTablaKMP };
+  export default {dibujoVacio, errorKonva, establecerDibujoInicial,establecerDibujo,establecerDibujoInicialTablaKMP,establecerDibujoInicialPrimeraTablaBM,establecerDibujoInicialPrimeraTablaBM,establecerDibujoPrimeraTablaBM,establecerDibujoSegundaTablaBM};
