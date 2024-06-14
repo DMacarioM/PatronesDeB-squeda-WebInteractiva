@@ -26,7 +26,7 @@ const ButtonComponent = () => {
   };
 
   return (
-    <Button disabled={buttonsDisabled} onClick={handleClick}>Reset</Button>
+    <Button className="comic-button" color='secondary' disabled={buttonsDisabled} onClick={handleClick}>Reset</Button>
   );
 };
 

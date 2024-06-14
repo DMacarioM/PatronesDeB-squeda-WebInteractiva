@@ -1,153 +1,96 @@
+/* Estilos para el título */
+.title {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el contenedor principal */
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    margin-top: 50px;
-  }
-  
-  .title, .section-title {
-    margin-top: 30px;
-    font-size: 2em;
-    text-align: center;
-  }
-  
-  .yellow-line {
-    width: 50%;
-    border: none;
-    height: 3px;
-    background-color: #E7863C;
-    margin-bottom: 20px;
-  }
-  
-  
-  .description, .section-content {
-    text-align: center;
-    padding-left: 200px; /* Ajuste según sea necesario */
-    padding-right: 200px; /* Ajuste según sea necesario */
-    margin-bottom: 20px;
-    font-size: 1em;
-  }
-  
-  @media (max-width: 1300px) {
-    .description, .section-content {
-      font-size: 0.8em;
-      padding-left: 10px; /* Reducir el padding lateral */
-      padding-right: 10px; /* Reducir el padding lateral */
-    }
-  }
-  
-  
-  .button-container {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    margin: 25px;
-  }
-  
-  
-  @media (max-width: 600px) {
-    .title, .section-title {
-      font-size: 1.5em;
-    }
-  
-    .yellow-line {
-      width: 80%;
-    }
-  
-    .description, .section-content {
-      font-size: 0.8em;
-    }
-  }
-  
+  background-color: #f0f0f0; /* Color de fondo del contenedor */
+  padding: 20px; /* Espacio interno del contenedor */
+}
 
-  .frogImage {
-    margin-top: -20px;
-    padding-bottom: 20px;
-    width: 500px;
+/* Estilos para el componente Controller */
+.controller {
+  width: 100%;
+  max-width: 800px; /* Ancho máximo del componente */
+  margin: 20px auto; /* Centrar el componente y añadir margen superior e inferior */
+  padding: 10px; /* Espacio interno */
+  background-color: #9db0a3; /* Color de fondo */
+  border-radius: 20px; /* Borde redondeado */
+  box-shadow: 5px 5px 2px #9db0a3; /* Sombra ligera */
+}
+
+/* Estilos para el contenedor de Slider y Botón */
+.speed-slider-container {
+  display: flex;
+  justify-content: space-between; /* Alinear el slider y el botón */
+  align-items: center;
+  width: 100%; /* Ocupa el ancho completo de la tarjeta */
+  margin-top: 20px; /* Margen superior para el Slider */
+}
+
+.speed-slider-container .nextui-slider {
+  width: 70%; /* Ajusta el ancho del slider */
+}
+
+.speed-slider-container .execute-button {
+  width: 25%; /* Ajusta el ancho del botón */
+  margin-left: 5%; /* Espacio entre el slider y el botón */
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 800px) {
+  .speed-slider-container {
+    flex-direction: column; /* Cambia a dirección columna en dispositivos más pequeños */
+    align-items: stretch; /* Estirar los elementos */
   }
 
-  /* Yoinked from CodePen, but improved the animation
-so that it is smooth among other more minor things */
-
-.codepen-button {
-    display: block;
-    cursor: pointer;
-    color: white;
-    margin: 0 auto;
-    position: relative;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 15px;
-    overflow: hidden;
-    padding: 7px;
-    isolation: isolate;
-  }
-  
-  .codepen-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 400%;
-    height: 100%;
-    background: linear-gradient(115deg,#4fcf70,#fad648,#a767e5,#12bcfe,#44ce7b);
-    background-size: 25% 100%;
-    animation: an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop .75s linear infinite;
-    animation-play-state: paused;
-    translate: -5% 0%;
-    transition: translate 0.25s ease-out;
-  }
-  
-  .codepen-button:hover::before {
-    animation-play-state: running;
-    transition-duration: 0.75s;
-    translate: 0% 0%;
-  }
-  
-  @keyframes an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop {
-    to {
-      transform: translateX(-25%);
-    }
-  }
-  
-  .codepen-button span {
-    position: relative;
-    display: block;
-    padding: 25px 50px;
-    font-size: 30px;
-    background: #000;
-    border-radius: 1px;
-    height: 100%;
+  .speed-slider-container .nextui-slider {
+    width: 100%; /* Ancho completo del slider en dispositivos móviles */
+    margin-bottom: 10px; /* Margen inferior para el slider */
   }
 
-  /*COMIC BUTTON*/
-  .comic-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    color: #fff;
-    background-color: #53725D;
-    border: 2px solid #000;
-    border-radius: 10px;
-    box-shadow: 5px 5px 0px #000;
-    transition: all 0.3s ease;
-    cursor: pointer;
+  .speed-slider-container .execute-button {
+    width: 100%; /* Ancho completo del botón en dispositivos móviles */
+    margin-left: 0; /* Eliminar margen izquierdo en dispositivos móviles */
+    margin-top: 10px; /* Añadir margen superior en dispositivos móviles */
   }
-  
-  .comic-button:hover {
-    background-color: #fff;
-    color: #53725D;
-    border: 2px solid #53725D;
-    box-shadow: 5px 5px 0px #53725D;
+}
+
+/* Estilos específicos para LogContainerComponent 
+
+.log-container {
+  background-color: #000; 
+  color: #fff; 
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.log-container .log-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 800px) {
+  .log-container {
+      width: 100%;
+      padding: 10px;
   }
-  
-  .comic-button:active {
-    background-color: #53725D;
-    box-shadow: none;
-    transform: translateY(4px);
+
+  .log-container p {
+      font-size: 14px;
   }
-  
+}*/
+
+.log-body {
+  max-height: 200px; 
+  overflow-y: auto;  
+}

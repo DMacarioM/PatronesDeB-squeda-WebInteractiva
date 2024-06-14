@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import '../css/BusquedaDirectaPage.css';
+import CodeComponent from "../components/CodeComponent";
+
 
 function BusquedaDirectaPage() {
   return (
@@ -13,26 +14,27 @@ function BusquedaDirectaPage() {
       <h2 className='section-title'>Código</h2>
       <hr className='yellow-line'/>
       <p className='section-content'>
-        Coodigo
       </p>
-      <h2 className='section-title'>Ejemplo</h2>
+      <CodeComponent />
+      <h2 className='section-title'>Explicación del código</h2>
       <hr className='yellow-line'/>
       <p className='section-content'>
-      Animación simple o algo así?
+      El algoritmo de búsqueda directa, también conocido como fuerza bruta, funciona recorriendo el texto en el que se busca el patrón y comparando cada subcadena de longitud igual al patrón con el propio patrón. Comienza en la primera posición del texto y compara carácter por carácter con el patrón. Si encuentra una discrepancia, avanza a la siguiente posición del texto y repite el proceso. Este enfoque garantiza que todas las posibles posiciones del patrón en el texto sean evaluadas, lo que asegura encontrar todas las ocurrencias del patrón si existen.
+      </p><p className='section-content'>A pesar de su simplicidad y facilidad de implementación, el algoritmo de búsqueda directa puede ser ineficiente para textos grandes o patrones largos, ya que en el peor de los casos realiza una cantidad de comparaciones proporcional al producto de las longitudes del texto y el patrón (O(n*m)). Sin embargo, su claridad y falta de necesidad de preprocesamiento hacen que sea útil en situaciones donde los textos son cortos o las búsquedas se realizan de manera esporádica. Su principal ventaja es la sencillez y la falta de complejidad en su lógica, haciéndolo fácil de entender y aplicar en una variedad de lenguajes de programación.
       </p>
 
         <div className='button-container'>
-        <a href='/KMP'>
-            <button class="comic-button">Volver al Inicio</button>
+        <a href='/'>
+            <button className="comic-button">Volver al Inicio</button>
         </a>
         </div>
       <h2 className='section-title'>Pruebalo!</h2>
       <hr className='yellow-line'/>
       <p className='section-content'>
-        Te invitamos a probar estos algoritmos en nuestra sección Sandbox. Allí podrás experimentar con diferentes patrones y textos para ver cómo funcionan estos algoritmos en la práctica.
+        Te invitamos a probar este algoritmosen nuestra sección Sandbox. Allí podrás experimentar con diferentes patrones y textos para ver cómo funcionan estos algoritmos en la práctica.
       </p>
       <div className='button-container'>
-        <a href='/Sandbox' class="codepen-button"><span>Sandbox</span></a>
+        <a href='/Sandbox' className="codepen-button"><span>Sandbox</span></a>
       </div>
     </div>
   )

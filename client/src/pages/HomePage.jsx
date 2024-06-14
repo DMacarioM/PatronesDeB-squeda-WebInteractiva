@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import '../css/HomePage.css';
 
 function HomePage() {
   return (
@@ -15,8 +14,8 @@ function HomePage() {
       <hr className='yellow-line'/>
       <p className='section-content'>
       La Búsqueda de patrones de texto se refiere al proceso de encontrar ocurrencias de un patrón dado dentro de un texto más extenso. Este patrón puede ser una cadena de caracteres (subcadena) o incluso una expresión regular que describe un conjunto de cadenas posibles.
-        El objetivo principal de la Búsqueda de patrones de texto es identificar todas las posiciones dentro del texto donde el patrón buscado coincide. Esto es fundamental en diversas áreas como el procesamiento de lenguaje natural, la bioinformática, la minería de datos y la compresión de datos.
-    </p>
+      El objetivo principal de la Búsqueda de patrones de texto es identificar todas las posiciones dentro del texto donde el patrón buscado coincide. Esto es fundamental en diversas áreas como el procesamiento de lenguaje natural, la bioinformática, la minería de datos y la compresión de datos.
+      </p>
       <h2 className='section-title'>Para qué sirven</h2>
       <hr className='yellow-line'/>
       <p className='section-content'>

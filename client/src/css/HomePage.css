@@ -1,153 +1,149 @@
+/* HomePage.css */
+
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.title, .section-title {
+  margin-top: 30px;
+  font-size: 2em;
+  text-align: center;
+}
+
+.yellow-line {
+  width: 50%;
+  border: none;
+  height: 3px;
+  background-color: #E7863C;
+  margin-bottom: 30px;
+}
+
+.description, .section-content {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+.section-content-section {
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 10px 20px;
+  font-size: 0.8em;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 50px 0;
+}
+
+@media (max-width: 1300px) {
+  .description, .section-content, .section-content-section {
+    font-size: 0.8em;
+    padding: 0 20px; /* Reducir el padding lateral */
   }
-  
+}
+
+@media (max-width: 600px) {
   .title, .section-title {
-    margin-top: 30px;
-    font-size: 2em;
-    text-align: center;
+    font-size: 1.5em;
   }
   
-  .yellow-line {
-    width: 50%;
-    border: none;
-    height: 3px;
-    background-color: #E7863C;
-    margin-bottom: 20px;
+  .description, .section-content, .section-content-section {
+    font-size: 12px;
+    padding: 0 10px; /* Reducir el padding lateral */
   }
-  
-  
-  .description, .section-content {
-    text-align: center;
-    padding-left: 200px; /* Ajuste según sea necesario */
-    padding-right: 200px; /* Ajuste según sea necesario */
-    margin-bottom: 20px;
-    font-size: 1em;
-  }
-  
-  @media (max-width: 1300px) {
-    .description, .section-content {
-      font-size: 0.8em;
-      padding-left: 10px; /* Reducir el padding lateral */
-      padding-right: 10px; /* Reducir el padding lateral */
-    }
-  }
-  
-  
-  .button-container {
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    margin: 25px;
-  }
-  
-  
-  @media (max-width: 600px) {
-    .title, .section-title {
-      font-size: 1.5em;
-    }
-  
-    .yellow-line {
-      width: 80%;
-    }
-  
-    .description, .section-content {
-      font-size: 0.8em;
-    }
-  }
-  
+}
 
-  .frogImage {
-    margin-top: -20px;
-    padding-bottom: 20px;
-    width: 500px;
-  }
+.frogImage {
+  max-width: 100%; /* Ajusta el tamaño máximo de la imagen */
+  height: auto;
+}
 
-  /* Yoinked from CodePen, but improved the animation
-so that it is smooth among other more minor things */
+.comic-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #E7EEE9;
+  background-color: #E7863C;
+  border: 2px solid #000;
+  border-radius: 10px;
+  box-shadow: 5px 5px 0px #000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.comic-button:hover {
+  background-color: #E7EEE9;
+  color: #DA6E1B;
+  border: 2px solid #E7863C;
+  box-shadow: 5px 5px 0px #E7863C;
+}
+
+.comic-button:active {
+  background-color: #53725D;
+  box-shadow: none;
+  transform: translateY(4px);
+}
 
 .codepen-button {
-    display: block;
-    cursor: pointer;
-    color: white;
-    margin: 0 auto;
-    position: relative;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 15px;
-    overflow: hidden;
-    padding: 7px;
-    isolation: isolate;
-  }
-  
-  .codepen-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 400%;
-    height: 100%;
-    background: linear-gradient(115deg,#4fcf70,#fad648,#a767e5,#12bcfe,#44ce7b);
-    background-size: 25% 100%;
-    animation: an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop .75s linear infinite;
-    animation-play-state: paused;
-    translate: -5% 0%;
-    transition: translate 0.25s ease-out;
-  }
-  
-  .codepen-button:hover::before {
-    animation-play-state: running;
-    transition-duration: 0.75s;
-    translate: 0% 0%;
-  }
-  
-  @keyframes an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop {
-    to {
-      transform: translateX(-25%);
-    }
-  }
-  
-  .codepen-button span {
-    position: relative;
-    display: block;
-    padding: 25px 50px;
-    font-size: 30px;
-    background: #000;
-    border-radius: 1px;
-    height: 100%;
-  }
+  display: block;
+  cursor: pointer;
+  color: white;
+  margin: 0 auto;
+  position: relative;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 7px;
+  isolation: isolate;
+}
 
-  /*COMIC BUTTON*/
-  .comic-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    color: #fff;
-    background-color: #53725D;
-    border: 2px solid #000;
-    border-radius: 10px;
-    box-shadow: 5px 5px 0px #000;
-    transition: all 0.3s ease;
-    cursor: pointer;
+.codepen-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 100%;
+  background: linear-gradient(115deg,#4fcf70,#fad648,#a767e5,#12bcfe,#44ce7b);
+  background-size: 25% 100%;
+  animation: an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop .75s linear infinite;
+  animation-play-state: paused;
+  translate: -5% 0%;
+  transition: translate 0.25s ease-out;
+}
+
+.codepen-button:hover::before {
+  animation-play-state: running;
+  transition-duration: 0.75s;
+  translate: 0% 0%;
+}
+
+@keyframes an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop {
+  to {
+    transform: translateX(-25%);
   }
-  
-  .comic-button:hover {
-    background-color: #fff;
-    color: #53725D;
-    border: 2px solid #53725D;
-    box-shadow: 5px 5px 0px #53725D;
-  }
-  
-  .comic-button:active {
-    background-color: #53725D;
-    box-shadow: none;
-    transform: translateY(4px);
-  }
-  
+}
+
+.codepen-button span {
+  position: relative;
+  display: block;
+  padding: 25px 50px;
+  font-size: 30px;
+  background: #000;
+  border-radius: 1px;
+  height: 100%;
+}
+
+/* Añadir más estilos según sea necesario */

@@ -5,12 +5,12 @@ import '../css/Navbar.css';
 const Navbar = () => {
   const location = useLocation();
   const [selected, setSelected] = useState(location.pathname);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 800);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
 
   const handleResize = () => {
-    setIsMobile(window.innerWidth <= 800);
+    setIsMobile(window.innerWidth <= 900);
   };
 
   const handleSelect = (path) => {

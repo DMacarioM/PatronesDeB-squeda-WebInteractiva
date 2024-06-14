@@ -1,0 +1,98 @@
+.code-container {
+    width: 70%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 10px; /* Añadir padding para asegurar espacio a los lados */
+  }
+  
+  .code-section {
+    position: relative;
+    background: #9DB0A3;
+    padding: 20px;
+    border-radius: 15px;
+    color: #E7EEE9;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto; /* Añadir scroll horizontal si el contenido es demasiado ancho */
+  }
+  
+  .language-javascript pre, .language-javascript code {
+    font-size: 20px !important; /* Usar !important para asegurar que los estilos se apliquen */
+    white-space: pre-wrap;
+    
+  }
+  
+  .copy-button, .toggle-button {
+    background: #53725D;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .copy-button {
+    position: absolute;
+    top: 10px;
+    right: 60px;
+  }
+  
+  .toggle-button {
+    display: block;
+    margin: 10px auto 0; /* Centramos el botón y lo colocamos al fondo */
+  }
+  
+  .copy-button:hover, .toggle-button:hover {
+    background: #455F4C;
+  }
+  
+  @media (max-width: 1300px) {
+    .code-section {
+      padding: 20px;
+      width: 100%;
+    }
+  
+    .language-javascript pre, .language-javascript code {
+      font-size: 23px !important; /* Ajustamos el tamaño de la fuente */
+    }
+  
+    .copy-button, .toggle-button {
+      padding: 5px 7px;
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .code-section {
+      padding: 15px;
+      width: 100%;
+    }
+  
+    .language-javascript pre, .language-javascript code {
+      font-size: 12px !important; /* Ajustamos el tamaño de la fuente */
+      line-height: 0.5 !important; /* Ajustamos el espaciado entre líneas */
+    }
+  
+    .copy-button, .toggle-button {
+      padding: 5px 7px;
+      font-size: 12px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .code-section {
+      padding: 10px;
+      width: 100%;
+    }
+  
+    .language-javascript pre, .language-javascript code {
+      font-size: 11px !important; /* Ajustamos el tamaño de la fuente */
+      line-height: 0.5 !important; /* Ajustamos el espaciado entre líneas */
+    }
+  
+    .copy-button, .toggle-button {
+      padding: 4px 6px;
+      font-size: 10px;
+    }
+  }
+  

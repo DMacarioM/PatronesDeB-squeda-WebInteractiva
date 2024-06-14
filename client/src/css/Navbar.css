@@ -11,6 +11,7 @@
   padding-top: 00px;
   transition: width 0.3s, height 0.3s;
   align-items: center;
+  z-index: 1000;
 }
 
 .logo {
@@ -119,7 +120,7 @@
   padding: 20px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .content {
     margin-left: 0;
     padding-top: 60px;
@@ -134,7 +135,7 @@
   transition: margin-left 0.3s, padding-top 0.3s;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .content {
     margin-left: 0;
     padding-top: 60px;
