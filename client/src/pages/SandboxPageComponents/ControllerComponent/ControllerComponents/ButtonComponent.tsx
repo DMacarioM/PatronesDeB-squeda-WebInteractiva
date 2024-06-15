@@ -70,7 +70,7 @@ const ButtonComponent = ({ className }) => {
   };
 
   return (
-    <Button color='secondary' className={className} disabled={buttonsDisabled} onClick={handleClick}>Ejecutar algoritmo</Button>
+    <Button color='primary' className={className} disabled={buttonsDisabled} onClick={handleClick}>Ejecutar algoritmo</Button>
   );
 };
 

@@ -25,10 +25,10 @@ export const fuerzaBruta = (motherString, pattern) => {
           //Paso  
           if (motherString[i + j] !== pattern[j]) {
             pasos.push({
-              message: ("Comprueba '" + pattern[j]  + "' ["+j+" en patrón] con '" + motherString[i + j] + "'["+(i + j)+" en cadena madre]. Como ha fallado, aumenta la posición inicial en la cadena madre, ahora es: ["+(i+1)+"]"),
+              message: ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '" + motherString[i + j] + "': cadenaMadre["+(i + j)+"].\n\tFallo \n\tAumenta la posición en la cadena madre"),
               motherString: motherString,
               pattern: pattern,
-              status: 'Fallo',
+              status: 'FALLO',
               posEnCMadre: i,
               posComienzoPatron: i,
               posEnPatron: j,
@@ -39,7 +39,7 @@ export const fuerzaBruta = (motherString, pattern) => {
           if (j == m-1) {
             //resultados.push(i); 
             pasos.push({
-              message: ("Comprueba '"+pattern[j]+ "' ["+j+" en patrón] con '"+motherString[i + j]+"' ["+(i + j)+" en cadena madre]. Patrón encontrado!\n Ahora aumenta la posición inicial en la cadena madre, ahora es: ["+(i+1)+"]"),
+              message: ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '"+motherString[i + j]+ "': cadenaMadre["+(i + j)+"].\n\tPatrón encontrado!\n\tAumenta la posición en la cadena madre"),
               motherString: motherString,
               pattern: pattern,
               status: 'EXITO',
@@ -53,10 +53,10 @@ export const fuerzaBruta = (motherString, pattern) => {
           }else{
             //El caracter coincide
             pasos.push({
-              message: ("Comprueba '"+pattern[j]+"' ["+j+" en patrón] con '"+motherString[i + j]+"' ["+(i + j)+" en cadena madre]. Acierto! Ahora comprueba la posición ["+(j+1)+"] del patrón con el siguiente caracter de la cadena madre: Posición["+(i+j+1)+"]"),
+              message: ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '"+motherString[i + j]+ "': cadenaMadre["+(i + j)+"].\n\tAcierto!\n\tAumenta la posición del patrón y de la cadena madre"),
               motherString: motherString,
               pattern: pattern,
-              status: 'Acierto',
+              status: 'ACIERTO',
               posEnCMadre: i,
               posEnPatron: j,             
               posComienzoPatron: i,
@@ -67,7 +67,7 @@ export const fuerzaBruta = (motherString, pattern) => {
     }
 
     pasos.push({
-      message: ("Fin de la ejecución. Patrón encontrado[ "+ exitos +" ]veces. Número de Comprobaciones[ " +comprobaciones+ " ]. Como el patrón ya no cabe en la cadena madre. Finaliza la ejecución" ),
+      message: ("Fin de la ejecución. Patrón encontrado[ "+ exitos +" ]veces.\n\tNúmero de Comprobaciones[ " +comprobaciones+ " ].\n\tComo el patrón ya no cabe en la cadena madre. Finaliza la ejecución" ),
       motherString: motherString,
       pattern: pattern,
       status: 'FIN',
@@ -91,7 +91,6 @@ export const fuerzaBruta = (motherString, pattern) => {
     const motherStringLength = motherString.length;
     const pasos: PasoDelAlgoritmo[] = [];
     const lps = computeLPSArray(pattern, patternLength,pasos);
-    //console.log("lps "+lps);
     let i = 0; // index for text[]
     let j = 0; // index for pattern[]
     let posPatron=0;
@@ -103,10 +102,10 @@ export const fuerzaBruta = (motherString, pattern) => {
       comprobaciones++;
         if (pattern[j] === motherString[i]) {
             pasos.push({
-              message: ("Comprueba '" + pattern[j]  +"' ["+j+" en patrón] con '" + motherString[i] + "' ["+(i)+" en cadena madre]. Acierto! Ahora comprueba la posición ["+(j+1)+"] del patrón con el siguiente caracter de la cadena madre: Posición ["+(i+1)+"]"),
+              message: ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '" + motherString[i] + "': cadenaMadre["+(i)+"].\n\tAcierto!\n\tAumenta la posición del patrón y de la cadena madre"),
               motherString: motherString,
               pattern: pattern,
-              status: 'Acierto',
+              status: 'ACIERTO',
               posEnCMadre: (i),
               posEnPatron: j,
               posComienzoPatron: (i-j),
@@ -117,32 +116,29 @@ export const fuerzaBruta = (motherString, pattern) => {
         }
         if (j === patternLength) {
             pasos[pasos.length - 1].status = 'EXITO';
-            pasos[pasos.length - 1].message = ("Comprueba '"+pattern[j]+ "' ["+j+" en patrón] con '"+motherString[i + j]+"' ["+(i + j)+" en cadena madre]. Patrón encontrado!\n Ahora aumenta la posición a comprobar la cadena madre, ahora es: ["+(i+1)+"]"),
+            pasos[pasos.length - 1].message = ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '"+motherString[i + j]+ "': cadenaMadre["+(i + j)+"].\n\tPatrón encontrado!\n\tAumenta la posición de la cadena madre"),
             pasos[pasos.length - 1].posEnCMadre= i-1;
-            //console.log(`Éxito en la posición ${i - j} de la cadena madre`);
             exitos++;
             j = lps[j - 1];
         } else if (i < motherStringLength && pattern[j] !== motherString[i]) {
-            //console.log(`Fallo en la posición ${i} de la cadena madre`);
             if (j !== 0) {
               pasos.push({
-                message: ("Comprueba '" + pattern[j]  + "' ["+j+" en patrón] con '" + motherString[i] + "'["+(i)+" en cadena madre]. Como ha fallado, Busca en la tabla Siguiente el valor del carácter que ha fallado y aumenta la posición del patrón esas posiciones, El valor de "+pattern[j]+" en la tabla es: ["+lps[j - 1]+"]"),
+                message: ("Comprueba '" + pattern[j]  + "' : patrón["+j+"] con '" + motherString[i] + "': cadenaMadre["+(i)+"].\n\tFallo \n\tBusca en la tabla Siguiente el valor del carácter que ha fallado\n\t y aumenta la posición del patrón esa cantidad de posiciones,\n\t El valor de "+pattern[j]+" en la tabla es: tablaSgte["+pattern[j]+"]="+lps[j - 1]+""),
                 motherString: motherString,
                 pattern: pattern,
-                status: 'Fallo',
+                status: 'FALLO',
                 posEnCMadre: (i),
                 posEnPatron: j,
                 posComienzoPatron: (i-j),
                 patronDeBusqueda: "KMP"
               });
-              //console.log(`Saltando a la posición ${lps[j - 1]} del patrón`);
                 j = lps[j - 1];
             } else {
               pasos.push({
-                message: ("Comprueba '" + pattern[j]  + "' ["+j+" en patrón] con '" + motherString[i] + "'["+(i)+" en cadena madre]. Como ha fallado, Busca en la tabla Siguiente el valor del carácter que ha fallado. En este caso, si el valor en la tabla es 0 o -1, y aumenta la posición inicial del patrón una posición Pos["+(i+1)+"]"),
+                message: ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '" + motherString[i] + "': cadenaMadre["+(i)+"].\n\tFallo \n\tBusca en la tabla Siguiente el valor del carácter que ha fallado.\n\ttablaSgte["+pattern[j]+"] es 0 o -1,\n\tAumenta la posición del patrón y de la cadena madre"),
                 motherString: motherString,
                 pattern: pattern,
-                status: 'Fallo',
+                status: 'FALLO',
                 posEnCMadre: (i),
                 posEnPatron: j,
                 posComienzoPatron: (i-j),
@@ -153,7 +149,7 @@ export const fuerzaBruta = (motherString, pattern) => {
         }
     }
     pasos.push({
-      message: ("Fin de la ejecución. Patrón encontrado "+ exitos +" veces. Número de Comprobaciones: " +comprobaciones+ ". Como el patrón ya no cabe en la cadena madre. Finaliza la ejecución" ),
+      message: ("Fin de la ejecución. Patrón encontrado "+ exitos +" veces.\n\tNúmero de Comprobaciones: " +comprobaciones+ ".\n\tComo el patrón ya no cabe en la cadena madre. Finaliza la ejecución" ),
       motherString: motherString,
       pattern: pattern,
       status: 'FIN',
@@ -173,7 +169,7 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
           length++;
           lps[i] = length;
           pasos.push({
-            message: `El carácter en la posición ${i} del patrón (${pattern[i]}) coincide con el carácter en la posición actual de la longitud del prefijo más largo (${length}). Por lo tanto, incrementamos la longitud en uno y asignamos este valor a TablaSiguiente[${i}].`,
+            message: `El carácter del patrón: patrón[${i}]=${pattern[i]}\n\tcoincide con el carácter en la posición actual de la longitud\n\tdel prefijo más largo: patrón[${length}]=${pattern[length]}.\nPor lo tanto, incrementamos la longitud en uno y asignamos este valor a tablaSgte[${i}].`,
             pattern: pattern,
             posEnPatron:i,
             status: 'TABLA',
@@ -184,7 +180,7 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
       } else {
           if (length !== 0) {
               pasos.push({
-                message: `El carácter en la posición ${i} del patrón (${pattern[i]}) no coincide con el carácter en la posición actual de la longitud del prefijo más largo (${length}). Sin embargo, la longitud no es cero, por lo que actualizamos la longitud al valor de TablaSiguiente en la posición length - 1 (TablaSiguiente[${length - 1}]).`,
+                message: `El carácter del patrón: patrón[${i}]=${pattern[i]}\n\tno coincide con el carácter en la posición actual de la longitud\n\t del prefijo más largo: patrón[${length}]=${pattern[length]}.\n\tSin embargo, la longitud no es cero,\n\t por lo que actualizamos la longitud\n\t al valor de TablaSiguiente en la posición length - 1.\n\tlongitud=TablaSiguiente[${length - 1}=${lps[length - 1]}).`,
                 pattern: pattern,
                 status: 'TABLA',
                 posEnPatron:i,
@@ -195,7 +191,7 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
           } else {
               lps[i] = 0;
               pasos.push({
-                message: `El carácter en la posición ${i} del patrón (${pattern[i]}) no coincide con el carácter en la posición actual de la longitud del prefijo más largo (${length}), y la longitud es cero. Por lo tanto, asignamos TablaSiguiente[${i}] a cero.`,
+                message: `El carácter  del patrón: patrón[${i}]=${pattern[i]}\n\tno coincide con el carácter en la posición actual de la longitud\n\t del prefijo más largo: patrón[${length}]=${pattern[length]}.\n\tY la longitud es cero. Por lo tanto, asignamos tablaSgte[${i}]=0 .`,
                 pattern: pattern,
                 status: 'TABLA',
                 posEnPatron:i,
@@ -230,17 +226,14 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
     let comprobaciones = 0;
    
 
-    console.log("gs- "+goodSufixTable);
-    //console.log(badCharTable);
-
     while (i < motherStringLength) {
         for (j = patternLength - 1; pattern[j] === motherString[i]; --i, --j) {
             comprobaciones++;
             pasos.push({
-                message: ("Comprueba '" + pattern[j]  +"' ["+j+" en patrón] con '" + motherString[i] + "' ["+(i)+" en cadena madre]. Acierto!Ahora comprueba la posición ["+(j-1)+"] del patrón con el siguiente caracter de la cadena madre: Posición ["+(i-1)+"]"),
+                message: ("Comprueba '" + pattern[j]  +"': patrón["+j+"] con '" + motherString[i] + "': cadenaMadre["+(i)+"].\n\tAcierto!\n\tAumenta la posición del patrón y de la cadena madre"),
                 motherString: motherString,
                 pattern: pattern,
-                status: 'Acierto',
+                status: 'ACIERTO',
                 posEnCMadre: i,
                 posEnPatron: j,
                 posComienzoPatron: i-j,
@@ -248,17 +241,17 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
             });
             if (j === 0) {
                 pasos[pasos.length - 1].status = 'EXITO';
-                pasos[pasos.length - 1].message = ("Patrón encontrado!\n Ahora aumenta la posición a comprobar la cadena madre, ahora es: ["+(i+patternLength-1)+"]");
+                pasos[pasos.length - 1].message = ("Comprueba '" + pattern[j+1]  +"': patrón["+(j+1)+"] con '" + motherString[i+1] + "': cadenaMadre["+(i+1)+"].\n\tPatrón encontrado!\n\tAumenta la posición a comprobar la cadena madre");
                 exitos++;
                 break;
             }
         }
         if(j!=0){
             pasos.push({
-              message: ("Comprueba '" + pattern[j]  + "' ["+j+" en patrón] con '" + motherString[i] + "' ["+(i)+" en cadena madre]. Fallo! Como ha fallado, Recoge el mayor valor entre las tablas del buen sufijo y de malos caracteres. En este caso, Los valores son: Buen Sufijo-["+goodSufixTable[patternLength - 1 - j]+"] y Malos Caracteres-["+badCharTable[motherString[i] || pattern.length]+"], entonces nos quedamos con: ["+(badCharTable[motherString[i]] !== undefined ? badCharTable[motherString[i]] : pattern.length)+"]"),
+              message: ("Comprueba '" + pattern[j]  + "': patrón["+j+"] con '" + motherString[i] + "': cadenaMadre["+(i)+"].\n\tFallo!\n\tRecoge el mayor valor entre las tablas del buen sufijo y de malos caracteres.\n\tLos valores son: Buen Sufijo=tablaD2["+(patternLength - 1 - j)+"]="+goodSufixTable[patternLength - 1 - j]+", y Malos Caracteres=tablaD1["+(motherString[i] || pattern.length)+"]="+badCharTable[motherString[i] || pattern.length]+".\n\tentonces nos quedamos con: "+(badCharTable[motherString[i]] !== undefined ? badCharTable[motherString[i]] : pattern.length)+""),
               motherString: motherString,
               pattern: pattern,
-              status: 'Fallo',
+              status: 'FALLO',
               posEnCMadre: i,
               posEnPatron: j,
               posComienzoPatron: i-j,
@@ -269,7 +262,7 @@ function computeLPSArray(pattern: string, patternLength: number , pasos: PasoDel
       }
 
     pasos.push({
-        message: ("Fin de la ejecución. Patrón encontrado " + exitos + " veces. Número de Comprobaciones: " + comprobaciones + ". Como el patrón ya no cabe en la cadena madre. Finaliza la ejecución"),
+        message: ("Fin de la ejecución. Patrón encontrado " + exitos + " veces.\n\tNúmero de Comprobaciones: " + comprobaciones + ".\n\tComo el patrón ya no cabe en la cadena madre. Finaliza la ejecución"),
         motherString: motherString,
         pattern: pattern,
         status: 'FIN',
@@ -285,7 +278,7 @@ function makeBadCharTable(pattern: string,pasos: PasoDelAlgoritmo[]) {
     for (let i = 0; i <= pattern.length - 1; i++) {
         table[pattern[i]] = pattern.length - 1 - (table[pattern[i]] !== undefined ? Math.max(i,table[pattern[i]]) : i);
         pasos.push({
-          message: `D1[${i}] = ${table[pattern[i]]}. En la tabla de malos caracteres.`,
+          message: `D1[${i}] = ${table[pattern[i]]}. Ajuste en la tabla de malos caracteres \n\tpara el carácter '${pattern[i]}', con desplazamiento ${pattern.length - 1 - (table[pattern[i]] !== undefined ? Math.max(i, table[pattern[i]]) : i)}.`,
           pattern: pattern,
           posEnPatron: i,
           status: 'TABLA',
@@ -314,7 +307,7 @@ function makeGoodSufixTable(pattern: string, pasos: PasoDelAlgoritmo[]) {
   
   for (let i = pattern.length; i >= 0; --i) {
     pasos.push({
-        message: `D2[${i}] = ${table[pattern.length - i]}. En la posición ${pattern.length - i} del patrón, el sufijo tiene un desplazamiento de ${lastPrefixPosition - i + pattern.length}.`,
+        message: `D2[${pattern.length - i}] = ${table[pattern.length - i]}. En la posición ${pattern.length - i} del patrón,\n\t el sufijo tiene un desplazamiento de ${lastPrefixPosition - i + pattern.length}.`,
         pattern: pattern,
         posEnPatron: i,
         status: 'TABLA',
@@ -324,7 +317,6 @@ function makeGoodSufixTable(pattern: string, pasos: PasoDelAlgoritmo[]) {
     });
   }
   
-  console.log(table);
   return table;
 }
 

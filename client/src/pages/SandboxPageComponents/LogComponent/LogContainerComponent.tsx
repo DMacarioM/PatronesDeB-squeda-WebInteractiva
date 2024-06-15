@@ -5,19 +5,19 @@ import ResetLogButtonComponent from './LogContainerComponents/ResetLogButtonComp
 
 const LogContainerComponent = () => {
   return (
-    <div className="flex justify-center items-center">
-      <Card style={{ backgroundColor: "#000", color: "#fff", maxWidth: "600px", minHeight: "350px"  }}>
+    <div className="log-component">
+      <Card style={{ backgroundColor: "#000", color: "#fff"  }}>
         <CardHeader style={{ backgroundColor: "#000", color: "#fff" }}>
-          <div className="flex pr-1 py-1">
+          <div className="flex pl-2 py-1">
             <p className="text-md">Salida</p>
           </div>
         </CardHeader>
         <Divider style={{ backgroundColor: "#fff" }} />
-        <CardBody className="log-body px-1 py-0 text-small gap-1 overflow-y-auto" style={{ backgroundColor: "#000", color: "#fff" }}>
+        <CardBody className="log-body px-3 py-0 text-small gap-1 overflow-y-auto" style={{ backgroundColor: "#000", color: "#fff" }}>
           <LogComponent />
         </CardBody>
         <Divider style={{ backgroundColor: "#fff" }} />
-        <CardFooter className="flex justify-end items-center px-2 py-5" style={{ backgroundColor: "#000", color: "#fff" }}>
+        <CardFooter className="flex justify-end items-center px-10 py-2" style={{ backgroundColor: "#000", color: "#fff" }}>
           <ResetLogButtonComponent />
         </CardFooter>
       </Card>

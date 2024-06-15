@@ -165,7 +165,6 @@ const KonvaComponent = () => {
         var newTableElements
 
         if(pasos[currentLogIndex]){
-            console.log(pasos[currentLogIndex].status);
             if(timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
               }
@@ -239,11 +238,11 @@ const KonvaComponent = () => {
                             }else{console.log("Fallo del paso TABLA");}
                     }else{
                         
-                        if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
+                        if((pasos[currentLogIndex-1].status == "FALLO")||(pasos[currentLogIndex-1].status == "EXITO")) {
                             pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
-                            if((pasos[currentLogIndex].alturaY>5)&&(pasos[currentLogIndex].patronDeBusqueda!="KMP")){
+                            /*if((pasos[currentLogIndex].alturaY>5)&&(pasos[currentLogIndex].patronDeBusqueda!="KMP")){
                                 pasos[currentLogIndex].alturaY = 1;
-                            }
+                            }*/
                         }else{
                             pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;
                         }

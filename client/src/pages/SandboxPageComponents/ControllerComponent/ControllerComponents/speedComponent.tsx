@@ -15,8 +15,8 @@ const SpeedComponent = () => {
       <Slider
         size="md"
         step={1}
-        color="primary"
-        label={`Velocidad de ejecución (x${execSpeed})`}
+        color="secondary"
+        label={<span className="slider-label">Velocidad de ejecución (x{execSpeed})</span>}
         showSteps={true}
         maxValue={8}
         defaultValue={1}

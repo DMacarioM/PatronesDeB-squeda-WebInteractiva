@@ -26,6 +26,8 @@
   text-align: center;
   margin-bottom: 20px;
   margin-top: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
   font-size: 1em;
 }
 
@@ -68,13 +70,13 @@
 
 .comic-button {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 25px;
   font-size: 24px;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
   color: #E7EEE9;
-  background-color: #E7863C;
+  background-color: #455F4C;
   border: 2px solid #000;
   border-radius: 10px;
   box-shadow: 5px 5px 0px #000;
@@ -84,9 +86,9 @@
 
 .comic-button:hover {
   background-color: #E7EEE9;
-  color: #DA6E1B;
-  border: 2px solid #E7863C;
-  box-shadow: 5px 5px 0px #E7863C;
+  color: #455F4C;
+  border: 2px solid #53725D;
+  box-shadow: 5px 5px 0px #53725D;
 }
 
 .comic-button:active {

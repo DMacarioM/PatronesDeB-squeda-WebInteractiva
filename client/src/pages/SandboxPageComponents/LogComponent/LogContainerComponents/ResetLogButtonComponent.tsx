@@ -3,6 +3,7 @@ import React from 'react';
 import {Button} from "@nextui-org/react";
 import { PasoDelAlgoritmo } from '../../../../classes/PasoDelAlgoritmo';
 import { useLogContext } from '../../../../context/useLogContext';
+import '../../../../css/ResetButton.css';
 
 const ButtonComponent = () => {
   const { addPaso,clearPasos,currentLogIndex,setCurrentLogIndex,lastLogIndex ,setLastLogIndex, buttonsDisabled,setButtonsDisabled} = useLogContext();
@@ -26,7 +27,7 @@ const ButtonComponent = () => {
   };
 
   return (
-    <Button className="comic-button" color='secondary' disabled={buttonsDisabled} onClick={handleClick}>Reset</Button>
+    <Button className="comic-button comic-button-reset" color='secondary' disabled={buttonsDisabled} onClick={handleClick}>Reset</Button>
   );
 };
 

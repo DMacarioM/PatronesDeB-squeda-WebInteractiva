@@ -90,7 +90,6 @@ const KonvaComponent = () => {
 
         if(pasos[currentLogIndex]){
             //console.log("ID: "+ pasos[currentLogIndex].id);
-            console.log(pasos[currentLogIndex].status);
             if(timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
               }
@@ -160,7 +159,7 @@ const KonvaComponent = () => {
                             setFirstTableElements(oldTableElements);
                     }else{
                         
-                        if((pasos[currentLogIndex-1].status == "Fallo")||(pasos[currentLogIndex-1].status == "EXITO")) {
+                        if((pasos[currentLogIndex-1].status == "FALLO")||(pasos[currentLogIndex-1].status == "EXITO")) {
                             pasos[currentLogIndex].alturaY = (pasos[currentLogIndex-1].alturaY + 1) || 1;
                         }else{
                             pasos[currentLogIndex].alturaY = pasos[currentLogIndex-1].alturaY || 1;

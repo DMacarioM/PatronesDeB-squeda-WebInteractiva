@@ -12,7 +12,6 @@ export const algorithmHandler = async (motherString:string , pattern:string, alg
             break;
         case 'Boyer-Moore':
             result = boyerMooreAlgorithm(motherString, pattern);
-            //TODO: En caso de ser BM/KMP se deberán mostrar las tablas antes de comenzar con el algoritmo
             break;
         case 'KMP':
             result = kmpAlgorithm(motherString, pattern);

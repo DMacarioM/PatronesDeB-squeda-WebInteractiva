@@ -4,9 +4,9 @@ import { useLogContext } from "../../../context/useLogContext";
 
 export const getColorFromStatus = (status) => {
     switch (status) {
-      case 'Fallo': return '#FF0000';
-      case 'Acierto': return '#63BB66';
-      case 'EXITO': return '#9CCC66';
+      case 'FALLO': return '#C33030';
+      case 'ACIERTO': return '#5B9C70';
+      case 'EXITO': return '#30C35F';
       case 'NEWELEMENT': return '#85C2FF';
       case 'Grey': return '#B0C4C3';
       default: return 'white';
@@ -152,7 +152,7 @@ export const getColorFromStatus = (status) => {
         {index==0 && 
           <>
           <Rect fill='#C9F0FF' x={20+distancia*2} y={20+distancia+(index*distancia)} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
-          <Text text={`0`} x={35+distancia*2} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
+          <Text text={`-1`} x={35+distancia*2} y={25+distancia+(index*distancia)} fontSize={tamanoTexto} />
           </>
         }
       </Group>
@@ -206,7 +206,6 @@ export const getColorFromStatus = (status) => {
     const distancia = tamanoTexto + 15; // Distancia entre caracteres
 
     const caracteresUnicos = [...new Set(caracteresPatron)];
-    
     // Crear los componentes Konva para cada carácter y su correspondiente valor en la tabla lps
     const componentesKonva = caracteresUnicos.map((caracter, index) => (
       <Group key={`${paso.id}-IN-T-BM1-${index}`}>
@@ -227,6 +226,11 @@ export const getColorFromStatus = (status) => {
         <Text text={`P[i]`}x={12} y={13} fontSize={tamanoTexto} />
         <Rect fill='#B0C4C3' x={20+distancia} y={10} width={distancia*2} height={tamanoTexto+5} stroke='black'></Rect>
         <Text text={`D1[i]`} x={30+distancia} y={13} fontSize={tamanoTexto} />
+        
+        <Rect fill='white' x={10} y={10+(distancia*(caracteresUnicos.length+1))} width={distancia+20} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={`Otros`}x={12} y={18+(distancia*(caracteresUnicos.length+1))} fontSize={tamanoTexto-5} />
+        <Rect fill='#C9F0FF' x={30+distancia} y={10+(distancia*(caracteresUnicos.length+1))} width={distancia*2-10} height={tamanoTexto+5} stroke='black'></Rect>
+        <Text text={(""+caracteresPatron.length)} x={35+distancia} y={15+(distancia*(caracteresUnicos.length+1))} fontSize={tamanoTexto} />
         {componentesKonva}
       </Group>
     );

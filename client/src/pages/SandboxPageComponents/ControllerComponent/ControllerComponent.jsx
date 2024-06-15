@@ -21,8 +21,12 @@ const ControllerComponent = () => {
           </CardHeader>
           <CardBody>
             <div className="input-container">
-              <InputComponent />
-              <SelectorComponent />
+              <div className="input-fields">
+                <InputComponent />
+              </div>
+              <div className="selector">
+                <SelectorComponent />
+              </div>
             </div>
           </CardBody>
           <CardFooter>

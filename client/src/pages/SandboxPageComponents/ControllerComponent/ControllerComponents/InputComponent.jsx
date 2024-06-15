@@ -6,10 +6,32 @@ import { InputContext } from '../InputContext';
 const InputComponent = () => {
   const { motherString, setMotherString, pattern, setPattern } = useContext(InputContext);
 
+  const handleMotherStringChange = (e) => {
+    const uppercaseValue = e.target.value.toUpperCase(); // Convertir a mayúsculas
+    setMotherString(uppercaseValue); // Actualizar el estado
+  };
+
+  const handlePatternChange = (e) => {
+    const uppercaseValue = e.target.value.toUpperCase(); // Convertir a mayúsculas
+    setPattern(uppercaseValue); // Actualizar el estado
+  };
+
   return (
     <div className="input-fields">
-      <Input className="py-1" type="text" value={motherString} onChange={(e) => setMotherString(e.target.value)} placeholder="Cadena madre" />
-      <Input className="py-1" type="text" value={pattern} onChange={(e) => setPattern(e.target.value)} placeholder="Patrón a buscar" />
+      <Input
+        className="py-1"
+        type="text"
+        value={motherString}
+        onChange={handleMotherStringChange}
+        label="Cadena madre"
+      />
+      <Input
+        className="py-1"
+        type="text"
+        value={pattern}
+        onChange={handlePatternChange}
+        label="Patrón a buscar"
+      />
     </div>
   );
 };

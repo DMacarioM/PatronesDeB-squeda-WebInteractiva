@@ -5,21 +5,51 @@
   margin-bottom: 20px;
 }
 
-/* Estilos para el contenedor principal */
-.container {
-  background-color: #f0f0f0; /* Color de fondo del contenedor */
-  padding: 20px; /* Espacio interno del contenedor */
+/* Estilos para los contenedores flexibles */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2%;
+  /*margin-left: -3%;*/
+  margin-right: -6%;
+  width: 98%;
+}
+
+/* Estilos específicos para los componentes internos */
+.log-container {
+  flex: 1 1 55%; /* Ocupan hasta el 45% del ancho del contenedor flexible */
+  max-width: 100%;
+  min-width: 300px; /* Ancho mínimo para componentes */
+  box-sizing: border-box; /* Incluye padding y border en el ancho total */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* Estilos para el componente Controller */
 .controller {
   width: 100%;
-  max-width: 800px; /* Ancho máximo del componente */
-  margin: 20px auto; /* Centrar el componente y añadir margen superior e inferior */
+  box-sizing: border-box; /* Incluye padding y border en el ancho total */
+  flex: 1 1 40%; /* Ocupan hasta el 45% del ancho del contenedor flexible */
+  max-width: 80%; /* Ancho máximo del componente */
+  min-width: 300px; /* Ancho mínimo para componentes */
+  
+  margin-bottom: 50px; /* Centrar el componente y añadir margen superior e inferior */
   padding: 10px; /* Espacio interno */
+
   background-color: #9db0a3; /* Color de fondo */
   border-radius: 20px; /* Borde redondeado */
-  box-shadow: 5px 5px 2px #9db0a3; /* Sombra ligera */
+  box-shadow: 5px 5px 2px #53725D; /* Sombra ligera */
+}
+/* Estilos adicionales para separar los elementos en Input Container */
+.input-container .input-fields {
+  margin-top: -10px;
+  margin-bottom: 4px; /* Margen inferior para separar del selector */
+}
+
+.input-container .selector {
+  margin-top: 5px; /* Margen superior para separar de los campos de entrada */
 }
 
 /* Estilos para el contenedor de Slider y Botón */
@@ -40,8 +70,12 @@
   margin-left: 5%; /* Espacio entre el slider y el botón */
 }
 
+.speed-slider-container .slider-label {
+  font-size: 1.5em; /* Ajusta el tamaño de la fuente */
+}
+
 /* Media query para dispositivos móviles */
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .speed-slider-container {
     flex-direction: column; /* Cambia a dirección columna en dispositivos más pequeños */
     align-items: stretch; /* Estirar los elementos */
@@ -57,40 +91,24 @@
     margin-left: 0; /* Eliminar margen izquierdo en dispositivos móviles */
     margin-top: 10px; /* Añadir margen superior en dispositivos móviles */
   }
-}
 
-/* Estilos específicos para LogContainerComponent 
-
-.log-container {
-  background-color: #000; 
-  color: #fff; 
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-
-.log-container .log-footer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-@media (max-width: 800px) {
-  .log-container {
-      width: 100%;
-      padding: 10px;
+  .slider-label {
+    font-size: 15px !important; /* Ajusta el tamaño de la fuente */
   }
 
-  .log-container p {
-      font-size: 14px;
+  .flex-container {
+    flex-direction: column;
   }
-}*/
+  
+  .controller, .log-container {
+    max-width: 100%;
+    flex: 1 1 100%; /* Ocupan el 100% del ancho en pantallas pequeñas */
+  }
+}
+
+/* Estilos específicos para LogContainerComponent */
 
 .log-body {
-  max-height: 200px; 
+  max-height: 275px; 
   overflow-y: auto;  
 }

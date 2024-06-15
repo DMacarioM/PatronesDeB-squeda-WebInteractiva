@@ -9,22 +9,19 @@ function SandboxPage() {
     <div className='container'>
       <h1 className='title'>Sandbox</h1>
       <hr className='yellow-line' />
-      <div className='controller'>
-        <ControllerComponent />
+      <div className='flex-container'>
+        <div className='controller'>
+          <ControllerComponent />
+        </div>
+        <div className='log-container'>
+          <LogContainerComponent />
+        </div>
       </div>
-      <div className='log-container'>
-        <LogContainerComponent />
-      </div>
-
-      <VisualContainerComponent />
+      
+      
     </div>
   );
 }
 
 export default SandboxPage;
 
-
-/*
-          
-        </div>
-        */
