@@ -29,8 +29,9 @@ const KonvaComponent = () => {
     
     /**Para el dibujo del texto */
     const [textSize, setTextSize] = useState(45); // Tamaño inicial del texto
-    const [stageWidth, setStageWidth] = useState(1150); // Ancho inicial del Stage
-    const [stageHeight, setStageHeight] = useState(465); // Altura inicial del Stage
+    const [rTextSize, setRTextSize] = useState((window.innerWidth*0.5) * 0.05);
+    const [stageWidth, setStageWidth] = useState(window.innerWidth * 0.7); // Initial stage width
+    const [stageHeight, setStageHeight] = useState(window.innerHeight * 0.6);
 
     /**Para el dibujo de la tabla */
     const shapeRefFT = useRef();
@@ -50,6 +51,16 @@ const KonvaComponent = () => {
 
 
 
+    useEffect(() => {
+        const handleResize = () => {
+            setStageWidth(window.innerWidth * 0.7);
+            setStageHeight(window.innerHeight * 0.6);
+            setRTextSize(textSize);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         if(firstTableVisible){
@@ -93,11 +104,11 @@ const KonvaComponent = () => {
                 resizedElements = pasos.map(paso => {
                         if(paso.status!="TABLA"){
                             if (paso.id > pasos[currentLogIndex].lastExecId && paso.id == currentLogIndex){
-                                return establecerDibujoFinal(paso,textSize);
+                                return establecerDibujoFinal(paso,rTextSize);
                             }else if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex-1) {
-                                return establecerDibujo(paso,textSize);
+                                return establecerDibujo(paso,rTextSize);
                             } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                                return establecerDibujoInicial(paso,textSize);
+                                return establecerDibujoInicial(paso,rTextSize);
                             } else {
                                 return null;
                             }
@@ -108,7 +119,7 @@ const KonvaComponent = () => {
                     resizedElements = pasos.map(paso => {
                         if(paso.status!="TABLA"){
                             if (paso.id === pasos[currentLogIndex].lastExecId) { 
-                                return establecerDibujoInicial(paso,textSize);
+                                return establecerDibujoInicial(paso,rTextSize);
                             } else {
                                 return null;
                             }
@@ -119,9 +130,9 @@ const KonvaComponent = () => {
                 resizedElements = pasos.map(paso => {
                     if(paso.status!="TABLA"){
                         if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
-                            return establecerDibujo(paso,textSize);
+                            return establecerDibujo(paso,rTextSize);
                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { 
-                            return establecerDibujoInicial(paso,textSize);
+                            return establecerDibujoInicial(paso,rTextSize);
                         } else {
                             return null;
                         }}
@@ -134,9 +145,9 @@ const KonvaComponent = () => {
             if(pasos[currentLogIndex].patronDeBusqueda=="KMP"){
                 resizedTableElements = pasos.map(paso => {
                         if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA")) {
-                            return establecerDibujoTablaKMP(paso,textSize);
+                            return establecerDibujoTablaKMP(paso,rTextSize);
                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                            return establecerDibujoInicialTablaKMP(paso,textSize);
+                            return establecerDibujoInicialTablaKMP(paso,rTextSize);
                         } else {
                             return null;
                         }
@@ -145,20 +156,19 @@ const KonvaComponent = () => {
                 setFirstTableElements(resizedTableElements);
                 }else if(pasos[currentLogIndex].patronDeBusqueda=="Boyer-Moore"){
                     var resizedSecondTableElements
-                    //TODO: Alguna forma de diferenciar los pasos de las tablas para pintar cada una
                     resizedTableElements = pasos.map(paso => {
                         if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA") && (paso.tableNumber==1)) {
-                            return establecerDibujoPrimeraTablaBM(paso,textSize);
+                            return establecerDibujoPrimeraTablaBM(paso,rTextSize);
                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                            return establecerDibujoInicialPrimeraTablaBM(paso,textSize);
+                            return establecerDibujoInicialPrimeraTablaBM(paso,rTextSize);
                         } else {
                             return null;
                         } });
                     resizedSecondTableElements = pasos.map(paso => {
                         if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && (paso.status=="TABLA") && (paso.tableNumber==2)) {
-                            return establecerDibujoSegundaTablaBM(paso,textSize);
+                            return establecerDibujoSegundaTablaBM(paso,rTextSize);
                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                            return establecerDibujoInicialSegundaTablaBM(paso,textSize);
+                            return establecerDibujoInicialSegundaTablaBM(paso,rTextSize);
                         } else {
                             return null;
                         }
@@ -191,21 +201,21 @@ const KonvaComponent = () => {
                             setFirstTableVisible(true);
                             setTableTitle("Tabla D1");
                             setSecondTableVisible(true);
-                            setFirstTableElements(establecerDibujoInicialPrimeraTablaBM(pasos[currentLogIndex],textSize));
-                            setSecondTableElements(establecerDibujoInicialSegundaTablaBM(pasos[currentLogIndex],textSize));
+                            setFirstTableElements(establecerDibujoInicialPrimeraTablaBM(pasos[currentLogIndex],rTextSize));
+                            setSecondTableElements(establecerDibujoInicialSegundaTablaBM(pasos[currentLogIndex],rTextSize));
                             break;
                         case "KMP":
                             setFirstTableVisible(true);
                             setSecondTableVisible(false);
                             setTableTitle("Tabla Siguiente");
-                            setFirstTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],textSize));
+                            setFirstTableElements(establecerDibujoInicialTablaKMP(pasos[currentLogIndex],rTextSize));
                             break;
                         default:
                             setFirstTableVisible(false);
                             break;
                     }
                   setLastExecutes([...lastExecutes, pasos[currentLogIndex]]); // Añadir al array
-                  setElements(establecerDibujoInicial(pasos[currentLogIndex],textSize));
+                  setElements(establecerDibujoInicial(pasos[currentLogIndex],rTextSize));
                 }else if(pasos[currentLogIndex].status=="RESET"){
                     setFirstTableElements(dibujoVacio());
                     setSecondTableElements(dibujoVacio());
@@ -228,18 +238,18 @@ const KonvaComponent = () => {
                               case "Boyer-Moore":
                                 //TODO: Diferenciar de alguna forma los tipos de tabla, así es mas facil para decidir si es uno u otro
                                 if(pasos[currentLogIndex].tableNumber==1){
-                                    const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && (paso.status=="TABLA") && (paso.tableNumber==1)) {return establecerDibujoPrimeraTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialPrimeraTablaBM(paso,textSize);} else {return null;}});
-                                    newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA"&& (paso.tableNumber==1)) {return establecerDibujoPrimeraTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialPrimeraTablaBM(paso,textSize);} else { return null;}});
+                                    const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && (paso.status=="TABLA") && (paso.tableNumber==1)) {return establecerDibujoPrimeraTablaBM(paso,rTextSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialPrimeraTablaBM(paso,rTextSize);} else {return null;}});
+                                    newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA"&& (paso.tableNumber==1)) {return establecerDibujoPrimeraTablaBM(paso,rTextSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialPrimeraTablaBM(paso,rTextSize);} else { return null;}});
                                     setFirstTableElements(oldTableElements);
                                 }else{
-                                    const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && (paso.status=="TABLA") && (paso.tableNumber==2)) {return establecerDibujoSegundaTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialSegundaTablaBM(paso,textSize);} else {return null;}});
-                                    newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA"&& (paso.tableNumber==2)) {return establecerDibujoSegundaTablaBM(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialSegundaTablaBM(paso,textSize);} else { return null;}});
+                                    const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && (paso.status=="TABLA") && (paso.tableNumber==2)) {return establecerDibujoSegundaTablaBM(paso,rTextSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialSegundaTablaBM(paso,rTextSize);} else {return null;}});
+                                    newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA"&& (paso.tableNumber==2)) {return establecerDibujoSegundaTablaBM(paso,rTextSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialSegundaTablaBM(paso,rTextSize);} else { return null;}});
                                     setSecondTableElements(oldTableElements);
                                 }
                                 break;
                                 case "KMP":
-                                  const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,textSize);} else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { return establecerDibujoInicialTablaKMP(paso,textSize);} else {return null;}});
-                                  newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,textSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialTablaKMP(paso,textSize);} else { return null;}});
+                                  const oldTableElements = pasos.map(paso => {if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1) && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,rTextSize);} else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { return establecerDibujoInicialTablaKMP(paso,rTextSize);} else {return null;}});
+                                  newTableElements = pasos.map(paso => {if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex && paso.status=="TABLA") {return establecerDibujoTablaKMP(paso,rTextSize);} else if (paso.id === pasos[currentLogIndex].lastExecId) { return establecerDibujoInicialTablaKMP(paso,rTextSize);} else { return null;}});
                                   setFirstTableElements(oldTableElements);
                                 break;
                                 default:
@@ -265,9 +275,9 @@ const KonvaComponent = () => {
                             const oldElements = pasos.map(paso => {
                                 if(paso.status!="TABLA"){
                                     if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= (currentLogIndex-1)) {
-                                        return establecerDibujo(paso,textSize);
+                                        return establecerDibujo(paso,rTextSize);
                                     } else if (paso.id === lastExecutes[lastExecutes.length - 1].id) { // Si el paso actual es EXECUTE
-                                        return establecerDibujoInicial(paso,textSize);
+                                        return establecerDibujoInicial(paso,rTextSize);
                                     } else {
                                         return null;
                                     }
@@ -278,11 +288,11 @@ const KonvaComponent = () => {
                                 newElements = pasos.map(paso => {
                                     if(paso.status!="TABLA"){
                                         if (paso.id > pasos[currentLogIndex].lastExecId && paso.id == currentLogIndex){
-                                            return establecerDibujoFinal(paso,textSize);
+                                            return establecerDibujoFinal(paso,rTextSize);
                                         }else if(paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex-1) {
-                                            return establecerDibujo(paso,textSize);
+                                            return establecerDibujo(paso,rTextSize);
                                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                                            return establecerDibujoInicial(paso,textSize);
+                                            return establecerDibujoInicial(paso,rTextSize);
                                         } else {
                                             return null;
                                         }
@@ -292,9 +302,9 @@ const KonvaComponent = () => {
                                 newElements = pasos.map(paso => {
                                     if(paso.status!="TABLA"){
                                         if (paso.id > pasos[currentLogIndex].lastExecId && paso.id <= currentLogIndex) {
-                                            return establecerDibujo(paso,textSize);
+                                            return establecerDibujo(paso,rTextSize);
                                         } else if (paso.id === pasos[currentLogIndex].lastExecId) { // Si el paso actual es EXECUTE
-                                            return establecerDibujoInicial(paso,textSize);
+                                            return establecerDibujoInicial(paso,rTextSize);
                                         } else {
                                             return null;
                                         }
@@ -342,8 +352,14 @@ const KonvaComponent = () => {
         }}
     }, [pasos,currentLogIndex]);
 
+
+    const handleResize = (e) => {
+        setStageWidth(e.target.value * 25);
+        setStageHeight(e.target.value * 12);
+    };
+
     return (
-        <div>
+        <div onChange={handleResize}>
             <Stage width={stageWidth} height={stageHeight}>
                 <Layer x={5} y={5} draggable>
                      {elements}
@@ -492,7 +508,7 @@ const KonvaComponent = () => {
                 </Layer>}
                 <KonvaController 
                     stageWidth={stageWidth} 
-                    stageHeigth={stageHeight} 
+                    stageHeight={stageHeight} 
                     setTextSize={setTextSize} 
                 />
             </Stage>

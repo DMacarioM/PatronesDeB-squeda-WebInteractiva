@@ -10,8 +10,8 @@
 .comic-button-ver:hover {
   background-color: white;
   color: #E7863C;
-  border: 2px solid #E7863C;
-  box-shadow: 5px 5px 0px #E7863C;
+  border: 2px solid #E7863C !important;
+  box-shadow: 5px 5px 0px #E7863C!important;
 }
 
 .eye {

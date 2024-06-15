@@ -6,7 +6,7 @@ import useImage from '../../../../context/useImage';
 import BotonesTamanoComponent from "./BotonesTamañoComponent"
 
 
-const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
+const KonvaController = ({ stageWidth, stageHeight, setTextSize }) => {
     
     const {setCurrentLogIndex,currentLogIndex,lastLogIndex} = useLogContext();
 
@@ -14,6 +14,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
     const imageSiguiente = useImage('paso-siguiente.png');
 
     const handleGoToIndex = (index) => {
+        console.log("click");
         if(index>=0 && index<=lastLogIndex){
             setCurrentLogIndex(index);
         }
@@ -24,7 +25,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                 <Layer>
                             <Rect
                             x={-10}
-                            y={stageHeigth-60}
+                            y={stageHeight-60}
                             width={200}
                             height={65}
                             fill='white'//Color del fondo
@@ -32,7 +33,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                             ></Rect>
                             <Rect
                             x={stageWidth-60}
-                            y={stageHeigth-60}
+                            y={stageHeight-60}
                             width={70}
                             height={70}
                             fill='white'//Color del fondo
@@ -42,9 +43,8 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                         <Group key={"BotonPasoPrevio"} onClick={() => handleGoToIndex(currentLogIndex-1)}>
                             <Circle
                                 x={20}
-                                y={stageHeigth-30}
-                                width={40}
-                                height={40}
+                                y={stageHeight-30}
+                                radius={20}
                                 fill='#3B684D'//Color del fondo
                                 cornerRadius={10}
                                 ></Circle>
@@ -52,7 +52,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                                 <Image
                                     image={imagePrevio}
                                     x={0}
-                                    y={stageHeigth - 50}
+                                    y={stageHeight - 50}
                                     width={40}
                                     height={40}
                                 />
@@ -62,7 +62,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                         <Group key={"BotonPasoSiguiente"} onClick={() => handleGoToIndex(currentLogIndex+1)}>
                             <Circle
                                 x={stageWidth-30}
-                                y={stageHeigth-30}
+                                y={stageHeight-30}
                                 width={40}
                                 height={40}
                                 fill='#3B684D'//Color del fondo
@@ -72,7 +72,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                                 <Image
                                     image={imageSiguiente}
                                     x={stageWidth-50}
-                                    y={stageHeigth-50}
+                                    y={stageHeight-50}
                                     width={40}
                                     height={40}
                                 />
@@ -81,7 +81,7 @@ const KonvaController = ({ stageWidth, stageHeigth, setTextSize }) => {
                     </Group>
                     <BotonesTamanoComponent
                     stageWidth={stageWidth} 
-                    stageHeigth={stageHeigth} 
+                    stageHeight={stageHeight} 
                     setTextSize={setTextSize}/>
                 </Layer>
         </>

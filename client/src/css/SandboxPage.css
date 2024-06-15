@@ -112,3 +112,8 @@
   max-height: 275px; 
   overflow-y: auto;  
 }
+
+.SandboxView{
+  background-color: #53725D;
+  padding: 10px;
+}

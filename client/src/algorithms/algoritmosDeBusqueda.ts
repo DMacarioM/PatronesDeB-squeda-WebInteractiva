@@ -83,7 +83,6 @@ export const fuerzaBruta = (motherString, pattern) => {
    * 
    * Algoritmo KMP
    * 
-   * SE EJECUTA PERO NO CORRECTAMENTE, EL PATRON LO ENCUENTRA PERO EL OUTPUT NO TIENE SENTIDO (HACER OTRA FUNCION ESTABLECERDIBUJO?)
    */
 
    export const  kmpAlgorithm= (motherString, pattern) =>{
@@ -99,6 +98,7 @@ export const fuerzaBruta = (motherString, pattern) => {
     let comprobaciones=0
 
     while (i < motherStringLength) {
+      if(i-j==motherStringLength-(patternLength-1)) break;
       comprobaciones++;
         if (pattern[j] === motherString[i]) {
             pasos.push({

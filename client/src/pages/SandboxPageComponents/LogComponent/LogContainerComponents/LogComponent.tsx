@@ -43,13 +43,13 @@ const LogComponent = () => {
           <React.Fragment key={index}>
             <Divider style={{ backgroundColor: "#fff", margin: "10px 0" }} />
             <div className="flex justify-between pr-3 py-0 place-items-center">
+              <div>
               <p className="message-text" style={{ color: "#fff", fontFamily: 'Courier New, Courier, monospace' }}></p>
                 <pre style={{ margin: 0 }}>
                 <span style={{ color: "#E7863C" }}>{index}. </span>
                   {`${paso.message}`}
                 </pre>
-              
-              
+              </div>
               <div className="place-items-center flex">
                 <p className="status-text font-bold" style={{ color: getStatusColor(paso.status), margin: "0px 10px 0px 20px" }}>{paso.status}</p>
                 {paso.status !== 'EXECUTE' && paso.status !== 'RESET' && paso.status !== 'FIN' && paso.status !== 'INPUTERROR' && (

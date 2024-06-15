@@ -4,7 +4,7 @@ import { useLogContext } from "../../../../context/useLogContext";
 import useImage from '../../../../context/useImage';
 
 
-const BotonesTamanoComponent = ({ stageWidth, stageHeigth, setTextSize }) => {
+const BotonesTamanoComponent = ({ stageWidth, stageHeight, setTextSize }) => {
     
     const imageAumentar = useImage('/aumentar-fuente.png'); // Carga la imagen
     const imageReducir = useImage('/public/reducir-fuente.png');
@@ -13,10 +13,10 @@ const BotonesTamanoComponent = ({ stageWidth, stageHeigth, setTextSize }) => {
     return (
         <>
         <Group key={"BotonesTamano"}>
-            <Group key={"BotonReducir"} onClick={() => setTextSize(size => size - 2)}>
+            <Group key={"BotonReducir"} onClick={() => setTextSize(size => size - 2) }>
                 <Rect
                 x={75}
-                y={stageHeigth -50}
+                y={stageHeight -50}
                 width={50}
                 height={40}
                 fill='#C5D3D2'
@@ -28,7 +28,7 @@ const BotonesTamanoComponent = ({ stageWidth, stageHeigth, setTextSize }) => {
                     <Image
                     image={imageReducir}
                     x={80}
-                    y={stageHeigth -47}
+                    y={stageHeight -47}
                     width={35}
                     height={35}
                     />
@@ -37,7 +37,7 @@ const BotonesTamanoComponent = ({ stageWidth, stageHeigth, setTextSize }) => {
             <Group key={"BotonAumentar"} onClick={() => setTextSize(size => size + 2)}>
                 <Rect
                 x={135}
-                y={stageHeigth -50}
+                y={stageHeight -50}
                 width={50}
                 height={40}
                 fill='#C5D3D2'
@@ -49,7 +49,7 @@ const BotonesTamanoComponent = ({ stageWidth, stageHeigth, setTextSize }) => {
                 <Image
                 image={imageAumentar}
                 x={143}
-                y={stageHeigth - 48}
+                y={stageHeight - 48}
                 width={34}
                 height={35}
                 />
