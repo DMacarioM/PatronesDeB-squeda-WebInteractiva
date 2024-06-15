@@ -18,7 +18,7 @@ function SandboxPage() {
         </div>
       </div>
       
-      
+      <VisualContainerComponent />
     </div>
   );
 }

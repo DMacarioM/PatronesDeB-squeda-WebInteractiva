@@ -1,8 +1,19 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Stage, Layer,  Text, Rect,Group, Image,Transformer,Circle} from "react-konva";
 import { useLogContext } from "../../../context/useLogContext";
-import { dibujoVacio ,errorKonva, establecerDibujo , establecerDibujoInicial,establecerDibujoFinal, establecerDibujoInicialTablaKMP, establecerDibujoTablaKMP,establecerDibujoInicialPrimeraTablaBM,establecerDibujoInicialSegundaTablaBM,establecerDibujoPrimeraTablaBM,establecerDibujoSegundaTablaBM } from "./KonvaHandler";
-import KonvaController from './KonvaComponents/konvaController';
+import { 
+    dibujoVacio, 
+    errorKonva, 
+    establecerDibujo, 
+    establecerDibujoInicial,
+    establecerDibujoFinal, 
+    establecerDibujoInicialTablaKMP, 
+    establecerDibujoTablaKMP,
+    establecerDibujoInicialPrimeraTablaBM,
+    establecerDibujoInicialSegundaTablaBM,
+    establecerDibujoPrimeraTablaBM,
+    establecerDibujoSegundaTablaBM 
+} from "./KonvaHandler";import KonvaController from './KonvaComponents/konvaController';
 
 const KonvaComponent = () => {
     /**Para la gestion de pasos */
@@ -19,7 +30,7 @@ const KonvaComponent = () => {
     /**Para el dibujo del texto */
     const [textSize, setTextSize] = useState(45); // Tamaño inicial del texto
     const [stageWidth, setStageWidth] = useState(1150); // Ancho inicial del Stage
-    const [stageHeigth, setStageHeigth] = useState(465); // Altura inicial del Stage
+    const [stageHeight, setStageHeight] = useState(465); // Altura inicial del Stage
 
     /**Para el dibujo de la tabla */
     const shapeRefFT = useRef();
@@ -333,7 +344,7 @@ const KonvaComponent = () => {
 
     return (
         <div>
-            <Stage width={stageWidth} height={stageHeigth}>
+            <Stage width={stageWidth} height={stageHeight}>
                 <Layer x={5} y={5} draggable>
                      {elements}
                 </Layer>
@@ -481,7 +492,7 @@ const KonvaComponent = () => {
                 </Layer>}
                 <KonvaController 
                     stageWidth={stageWidth} 
-                    stageHeigth={stageHeigth} 
+                    stageHeigth={stageHeight} 
                     setTextSize={setTextSize} 
                 />
             </Stage>

@@ -1,28 +1,19 @@
-// ControllerComponent.jsx
-import {Card, CardHeader, CardBody, CardFooter,Divider} from "@nextui-org/react";
-import KonvaComponent from "./KonvaComponent"
-import KonvaHandler from "./KonvaHandler"
-import KonvaPLS from "./KonvaPLS"
+import React from 'react';
+import { Card, CardBody } from '@nextui-org/react'; // Importa los componentes de NextUI según corresponda
+import KonvaComponent from './KonvaComponent';
 
 const VisualContainerComponent = () => {
-    //Es el componente que contiene el recuadro de la extensión KonvaJs 
     return (
         <div id="SandboxView">
-            <div className="flex justify-center items-center">        
-                <Card className="px-1 py-1 max-w-[1200px] min-w-[1200px] max-h-[500px] min-h-[500px] ">
-                    <CardBody className='flex justify-center items-center'>
-                    {/*<KonvaPLS />*/}
-                    <KonvaComponent/>
+            <div className="flex justify-center items-center">
+                <Card className="w-full">
+                    <CardBody className='flex justify-center items-center p-0'>
+                        <KonvaComponent />
                     </CardBody>
-
-                    {/*<Divider/><CardFooter></CardFooter>*/}
-                    
                 </Card>
             </div>
-            
         </div>
-  );
+    );
 };
 
 export default VisualContainerComponent;
-
