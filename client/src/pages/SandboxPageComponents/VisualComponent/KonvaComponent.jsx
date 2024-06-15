@@ -28,7 +28,7 @@ const KonvaComponent = () => {
     const timeoutRef = useRef(null);
     
     /**Para el dibujo del texto */
-    const [textSize, setTextSize] = useState(45); // Tamaño inicial del texto
+    const [textSize, setTextSize] = useState(5); // Tamaño inicial del texto
     const [rTextSize, setRTextSize] = useState((window.innerWidth*0.5) * 0.05);
     const [stageWidth, setStageWidth] = useState(window.innerWidth * 0.7); // Initial stage width
     const [stageHeight, setStageHeight] = useState(window.innerHeight * 0.6);
@@ -48,14 +48,13 @@ const KonvaComponent = () => {
 
     
     const [tableTitle, setTableTitle] = useState("");
-
-
+        
 
     useEffect(() => {
         const handleResize = () => {
             setStageWidth(window.innerWidth * 0.7);
             setStageHeight(window.innerHeight * 0.6);
-            setRTextSize(textSize);
+            
         };
 
         window.addEventListener('resize', handleResize);
@@ -96,6 +95,8 @@ const KonvaComponent = () => {
 
     /**Para El tamaño del dibujo  */
     useEffect(() => {
+        setRTextSize(textSize+window.innerWidth * 0.02);
+        console.log(rTextSize);
         var resizedElements;
         
         // Aquí va el código para actualizar el dibujo
@@ -360,8 +361,8 @@ const KonvaComponent = () => {
 
     return (
         <div onChange={handleResize}>
-            <Stage width={stageWidth} height={stageHeight}>
-                <Layer x={5} y={5} draggable>
+            <Stage  x={5} y={5} width={stageWidth} height={stageHeight}>
+                <Layer draggable>
                      {elements}
                 </Layer>
                 {firstTableVisible && <Layer x={stageWidth-205} y={5}>

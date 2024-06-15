@@ -67,7 +67,7 @@ export const establecerDibujoInicial = (paso, textSize) => {
   const distancia = calculateDistance(textSize);
 
   return (
-    <Group key={`${paso.id}-IN-`}  dragBoundFunc={dragBoundFunc}>
+    <Group key={`${paso.id}-IN-`}>
       {caracteresMadre.map((mcaracter, index) => (
         <React.Fragment key={`${mcaracter}-${index}`}>
           <Rect
@@ -122,8 +122,10 @@ export const establecerDibujoFinal = (paso, textSize) => {
 
 export const establecerDibujoInicialTablaKMP = (paso, tableTextSize) => {
   const caracteresPatron = paso.pattern.split('');
-  const tamanoTexto = tableTextSize - 20;
+  const tamanoTexto = (tableTextSize - 20) < 20 ? 20 : (tableTextSize - 20);
   const distancia = tamanoTexto + 15;
+
+  
 
   const componentesKonva = caracteresPatron.map((caracter, index) => (
     <Group key={`${paso.id}-IN-T-${index}`}>
@@ -157,7 +159,7 @@ export const establecerDibujoInicialTablaKMP = (paso, tableTextSize) => {
 
 export const establecerDibujoTablaKMP = (paso, tableTextSize) => {
   const caracteresPatron = paso.pattern.split('');
-  const tamanoTexto = tableTextSize - 20;
+  const tamanoTexto = (tableTextSize - 20) < 20 ? 20 : (tableTextSize - 20);
   const distancia = tamanoTexto + 15;
   const tablaFallos = paso.tablaSgte;
 
@@ -183,7 +185,7 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
   const caracteresPatron = paso.pattern.split('');
   const caracteresUnicos = Array.from(new Set([...caracteresPatron]));
 
-  const tamanoTexto = tableTextSize - 20;
+  const tamanoTexto = (tableTextSize - 20) < 20 ? 20 : (tableTextSize - 20);
   const distancia = tamanoTexto + 15;
 
   const componentesKonva = caracteresUnicos.map((caracter, index) => (
@@ -211,7 +213,7 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
   export const establecerDibujoPrimeraTablaBM = (paso, tableTextSize) => {
     const caracteresPatron = paso.pattern.split('');
     const caracteresUnicos = Array.from(new Set([...caracteresPatron]));
-    const tamanoTexto = tableTextSize - 20;
+    const tamanoTexto = (tableTextSize - 20) < 20 ? 20 : (tableTextSize - 20);
     const distancia = tamanoTexto + 15;
 
     const componentesKonva = caracteresUnicos.map((caracter, index) => {
@@ -238,7 +240,7 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
 
   export const establecerDibujoInicialSegundaTablaBM = (paso, tableTextSize) => {
     const caracteresPatron = paso.pattern.split('');
-    const tamanoTexto = tableTextSize - 20;
+    const tamanoTexto = (tableTextSize - 20) < 20 ? 20 : (tableTextSize - 20);
     const distancia = tamanoTexto + 15;
   
     const componentesKonva = caracteresPatron.map((caracter, index) => (
@@ -267,7 +269,7 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
   
   export const establecerDibujoSegundaTablaBM = (paso, tableTextSize) => {
     const caracteresPatron = paso.pattern.split('');
-    const tamanoTexto = tableTextSize - 20;
+    const tamanoTexto = (tableTextSize - 20) < 20 ? 20 : (tableTextSize - 20);
     const distancia = tamanoTexto + 15;
     const tablaBuenosSufijos = paso.tablaD2[0];
   

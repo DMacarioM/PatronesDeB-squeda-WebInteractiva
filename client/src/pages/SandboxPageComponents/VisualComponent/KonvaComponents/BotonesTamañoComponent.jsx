@@ -1,62 +1,71 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { Stage, Layer,  Text, Rect,Group, Image, Circle} from "react-konva";
-import { useLogContext } from "../../../../context/useLogContext";
+import React, { useState } from 'react';
+import { Stage, Layer, Rect, Group, Image } from "react-konva";
 import useImage from '../../../../context/useImage';
 
-
 const BotonesTamanoComponent = ({ stageWidth, stageHeight, setTextSize }) => {
-    
     const imageAumentar = useImage('/aumentar-fuente.png'); // Carga la imagen
     const imageReducir = useImage('/public/reducir-fuente.png');
-  
-    
+    const [hoveredButton, setHoveredButton] = useState(null);
+
+    const handleSetSize = (size) => {
+        setTextSize(size);
+    };
+
     return (
-        <>
         <Group key={"BotonesTamano"}>
-            <Group key={"BotonReducir"} onClick={() => setTextSize(size => size - 2) }>
+            <Group
+                key={"BotonReducir"}
+                onClick={() => handleSetSize(size => size - 2)}
+                onMouseEnter={() => setHoveredButton('reducir')}
+                onMouseLeave={() => setHoveredButton(null)}
+            >
                 <Rect
-                x={75}
-                y={stageHeight -50}
-                width={50}
-                height={40}
-                fill='#C5D3D2'
-                cornerRadius={7}
-                stroke='black'
-                strokeWidth={2}
+                    x={70}
+                    y={stageHeight - 50}
+                    width={hoveredButton === 'reducir' ? 65 : 50}
+                    height={40}
+                    fill='#9DB0A3'
+                    cornerRadius={7}
+                    stroke='black'
+                    strokeWidth={2}
                 />
                 {imageReducir && (
                     <Image
-                    image={imageReducir}
-                    x={80}
-                    y={stageHeight -47}
-                    width={35}
-                    height={35}
+                        image={imageReducir}
+                        x={hoveredButton === 'reducir' ? 82 : 80}
+                        y={stageHeight - 47}
+                        width={35}
+                        height={35}
                     />
                 )}
             </Group>
-            <Group key={"BotonAumentar"} onClick={() => setTextSize(size => size + 2)}>
+            <Group
+                key={"BotonAumentar"}
+                onClick={() => handleSetSize(size => size + 2)}
+                onMouseEnter={() => setHoveredButton('aumentar')}
+                onMouseLeave={() => setHoveredButton(null)}
+            >
                 <Rect
-                x={135}
-                y={stageHeight -50}
-                width={50}
-                height={40}
-                fill='#C5D3D2'
-                cornerRadius={7}
-                stroke='black'
-                strokeWidth={2}
+                    x={hoveredButton === 'aumentar' ? 135 : 145}
+                    y={stageHeight - 50}
+                    width={hoveredButton === 'aumentar' ? 70 : 50}
+                    height={40}
+                    fill='#9DB0A3'
+                    cornerRadius={7}
+                    stroke='black'
+                    strokeWidth={2}
                 />
-            {imageAumentar && (
-                <Image
-                image={imageAumentar}
-                x={143}
-                y={stageHeight - 48}
-                width={34}
-                height={35}
-                />
-            )}
+                {imageAumentar && (
+                    <Image
+                        image={imageAumentar}
+                        x={hoveredButton === 'aumentar' ? 155 : 153}
+                        y={stageHeight - 48}
+                        width={34}
+                        height={35}
+                    />
+                )}
             </Group>
         </Group>
-    </>
     );
 };
 
