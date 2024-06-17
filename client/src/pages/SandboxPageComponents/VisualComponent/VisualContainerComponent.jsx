@@ -11,8 +11,9 @@ const VisualContainerComponent = () => {
               borderRadius: "20px",
               boxShadow: "5px 5px 2px #53725D" }}>
         <Card className="w-full">
-          <CardBody className='flex justify-center items-center p-5'>
+          <CardBody className='flex justify-center items-center p-2'>
             <KonvaComponent />
+            
           </CardBody>
         </Card>
       </div>

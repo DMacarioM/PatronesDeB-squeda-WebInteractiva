@@ -18,7 +18,7 @@ const SelectorComponent = () => {
         onChange={handleSelectionChange}
         value={algorithm}
       >
-        <SelectItem key="FuerzaBruta">Fuerza Bruta</SelectItem>
+        <SelectItem key="FuerzaBruta">Búsqueda Directa</SelectItem>
         <SelectItem key="KMP">KMP</SelectItem>
         <SelectItem key="Boyer-Moore">Boyer-Moore</SelectItem>
       </Select>

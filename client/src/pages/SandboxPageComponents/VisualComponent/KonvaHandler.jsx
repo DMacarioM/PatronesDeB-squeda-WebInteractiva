@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 export const getColorFromStatus = (status) => {
   const colors = {
     'FALLO': '#C33030',
-    'ACIERTO': '#5B9C70',
-    'EXITO': '#30C35F',
-    'NEWELEMENT': '#85C2FF',
+    'ACIERTO': '#30C35F',
+    'EXITO': '#63F691',
+    'NEWELEMENT': '#E7863C',
     'Grey': '#B0C4C3',
   };
   return colors[status] || 'white';
@@ -27,20 +27,20 @@ export const establecerDibujo = (paso, textSize) => {
         if (paso.status === 'EXITO') {
           color = getColorFromStatus('EXITO');
         } else if (index < paso.posEnPatron && paso.patronDeBusqueda !== "Boyer-Moore") {
-          color = '#63BB66';
+          color = '#30C35F';
         } else if (index === paso.posEnPatron) {
           color = getColorFromStatus(paso.status);
         } else if (index < paso.posEnPatron && paso.patronDeBusqueda === "Boyer-Moore") {
           color = '#B0C4C3';
         } else if (index > paso.posEnPatron && paso.patronDeBusqueda === "Boyer-Moore") {
-          color = '#63BB66';
+          color = '#30C35F';
         }
 
         return (
           <React.Fragment key={`${pcaracter}-${index}`}>
             <Rect
-              x={(index * distancia) + (paso.posComienzoPatron * distancia)}
-              y={paso.alturaY * distancia}
+              x={10+(index * distancia) + (paso.posComienzoPatron * distancia)}
+              y={10+paso.alturaY * distancia}
               width={textSize + 10}
               height={textSize + 7}
               stroke='black'
@@ -48,8 +48,8 @@ export const establecerDibujo = (paso, textSize) => {
               strokeWidth={textSize / 10}
             />
             <Text
-              x={(index * distancia + (textSize / 7)) + (paso.posComienzoPatron * distancia)}
-              y={paso.alturaY * distancia + textSize / 6}
+              x={10+(index * distancia + (textSize / 7)) + (paso.posComienzoPatron * distancia)}
+              y={10+paso.alturaY * distancia + textSize / 6}
               text={pcaracter}
               fontSize={textSize}
             />
@@ -68,19 +68,30 @@ export const establecerDibujoInicial = (paso, textSize) => {
 
   return (
     <Group key={`${paso.id}-IN-`}>
+      {/**Rectangulo que lo englobe¿? */}
+      <Rect
+            x={-9000}
+            y={0}
+            width={99999}
+            height={distancia}
+            stroke='#53725D'
+            strokeWidth={textSize / 10}
+            fill='#9DB0A3'
+          />
       {caracteresMadre.map((mcaracter, index) => (
         <React.Fragment key={`${mcaracter}-${index}`}>
           <Rect
-            x={(index * distancia)}
-            y={0}
+            x={10+(index * distancia)}
+            y={distancia/7}
             width={textSize + 10}
             height={textSize + 7}
             stroke='black'
+            fill='#E7EFE9'
             strokeWidth={textSize / 10}
           />
           <Text
-            x={(index * distancia) + textSize / 7}
-            y={textSize / 6}
+            x={10+(index * distancia) + textSize / 7}
+            y={textSize / 2}
             text={mcaracter}
             fontSize={textSize}
           />
@@ -100,17 +111,17 @@ export const establecerDibujoFinal = (paso, textSize) => {
       {caracteresPatron.map((pcaracter, index) => (
         <React.Fragment key={`${pcaracter}-${index}`}>
           <Rect
-            x={(index * distancia) + ((despX + 1) * distancia)}
-            y={(paso.alturaY) * distancia}
+            x={10+(index * distancia) + ((despX + 1) * distancia)}
+            y={10+(paso.alturaY) * distancia}
             width={textSize + 10}
             height={textSize + 7}
             stroke='black'
-            fill='#C9F0FF'
+            fill='#E7863C'
             strokeWidth={textSize / 10}
           />
           <Text
-            x={(index * distancia + (textSize / 7)) + ((despX + 1) * distancia)}
-            y={((paso.alturaY) * distancia + textSize / 6)}
+            x={10+(index * distancia + (textSize / 7)) + ((despX + 1) * distancia)}
+            y={10+((paso.alturaY) * distancia + textSize / 6)}
             text={pcaracter}
             fontSize={textSize}
           />
@@ -130,14 +141,14 @@ export const establecerDibujoInicialTablaKMP = (paso, tableTextSize) => {
   const componentesKonva = caracteresPatron.map((caracter, index) => (
     <Group key={`${paso.id}-IN-T-${index}`}>
       <>
-        <Rect fill='white' x={10} y={20 + distancia + (index * distancia)} width={distancia} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#E7EFE9' x={10} y={20 + distancia + (index * distancia)} width={distancia} height={tamanoTexto + 5} stroke='black' />
         <Text text={`${index}`} x={27} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
-        <Rect fill='white' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#E7EFE9' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
         <Text text={`${caracter}`} x={distancia + 20} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
       </>
       {index === 0 && (
         <>
-          <Rect fill='#C9F0FF' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+          <Rect fill='#E7863C' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
           <Text text={`-1`} x={35 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
         </>
       )}
@@ -146,11 +157,11 @@ export const establecerDibujoInicialTablaKMP = (paso, tableTextSize) => {
 
   return (
     <Group key={`${paso.id}-IN-T`}>
-      <Rect fill='#B0C4C3' x={10} y={20} width={distancia} height={tamanoTexto + 5} stroke='black' />
+      <Rect fill='#8BA192' x={10} y={20} width={distancia} height={tamanoTexto + 5} stroke='black' />
       <Text text={`i`} x={27} y={23} fontSize={tamanoTexto} />
-      <Rect fill='#B0C4C3' x={distancia + 10} y={20} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
+      <Rect fill='#8BA192' x={distancia + 10} y={20} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
       <Text text={`P[i]`} x={distancia + 12} y={23} fontSize={tamanoTexto} />
-      <Rect fill='#B0C4C3' x={20 + distancia * 2} y={20} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+      <Rect fill='#8BA192' x={20 + distancia * 2} y={20} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
       <Text text={`Sgte[i]`} x={20 + distancia * 2} y={23} fontSize={tamanoTexto} />
       {componentesKonva}
     </Group>
@@ -167,7 +178,7 @@ export const establecerDibujoTablaKMP = (paso, tableTextSize) => {
     <Group key={`${paso.id}-PAS-T-${index}`}>
       {paso.posEnPatron === index && (
         <>
-          <Rect fill='#C9F0FF' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+          <Rect fill='#E7863C' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
           <Text text={`${tablaFallos[index]}`} x={35 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
         </>
       )}
@@ -191,9 +202,9 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
   const componentesKonva = caracteresUnicos.map((caracter, index) => (
     <Group key={`${paso.id}-IN-T1-${index}`}>
       <>
-        <Rect fill='white' x={10} y={20 + distancia + (index * distancia)} width={distancia} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#E7EFE9' x={10} y={20 + distancia + (index * distancia)} width={distancia} height={tamanoTexto + 5} stroke='black' />
         <Text text={`${caracter}`} x={27} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
-        <Rect fill='#C9F0FF' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#E7863C' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
         <Text text={`${caracteresPatron.length}`} x={27 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
       </>
     </Group>
@@ -201,10 +212,16 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
 
   return (
     <Group key={`${paso.id}-IN-T1`}>
-      <Rect fill='#B0C4C3' x={10} y={20} width={distancia} height={tamanoTexto + 5} stroke='black' />
+      <Rect fill='#8BA192' x={10} y={20} width={distancia} height={tamanoTexto + 5} stroke='black' />
       <Text text={`c`} x={27} y={23} fontSize={tamanoTexto} />
-      <Rect fill='#B0C4C3' x={distancia + 10} y={20} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+      <Rect fill='#8BA192' x={distancia + 10} y={20} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
       <Text text={`D1[c]`} x={distancia + 12} y={23} fontSize={tamanoTexto} />
+      
+      
+      <Rect fill='#E7EFE9' x={10} y={20 + distancia + (caracteresUnicos.length * distancia)} width={distancia+20} height={tamanoTexto + 5} stroke='black' />
+      <Text text={`Otros`} x={12} y={25 + distancia + (caracteresUnicos.length * distancia)} fontSize={tamanoTexto} />
+      <Rect fill='#E7863C' x={distancia + 30} y={20 + distancia + (caracteresUnicos.length * distancia)} width={distancia * 2 - (distancia/2)} height={tamanoTexto + 5} stroke='black' />
+      <Text text={`${caracteresPatron.length}`} x={27 + distancia * 2} y={25 + distancia + (caracteresUnicos.length * distancia)} fontSize={tamanoTexto} />
       {componentesKonva}
     </Group>
   );
@@ -221,7 +238,7 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
         return (
           <Group key={`${paso.id}-PAS-T1-${index}`}>
             <>
-              <Rect fill='#C9F0FF' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+              <Rect fill='#E7863C' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
               <Text text={`${paso.D1[caracter]}`} x={27 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
             </>
           </Group>
@@ -245,22 +262,28 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
   
     const componentesKonva = caracteresPatron.map((caracter, index) => (
       <Group key={`${paso.id}-IN-T-BM2-${index}`}>
-        <Rect fill='white' x={10} y={20 + distancia + (index * distancia)} width={distancia} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#E7EFE9' x={10} y={20 + distancia + (index * distancia)} width={distancia} height={tamanoTexto + 5} stroke='black' />
         <Text text={`${index}`} x={27} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
-        <Rect fill='white' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#E7EFE9' x={distancia + 10} y={20 + distancia + (index * distancia)} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
         <Text text={`${caracter}`} x={distancia + 20} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
-        <Rect fill='#C9F0FF' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
-        <Text text={`0`} x={35 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
+        <Rect fill='#E7863C' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+        {index==caracteresPatron.length-1 &&
+        <><Text text={`-`} x={35 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} /></>
+        }
+        {index!=caracteresPatron.length-1 &&
+        <><Text text={`0`} x={35 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} /></>
+        }
+        
       </Group>
     ));
   
     return (
       <Group key={`${paso.id}-IN-T-BM2-`}>
-        <Rect fill='#B0C4C3' x={10} y={20} width={distancia} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#8BA192' x={10} y={20} width={distancia} height={tamanoTexto + 5} stroke='black' />
         <Text text={`i`} x={27} y={25} fontSize={tamanoTexto} />
-        <Rect fill='#B0C4C3' x={distancia + 10} y={20} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#8BA192' x={distancia + 10} y={20} width={distancia + 10} height={tamanoTexto + 5} stroke='black' />
         <Text text={`P[i]`} x={distancia + 12} y={23} fontSize={tamanoTexto} />
-        <Rect fill='#B0C4C3' x={20 + distancia * 2} y={20} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+        <Rect fill='#8BA192' x={20 + distancia * 2} y={20} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
         <Text text={`D2[i]`} x={30 + distancia * 2} y={23} fontSize={tamanoTexto} />
         {componentesKonva}
       </Group>
@@ -276,8 +299,11 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
     const componentesKonva = caracteresPatron.map((caracter, index) => (
       <Group key={`${paso.id}-PAS-T-BM2-${index}`}>
         {paso.posEnPatron === index && (<>
-          <Rect fill='#C9F0FF' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
+          {index!=caracteresPatron.length-1 &&
+          <><Rect fill='#E7863C' x={20 + distancia * 2} y={20 + distancia + (index * distancia)} width={distancia * 2} height={tamanoTexto + 5} stroke='black' />
           <Text text={`${tablaBuenosSufijos[(paso.pattern.length - 1) - index]}`} x={35 + distancia * 2} y={25 + distancia + (index * distancia)} fontSize={tamanoTexto} />
+          </>
+          }
           </>)}
         </Group>
     ));
@@ -302,4 +328,4 @@ export const establecerDibujoInicialPrimeraTablaBM = (paso, tableTextSize) => {
   );
   
  
-  export default {dibujoVacio, errorKonva, establecerDibujoInicial,establecerDibujo,establecerDibujoInicialTablaKMP,establecerDibujoInicialPrimeraTablaBM,establecerDibujoInicialPrimeraTablaBM,establecerDibujoSegundaTablaBM};
+  export default {dibujoVacio, errorKonva, establecerDibujoInicial,establecerDibujo,establecerDibujoInicialTablaKMP,establecerDibujoInicialPrimeraTablaBM,establecerDibujoSegundaTablaBM};

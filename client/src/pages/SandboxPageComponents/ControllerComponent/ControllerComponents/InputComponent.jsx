@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { Input } from '@nextui-org/react';
 import { InputContext } from '../InputContext';
+import { warning } from 'framer-motion';
 
 const InputComponent = () => {
   const { motherString, setMotherString, pattern, setPattern } = useContext(InputContext);
@@ -18,8 +19,7 @@ const InputComponent = () => {
 
   return (
     <div className="input-fields">
-      <Input
-        className="py-1"
+      <Input className="py-1"
         type="text"
         value={motherString}
         onChange={handleMotherStringChange}

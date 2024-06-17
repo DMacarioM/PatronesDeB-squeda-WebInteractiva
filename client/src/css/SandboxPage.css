@@ -11,8 +11,8 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 2%;
-  /*margin-left: -3%;*/
-  margin-right: -6%;
+  margin-left: -3%;
+  margin-right: -5%;
   width: 98%;
 }
 
@@ -74,6 +74,13 @@
   font-size: 1.5em; /* Ajusta el tamaño de la fuente */
 }
 
+@media (max-width: 1500px) {
+  .execute-button {
+    font-size: 10px !important;
+  }
+
+}
+
 /* Media query para dispositivos móviles */
 @media (max-width: 900px) {
   .speed-slider-container {
@@ -90,6 +97,10 @@
     width: 100%; /* Ancho completo del botón en dispositivos móviles */
     margin-left: 0; /* Eliminar margen izquierdo en dispositivos móviles */
     margin-top: 10px; /* Añadir margen superior en dispositivos móviles */
+  }
+
+  .execute-button {
+    font-size: 25px !important;
   }
 
   .slider-label {

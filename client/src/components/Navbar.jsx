@@ -28,6 +28,13 @@ const Navbar = () => {
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollBy({
+      top: -window.innerHeight*50,
+      behavior:'smooth'
+    });
+  };
+
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     document.addEventListener('mousedown', handleClickOutside);
@@ -42,13 +49,20 @@ const Navbar = () => {
     <>
       <div className={`navbar ${isMobile ? 'navbar-mobile' : ''}`}>
         {!isMobile && (
-          <Link to="/" className="logo-link" onClick={() => handleSelect('/')}>
-            <img src="/AlgoritmosLogo.png" alt="Logo" className="logo" />
+          <Link to="/algorpatrones/dist/" className="logo-link" 
+          onClick={() => {
+            handleSelect('/')
+            scrollToTop()
+          }}>
+            <img src="./AlgoritmosLogo.png" alt="Logo" className="logo" />
           </Link>
         )}
         {isMobile && (
-          <Link to="/" className="logo-link-mobile" onClick={() => handleSelect('/')}>
-            <img src="/AlgoritmosLogo.png" alt="Logo" className="logo-mobile" />
+          <Link to="/algorpatrones/dist/" className="logo-link-mobile" onClick={() => {
+            handleSelect('/')
+            scrollToTop()
+          }}>
+            <img src="./AlgoritmosLogo.png" alt="Logo" className="logo-mobile" />
           </Link>
         )}
         {isMobile && (
@@ -62,30 +76,42 @@ const Navbar = () => {
         {!isMobile && (
           <>
             <Link
-              to="/BD"
-              className={`nav-link ${selected === '/BD' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/BD')}
+              to="/algorpatrones/dist/BD"
+              className={`nav-link ${selected === '/algorpatrones/dist/BD' ? 'selected' : ''}`}
+              onClick={() => {
+                handleSelect('/algorpatrones/dist/BD')
+                scrollToTop()
+              }}
             >
               Búsqueda Directa
             </Link>
             <Link
-              to="/KMP"
-              className={`nav-link ${selected === '/KMP' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/KMP')}
+              to="/algorpatrones/dist/KMP"
+              className={`nav-link ${selected === '/algorpatrones/dist/KMP' ? 'selected' : ''}`}
+              onClick={() => {
+                handleSelect('/algorpatrones/dist/KMP')
+                scrollToTop()
+              }}
             >
               KMP
             </Link>
             <Link
-              to="/BM"
-              className={`nav-link ${selected === '/BM' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/BM')}
+              to="/algorpatrones/dist/BM"
+              className={`nav-link ${selected === '/algorpatrones/dist/BM' ? 'selected' : ''}`}
+              onClick={() => {
+                handleSelect('/algorpatrones/dist/BM')
+                scrollToTop()
+              }}
             >
               Boyer-Moore
             </Link>
             <Link
-              to="/Sandbox"
-              className={`nav-link ${selected === '/Sandbox' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/Sandbox')}
+              to="/algorpatrones/dist/Sandbox"
+              className={`nav-link ${selected === '/algorpatrones/dist/Sandbox' ? 'selected' : ''}`}
+              onClick={() => {
+                handleSelect('/algorpatrones/dist/Sandbox')
+                scrollToTop()
+              }}
             >
               Sandbox
             </Link>
@@ -96,30 +122,39 @@ const Navbar = () => {
         <div ref={sidebarRef} className={`sidebar-mobile-overlay ${isSidebarOpen ? 'open' : ''}`}>
           <div className="sidebar-mobile">
             <Link
-              to="/BD"
-              className={`nav-link ${selected === '/BD' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/BD')}
+              to="/algorpatrones/dist/BD"
+              className={`nav-link ${selected === '/algorpatrones/dist/BD' ? 'selected' : ''}`}
+              onClick={() => {
+                handleSelect('/algorpatrones/dist/BD')
+                scrollToTop()
+              }}
             >
               Búsqueda Directa
             </Link>
             <Link
-              to="/KMP"
-              className={`nav-link ${selected === '/KMP' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/KMP')}
+              to="/algorpatrones/dist/KMP"
+              className={`nav-link ${selected === '/algorpatrones/dist/KMP' ? 'selected' : ''}`}
+              onClick={() => {handleSelect('/algorpatrones/dist/KMP')
+                scrollToTop()
+              }}
             >
               KMP
             </Link>
             <Link
-              to="/BM"
-              className={`nav-link ${selected === '/BM' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/BM')}
+              to="/algorpatrones/dist/BM"
+              className={`nav-link ${selected === '/algorpatrones/dist/BM' ? 'selected' : ''}`}
+              onClick={() => {handleSelect('/algorpatrones/dist/BM')
+                scrollToTop()
+              }}
             >
               Boyer-Moore
             </Link>
             <Link
-              to="/Sandbox"
-              className={`nav-link ${selected === '/Sandbox' ? 'selected' : ''}`}
-              onClick={() => handleSelect('/Sandbox')}
+              to="/algorpatrones/dist/Sandbox"
+              className={`nav-link ${selected === '/algorpatrones/dist/Sandbox' ? 'selected' : ''}`}
+              onClick={() => {
+                handleSelect('/algorpatrones/dist/Sandbox')
+                scrollToTop()}}
             >
               Sandbox
             </Link>

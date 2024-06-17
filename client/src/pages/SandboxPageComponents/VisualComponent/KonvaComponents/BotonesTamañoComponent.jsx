@@ -3,8 +3,8 @@ import { Stage, Layer, Rect, Group, Image } from "react-konva";
 import useImage from '../../../../context/useImage';
 
 const BotonesTamanoComponent = ({ stageWidth, stageHeight, setTextSize }) => {
-    const imageAumentar = useImage('/aumentar-fuente.png'); // Carga la imagen
-    const imageReducir = useImage('/public/reducir-fuente.png');
+    const imageAumentar = useImage('./aumentar-fuente.png'); // Carga la imagen
+    const imageReducir = useImage('./reducir-fuente.png');
     const [hoveredButton, setHoveredButton] = useState(null);
 
     const handleSetSize = (size) => {

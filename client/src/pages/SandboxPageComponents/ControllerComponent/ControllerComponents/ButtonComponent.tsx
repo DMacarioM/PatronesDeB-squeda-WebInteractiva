@@ -14,7 +14,7 @@ const pasoErrorInput = {
   status: "INPUTERROR",
 };
 const pasoErrorInputPatron = {
-  message: "Introduce datos de entrada válidos (El patrón no puede ser más grande que la cadena Madre) ",
+  message: "Introduce datos de entrada válidos\n\tEl patrón no puede ser más grande que la cadena Madre ",
   motherString: "",
   patronDeBusqueda: "",
   pattern: "",
@@ -27,7 +27,7 @@ function mapPasoExito(motherString, pattern, algorithm) {
     motherString: motherString,
     pattern: pattern,
     patronDeBusqueda: algorithm,
-    message: "Ejecución exitosa, tiempo de ejecución:  ",
+    message: "Tiempo de ejecución:  ",
     status: "EXECUTE",
   };
 }
